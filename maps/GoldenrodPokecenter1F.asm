@@ -157,7 +157,10 @@ GoldenrodPokecenter1FGameboyKidScript:
 	jumptextfaceplayer GoldenrodPokecenter1FGameboyKidText
 
 GoldenrodPokecenter1FGrampsScript:
-	; todo: UnknownText_0x62173 if connected to the gb mobile
+	special Mobile_DummyReturnFalse
+	iftrue .script6a06
+	jumptextfaceplayer UnknownText_0x62173
+.script6a06
 	jumptextfaceplayer UnknownText_0x62222
 
 GoldenrodPokecenter1FLassScript:
