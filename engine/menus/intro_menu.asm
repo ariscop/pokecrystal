@@ -1333,4 +1333,5 @@ GameInit::
 	ld a, $90
 	ldh [hWY], a
 	call WaitBGMap
+	farcall Unreferenced_Function16c000
 	jp CrystalIntroSequence
