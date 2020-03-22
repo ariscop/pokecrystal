@@ -53,15 +53,15 @@ Function49f16:
 	ld hl, wMenuCursorY
 	ld a, [hl]
 	cp 1
-	jp z, Function4a098
+	jp z, Function4a098 ; my folder
 	cp 2
-	jp z, Function4a0b9
+	jp z, Function4a0b9 ; greeting
 	cp 3
-	jp z, Function4a0c2
+	jp z, Function4a0c2 ; profile
 	cp 4
-	jp z, Function4a100
+	jp z, Function4a100 ; settings
 	ld a, 1
-	call MenuClickSound
+	call MenuClickSound ; exit
 .b_button
 	pop bc
 	call ClearBGPalettes
@@ -100,33 +100,33 @@ Function49f16:
 	jp .joy_loop
 
 MobileString1:
-	db   "めいしフォルダー"
-	next "あいさつ"
-	next "プロフィール"
-	next "せ<TTE>い"
-	next "もどる"
+	db   "My folder"
+	next "Greeting"
+	next "Profile"
+	next "Settings"
+	next "Exit"
 	db   "@"
 
 MobileStrings2:
 
 String_0x49fe9:
-	db   "めいし¯つくったり"
-	next "ほぞんしておける　フォルダーです@"
+	db   "Make a lot"
+	next "Folder which can be saved@"
 
 String_0x4a004:
-	db   "モバイルたいせんや　じぶんのめいしで"
-	next "つかう　あいさつ¯つくります@"
+	db   "On the mobile platform"
+	next "I'll make a greeting@"
 
 String_0x4a026:
-	db   "あなた<NO>じゅうしょや　ねんれいの"
-	next "せ<TTE>い¯かえられます@"
+	db   "Your prayer"
+	next "I can change it@"
 
 String_0x4a042:
-	db  "モバイルセンター<NI>せつぞくするとき"
-	next "ひつような　こと¯きめます@"
+	db  "When you visit mobile center"
+	next "I need something like@"
 
 String_0x4a062:
-	db   "まえ<NO>がめん　<NI>もどります"
+	db   "Return to main menu"
 	next "@"
 
 MobileMenu_InitMenuBuffers:
@@ -219,7 +219,7 @@ Function4a118:
 	ld hl, w2DMenuCursorInitY
 	ld a, $1
 	ld [hli], a
-	ld a, $d
+	ld a, $b
 	ld [hli], a
 	ld a, $3
 	ld [hli], a
@@ -383,11 +383,11 @@ Function4a28a:
 	call CloseSRAM
 	and a
 	jr z, .asm_4a2df
-	hlcoord 12, 0
+	hlcoord 10, 0
 	ld b, $5
-	ld c, $6
+	ld c, $8
 	call Function48cdc
-	hlcoord 14, 1
+	hlcoord 12, 1
 	ld de, String_4a34b
 	call PlaceString
 	farcall Mobile_OpenAndCloseMenu_HDMATransferTilemapAndAttrmap
@@ -451,9 +451,9 @@ MenuHeader_0x4a346:
 	menu_coords 12, 0, SCREEN_WIDTH - 1, 6
 
 String_4a34b:
-	db   "いれなおす"
-	next "けす"
-	next "もどる@"
+	db   "Replace"
+	next "Delete"
+	next "Back@"
 
 DeleteSavedLoginPasswordText:
 	text_far _DeleteSavedLoginPasswordText
@@ -472,8 +472,8 @@ DeletePassword_YesNo_MenuHeader:
 MenuData_0x4a36a:
 	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING | STATICMENU_WRAP ; flags
 	db 2 ; items
-	db "はい@"
-	db "いいえ@"
+	db "Yes@"
+	db "No@"
 
 Function4a373:
 	ld hl, w2DMenuCursorInitY

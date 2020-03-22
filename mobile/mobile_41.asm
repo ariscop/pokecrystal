@@ -784,7 +784,8 @@ endr
 ; functions related to the cable club and various NPC scripts referencing communications
 
 Mobile_DummyReturnFalse:
-	xor a
+	;xor a
+	call Function106331
 	ld [wScriptVar], a
 	ret
 
