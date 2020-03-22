@@ -3,7 +3,6 @@
 
 ; Copies certain values at the time the player enters the Hall of Fame.
 StubbedTrainerRankings_HallOfFame2::
-	ret
 	ld a, BANK(sTrainerRankingGameTimeHOF)
 	call GetSRAMBank
 
@@ -34,7 +33,6 @@ StubbedTrainerRankings_HallOfFame2::
 	ret
 
 StubbedTrainerRankings_MagikarpLength:
-	ret
 	ld a, BANK(sTrainerRankingLongestMagikarp)
 	call GetSRAMBank
 	ld de, wBuffer1
@@ -102,7 +100,6 @@ StubbedTrainerRankings_MagikarpLength:
 	ret
 
 StubbedTrainerRankings_BugContestScore:
-	ret
 	ld a, BANK(sTrainerRankingBugContestScore)
 	call GetSRAMBank
 	ldh a, [hProduct]
@@ -131,7 +128,6 @@ StubbedTrainerRankings_BugContestScore:
 	ret
 
 StubbedTrainerRankings_AddToSlotsWinStreak:
-	ret
 	ld a, BANK(sTrainerRankingCurrentSlotsStreak)
 	call GetSRAMBank
 
@@ -171,7 +167,6 @@ StubbedTrainerRankings_AddToSlotsWinStreak:
 	ret
 
 StubbedTrainerRankings_EndSlotsWinStreak:
-	ret
 	ld a, BANK(sTrainerRankingCurrentSlotsStreak)
 	call GetSRAMBank
 	ld hl, sTrainerRankingCurrentSlotsStreak
@@ -183,7 +178,6 @@ StubbedTrainerRankings_EndSlotsWinStreak:
 	ret
 
 StubbedTrainerRankings_AddToSlotsPayouts:
-	ret
 	ld a, BANK(sTrainerRankingTotalSlotsPayouts)
 	call GetSRAMBank
 	ld hl, sTrainerRankingTotalSlotsPayouts + 3
@@ -211,7 +205,6 @@ StubbedTrainerRankings_AddToSlotsPayouts:
 	ret
 
 StubbedTrainerRankings_AddToBattlePayouts:
-	ret
 	ld a, BANK(sTrainerRankingTotalBattlePayouts)
 	call GetSRAMBank
 	ld hl, sTrainerRankingTotalBattlePayouts + 3
@@ -241,12 +234,10 @@ StubbedTrainerRankings_AddToBattlePayouts:
 	ret
 
 StubbedTrainerRankings_StepCount:
-	ret
 	ld hl, sTrainerRankingStepCount
 	jp StubbedTrainerRankings_Increment4Byte
 
 Unreferenced_StubbedTrainerRankings_BattleTowerWins:
-	ret
 	ld a, $5
 	call GetSRAMBank
 	ld a, [$aa8d]
@@ -257,12 +248,10 @@ Unreferenced_StubbedTrainerRankings_BattleTowerWins:
 	jp StubbedTrainerRankings_Increment2Byte
 
 StubbedTrainerRankings_TMsHMsTaught:
-	ret
 	ld hl, sTrainerRankingTMsHMsTaught
 	jp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_Battles:
-	ret
 	ld a, [wBattleType]
 	cp BATTLETYPE_TUTORIAL ; Exclude the Dude’s tutorial battle
 	ret z
@@ -270,7 +259,6 @@ StubbedTrainerRankings_Battles:
 	jp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_WildBattles:
-	ret
 	ld a, [wBattleType]
 	cp BATTLETYPE_TUTORIAL ; Exclude the Dude’s tutorial battle
 	ret z
@@ -278,102 +266,82 @@ StubbedTrainerRankings_WildBattles:
 	jp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_TrainerBattles:
-	ret
 	ld hl, sTrainerRankingTrainerBattles
 	jp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_Unused1:
-	ret
 	ld hl, sTrainerRankingUnused1
 	jp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_HallOfFame::
-	ret
 	ld hl, sTrainerRankingHOFEntries
 	jp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_WildMonsCaught:
-	ret
 	ld hl, sTrainerRankingWildMonsCaught
 	jp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_HookedEncounters:
-	ret
 	ld hl, sTrainerRankingHookedEncounters
 	jp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_EggsHatched:
-	ret
 	ld hl, sTrainerRankingEggsHatched
 	jp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_MonsEvolved:
-	ret
 	ld hl, sTrainerRankingMonsEvolved
 	jp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_FruitPicked:
-	ret
 	ld hl, sTrainerRankingFruitPicked
 	jp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_Healings:
-	ret
 	ld hl, sTrainerRankingHealings
 	jp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_MysteryGift:
-	ret
 	ld hl, sTrainerRankingMysteryGift
 	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_Trades:
-	ret
 	ld hl, sTrainerRankingTrades
 	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_Fly:
-	ret
 	ld hl, sTrainerRankingFly
 	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_Surf:
-	ret
 	ld hl, sTrainerRankingSurf
 	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_Waterfall:
-	ret
 	ld hl, sTrainerRankingWaterfall
 	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_WhiteOuts:
-	ret
 	ld hl, sTrainerRankingWhiteOuts
 	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_LuckyNumberShow:
-	ret
 	ld hl, sTrainerRankingLuckyNumberShow
 	jr StubbedTrainerRankings_Increment2Byte
 
 StubbedTrainerRankings_PhoneCalls:
-	ret
 	ld hl, sTrainerRankingPhoneCalls
 	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_Unused2:
-	ret
 	ld hl, sTrainerRankingUnused2
 	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_LinkBattles:
-	ret
 	ld hl, sTrainerRankingLinkBattles
 	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_Splash:
-	ret
 	; Only counts if it’s the player’s turn
 	ldh a, [hBattleTurn]
 	and a
@@ -382,33 +350,27 @@ StubbedTrainerRankings_Splash:
 	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_TreeEncounters:
-	ret
 	ld hl, sTrainerRankingTreeEncounters
 	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_Unused3:
-	ret
 	ld hl, sTrainerRankingUnused3
 	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_ColosseumWins: ; win
-	ret
 	ld hl, sTrainerRankingColosseumWins
 	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_ColosseumLosses: ; lose
-	ret
 	ld hl, sTrainerRankingColosseumLosses
 	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_ColosseumDraws: ; draw
-	ret
 	ld hl, sTrainerRankingColosseumDraws
 	jr StubbedTrainerRankings_Increment3Byte
 
 ; Counts uses of both Selfdestruct and Explosion.
 StubbedTrainerRankings_Selfdestruct:
-	ret
 	; Only counts if it’s the player’s turn
 	ldh a, [hBattleTurn]
 	and a
@@ -474,7 +436,6 @@ StubbedTrainerRankings_Increment:
 
 ; Used when SRAM bank 5 isn’t already loaded — what’s the point of this?
 UpdateTrainerRankingsChecksum2:
-	ret
 	ld a, BANK(sTrainerRankings)
 	call GetSRAMBank
 	call UpdateTrainerRankingsChecksum
@@ -784,13 +745,12 @@ endr
 ; functions related to the cable club and various NPC scripts referencing communications
 
 Mobile_DummyReturnFalse:
-	;xor a
-	call Function106331
+	call Mobile_AlwaysReturnNotCarry
+	ld a, c
 	ld [wScriptVar], a
 	ret
 
 Stubbed_Function106314:
-	ret
 	ld a, $4
 	call GetSRAMBank
 	ld a, c
@@ -805,12 +765,6 @@ Stubbed_Function106314:
 	ret
 
 Mobile_AlwaysReturnNotCarry:
-	or a
-	ret
-
-Function106331:
-; called by Mobile_DummyReturnFalse in Crystal-J
-	; check ~[4:b000] == [7:a800]
 	ld a, $4
 	call GetSRAMBank
 	ld a, [$b000]
