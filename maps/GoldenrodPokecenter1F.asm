@@ -17,7 +17,77 @@ PokeComInfoSign:
 	jumptext UnknownText_0x62370
 
 PokeComNewsMachine:
-	jumptext UnknownText_0x619db
+	special Mobile_DummyReturnFalse
+	iftrue .script68c2
+	jumptext UnknownText_0x623c7
+.script68c2
+	opentext
+	writetext UnknownText_0x619db
+	waitbutton
+	setval $14
+	special BattleTowerAction
+	ifnotequal $00, .script68d9
+	setval $15
+	special BattleTowerAction
+	writetext UnknownText_0x61a11
+	waitbutton
+.script68d9
+	writetext UnknownText_0x61c4b
+	yesorno
+	iffalse .script68ff
+	;special TryQuickSave
+	;iffalse .script68ff
+	setval $15
+	special BattleTowerAction
+.script68eb
+	writetext UnknownText_0x619f5
+	setval 0
+	special Menu_ChallengeExplanationCancel
+	ifequal 1, .script6908
+	ifequal 2, .script691d
+	ifequal 3, .script6901
+.script68ff
+	closetext
+	end
+.script6901
+	writetext UnknownText_0x61a11
+	waitbutton
+	sjump .script68eb
+.script6908
+	writetext UnknownText_0x61b7c
+	yesorno
+	iffalse .script68eb
+	writetext UnknownText_0x61b9d
+	special Function17d2b6
+	ifequal $a, .script68eb
+	ifnotequal $0, .script6935
+	special Function17d2ce
+	iffalse .script6932
+	ifequal 1, .script692e
+	writetext UnknownText_0x61b7c
+	yesorno
+	iffalse .script68eb
+	writetext UnknownText_0x61b9d
+	special Function17d2b6
+	ifequal $0a, .script68eb
+	ifnotequal $0, .script6935
+.script691d
+	special Function17d2ce
+	iffalse .script6932
+	ifequal 1, .script692e
+	writetext UnknownText_0x61bdb
+	waitbutton
+	sjump .script68eb
+.script692e
+	writetext UnknownText_0x61bc4
+	waitbutton
+.script6932
+	sjump .script68eb
+.script6935
+	special BattleTowerMobileError
+	closetext
+	end
+
 
 GoldenrodPokecenter1F_GSBallSceneLeft:
 	setval BATTLETOWERACTION_CHECKMOBILEEVENT
@@ -85,6 +155,10 @@ GoldenrodPokecenter1F_GSBallSceneRight:
 
 GoldenrodPokecenter1FGameboyKidScript:
 	jumptextfaceplayer GoldenrodPokecenter1FGameboyKidText
+
+GoldenrodPokecenter1FGrampsScript:
+	; todo: UnknownText_0x62173 if connected to the gb mobile
+	jumptextfaceplayer UnknownText_0x62222
 
 GoldenrodPokecenter1FLassScript:
 	jumptextfaceplayer GoldenrodPokecenter1FLassText
@@ -848,5 +922,5 @@ GoldenrodPokecenter1F_MapEvents:
 	object_event 30,  9, SPRITE_TEACHER, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, -1
 	object_event 30,  5, SPRITE_ROCKER, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, -1
 	object_event 11, 12, SPRITE_GAMEBOY_KID, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, GoldenrodPokecenter1FGameboyKidScript, -1
-	object_event 19, 14, SPRITE_GRAMPS, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, GoldenrodPokecenter1FPokefanF, -1
+	object_event 19, 14, SPRITE_GRAMPS, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, GoldenrodPokecenter1FGrampsScript, -1
 	object_event 4,  11, SPRITE_LASS, SPRITEMOVEDATA_WALK_LEFT_RIGHT, 1, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, GoldenrodPokecenter1FLassScript, -1

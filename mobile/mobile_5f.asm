@@ -354,7 +354,7 @@ Mobile_CopyDefaultMail:
 	ret
 
 .DefaultMessage:
-	db "こんにちは@"
+	db "Hello@"
 
 Mobile_CopyDefaultMailAuthor:
 	ld a, "@"
@@ -475,10 +475,10 @@ MenuHeader_17d26a:
 MenuData_17d272:
 	db STATICMENU_CURSOR | STATICMENU_WRAP ; flags
 	db 4
-	db "ニュース¯よみこむ@"
-	db "ニュース¯みる@"
-	db "せつめい@"
-	db "やめる@"
+	db "New News@"
+	db "Old News@"
+	db "Settings@"
+	db "Quit@"
 
 MenuHeader_ChallengeExplanationCancel:
 	db MENU_BACKUP_TILES ; flags
@@ -1885,8 +1885,8 @@ Function17dc1f:
 MenuData_17dc96:
 	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING | STATICMENU_WRAP ; flags
 	db 2
-	db "はい@"
-	db "いいえ@"
+	db "Yes@"
+	db "No@"
 
 Function17dc9f:
 	call IncCrashCheckPointer
@@ -4676,12 +4676,15 @@ Function17f6b7:
 	ret
 
 MobileCommunicationErrorText:
-	db "つうしんエラー　　　ー@"
+	db "Error     -@"
 
 String_17f6e8:
-	db   "みていぎ<NO>エラーです"
-	next "プログラム<WO>"
-	next "かくにん　してください"
+	;db   "みていぎ<NO>エラーです"
+	;next "プログラム<WO>"
+	;next "かくにん　してください"
+	db   "Errtxt 1"
+	db   "Errtxt 2"
+	db   "Errtxt 3"
 	db   "@"
 
 MobileErrorCodeTable:
@@ -4835,6 +4838,10 @@ MobileErrorCodes_33: db 19
 	dw $403, MobileErrorCode_ServerErrorText
 	dw $404, MobileErrorCode_ServerErrorText
 	dw -1, MobileErrorCode_ServerErrorText
+
+; Usable area for error text:
+            ;"################"
+            ;"モモモモモモモモモモモモモモモモ"
 
 MobileErrorCode_10_000_Text:
 ; The Mobile Adapter is not properly plugged in.
