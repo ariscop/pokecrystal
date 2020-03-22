@@ -160,17 +160,13 @@ MainMenu_GetWhichMenu:
 	cp -1
 	call CloseSRAM
 	jr nz, .mystery_gift
-	; This check makes no difference.
 	ld a, [wStatusFlags]
 	bit STATUSFLAGS_MAIN_MENU_MOBILE_CHOICES_F, a
-	ld a, $1 ; Continue
 	jr z, .ok
-	jr .ok
+	ld a, $3 ; MobileMenu
+	ret
 
 .ok
-	jr .ok2
-
-.ok2
 	ld a, $1 ; Continue
 	ret
 
@@ -178,11 +174,9 @@ MainMenu_GetWhichMenu:
 	; This check makes no difference.
 	ld a, [wStatusFlags]
 	bit STATUSFLAGS_MAIN_MENU_MOBILE_CHOICES_F, a
-	jr z, .ok3
-	jr .ok3
-
-.ok3
-	jr .ok4
+	jr z, .ok4
+	ld a, $2 ; MobileMysteryMenu
+	ret
 
 .ok4
 	ld a, $6 ; Mystery Gift
