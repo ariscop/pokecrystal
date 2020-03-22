@@ -7310,15 +7310,15 @@ AskMobileOrCable:
 
 MenuHeader_103640:
 	db MENU_BACKUP_TILES ; flags
-	menu_coords 13, 6, SCREEN_WIDTH - 1, TEXTBOX_Y - 1
+	menu_coords 11, 6, SCREEN_WIDTH - 1, TEXTBOX_Y - 1
 	dw MenuData_103648
 	db 1 ; default option
 
 MenuData_103648:
 	db STATICMENU_CURSOR ; flags
 	db 2
-	db "モバイル@"
-	db "ケーブル@"
+	db "Mobile@"
+	db "Cable@"
 
 Function103654:
 	farcall Mobile_AlwaysReturnNotCarry
