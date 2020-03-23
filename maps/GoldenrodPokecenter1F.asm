@@ -6,12 +6,232 @@
 	const GOLDENRODPOKECENTER1F_POKEFAN_F
 
 GoldenrodPokecenter1F_MapScripts:
-	db 0 ; scene scripts
+	db 2
+	scene_script script671d
+	scene_script script671d
 
-	db 0 ; callbacks
+	db 1
+	callback MAPCALLBACK_OBJECTS, script6735
+
+script671d:
+	end
+	setval $15
+	special BattleTowerAction
+	iffalse .script6729
+	prioritysjump script686f
+	end
+.script6729
+	setval $0e
+	special BattleTowerAction
+	iffalse .script6734
+	prioritysjump script68b5
+.script6734
+	end
+
+script6735:
+	special Mobile_DummyReturnFalse
+	iftrue .script6750
+	moveobject $05, $10, $09
+	moveobject $0A, $00, $07
+	moveobject $04, $08, $0D
+	moveobject $07, $1b, $0D
+	moveobject $08, $15, $06
+	return
+.script6750
+	setevent EVENT_33F
+	return
 
 GoldenrodPokecenter1FNurseScript:
+	setevent EVENT_WELCOMED_TO_POKECOM_CENTER
 	jumpstd pokecenternurse
+
+GoldenrodPokecenter1FLinkReceptionistScript
+	special SetBitsForLinkTradeRequest
+	opentext
+	writetext UnknownText_0x61072 ; 6a2d
+	promptbutton
+	checkitem EGG_TICKET
+	iftrue script687c
+	special Function11b879
+	ifequal $01, .script67f6
+	ifequal $02, .script6869
+	readvar $01
+	ifequal $01, .script67cf
+	writetext UnknownText_0x610ce ; 6a72
+	yesorno
+	iffalse .script67d5
+	writetext UnknownText_0x616fb ; 6e75
+	yesorno
+	iffalse .script67d5
+	;special TryQuickSave
+	iffalse .script67d5
+	writetext UnknownText_0x61727 ; 6e8f
+	waitbutton
+	special BillsGrandfather
+	ifequal $00, .script67d5
+	ifequal $fd, .script67ea
+	ifgreater $fb, .script67f0
+	special Function11ba38
+	ifnotequal $00, .script67e4
+	writetext UnknownText_0x61111 ; 6a9e
+	promptbutton
+;67aa
+	special Function11ac3e
+	ifequal $00, .script67d5
+	ifequal $02, .script67bb
+	writetext UnknownText_0x6113b ; 6ab9
+	sjump .script67be
+.script67bb
+	writetext UnknownText_0x611c9 ; 6b1e
+.script67be
+	special Function11b444
+	ifequal $0a, .script67d5
+	ifnotequal $00, .script67db
+	writetext UnknownText_0x61271 ; 6b8a
+	waitbutton
+	closetext
+	end
+.script67cf
+	writetext UnknownText_0x612d8 ; 6bd7
+	waitbutton
+	closetext
+	end
+
+.script67d5
+	writetext UnknownText_0x61344 ; 6c0f
+	waitbutton
+	closetext
+	end
+
+.script67db
+	special BattleTowerMobileError
+	writetext UnknownText_0x61749 ; 6eaa
+	waitbutton
+	closetext
+	end
+
+.script67e4
+	writetext UnknownText_0x61375 ; 6c2c
+	waitbutton
+	closetext
+	end
+
+.script67ea
+	writetext UnknownText_0x613a9 ; 6c51
+	waitbutton
+	closetext
+	end
+
+.script67f0
+	writetext UnknownText_0x613c8 ; 6c6f
+	waitbutton
+	closetext
+	end
+
+.script67f6
+	writetext UnknownText_0x616fb ; 6e75
+	yesorno
+	iffalse .script67d5
+	;special TryQuickSave
+	iffalse .script67d5
+	writetext UnknownText_0x61409 ; 6c89
+	promptbutton
+	readvar 01
+	ifequal $06, .script6838
+	writetext UnknownText_0x61438 ; 6ca5
+	special Function11b5e8
+	ifequal $0a, .script67d5
+	ifnotequal $00, .script67db
+	setval $0f
+	special BattleTowerAction
+	ifequal $00, .script683e
+	ifequal $01, .script682b
+	sjump .script6856
+.script682b
+	writetext UnknownText_0x6145c ; 6cc4
+	promptbutton
+	special Function11b7e5
+	writetext UnknownText_0x6149a ; 6ce6
+	waitbutton
+	closetext
+	end
+.script6838
+	writetext UnknownText_0x614ed ; 6d21
+	waitbutton
+	closetext
+	end
+.script683e
+	writetext UnknownText_0x61544 ; 6d57
+	yesorno
+	iffalse .script6863
+	special Function11b920
+	ifequal $0a, .script67d5
+	ifnotequal $00, .script67db
+	writetext UnknownText_0x615a5 ; 6d8a
+	waitbutton
+	closetext
+	end
+.script6856
+	writetext UnknownText_0x615c2 ; 6d9a
+	promptbutton
+	special Function11b93b
+	writetext UnknownText_0x6166e ; 6e01
+	waitbutton
+	closetext
+	end
+.script6863
+	writetext UnknownText_0x61689 ; 6e17
+	waitbutton
+	closetext
+	end
+.script6869
+	writetext UnknownText_0x616b4 ; 6e30
+	waitbutton
+	closetext
+	end
+
+script686f:
+	setscene 1
+	opentext
+	writetext UnknownText_0x6145c ; 6cc4
+	promptbutton
+	writetext UnknownText_0x6149a ; 6ce6
+	waitbutton
+	closetext
+	end
+
+script687c:
+	writetext UnknownText_0x6176f ; 6ecd
+	waitbutton
+	readvar 1
+	ifequal $06, GoldenrodPokecenter1FLinkReceptionistScript.script6838
+	writetext UnknownText_0x616fb ; 6e75
+	yesorno
+	iffalse GoldenrodPokecenter1FLinkReceptionistScript.script67d5
+	;special TryQuickSave
+	iffalse GoldenrodPokecenter1FLinkReceptionistScript.script67d5
+	writetext UnknownText_0x6191f ; 6fcc
+	special GiveOddEgg
+	setval 0 ; TODO: odd egg event no longer sets the script value
+	         ;       So lets pretend it succeeds for now
+	ifequal $0b, .script68af
+	ifequal $0a, GoldenrodPokecenter1FLinkReceptionistScript.script67d5
+	ifnotequal $00, GoldenrodPokecenter1FLinkReceptionistScript.script67db
+.script68a9
+	writetext UnknownText_0x61936 ; 6fe6
+	waitbutton
+	closetext
+	end
+.script68af
+	writetext UnknownText_0x61996 ; 7022
+	waitbutton
+	closetext
+	end
+
+script68b5:
+	opentext
+	sjump script687c.script68a9
+	end ;temp
 
 PokeComInfoSign:
 	jumptext UnknownText_0x62370
@@ -23,7 +243,7 @@ PokeComNewsMachine:
 .script68c2
 	opentext
 	writetext UnknownText_0x619db
-	waitbutton
+	promptbutton
 	setval $14
 	special BattleTowerAction
 	ifnotequal $00, .script68d9
@@ -918,7 +1138,7 @@ GoldenrodPokecenter1F_MapEvents:
 
 	db 10 ; object events
 	object_event  7,  7, SPRITE_NURSE, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, GoldenrodPokecenter1FNurseScript, -1
-	object_event 16,  8, SPRITE_LINK_RECEPTIONIST, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, ObjectEvent, -1
+	object_event 16,  8, SPRITE_LINK_RECEPTIONIST, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, GoldenrodPokecenter1FLinkReceptionistScript, -1
 	object_event 13,  5, SPRITE_SUPER_NERD, SPRITEMOVEDATA_WALK_UP_DOWN, 0, 1, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, -1
 	object_event 18,  9, SPRITE_LASS, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, -1
 	object_event 23,  8, SPRITE_YOUNGSTER, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, -1
