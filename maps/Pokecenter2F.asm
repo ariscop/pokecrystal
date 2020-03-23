@@ -415,7 +415,7 @@ Pokecenter2F_CheckGender:
 	checkflag ENGINE_PLAYER_IS_FEMALE
 	iftrue .Female
 	applymovementlasttalked Pokecenter2FMovementData_ReceptionistWalksUpAndLeft_LookRight
-	applymovement PLAYER, Pokecenter2FMovementData_PlayerTakesThreeStepsUp
+	applymovement PLAYER, Pokecenter2FMovementData_PlayerWalksIntoLinkRoom
 	end
 
 .Female:
@@ -443,7 +443,7 @@ Pokecenter2F_CheckGender:
 	waitbutton
 	closetext
 	showemote EMOTE_SHOCK, PLAYER, 15
-	applymovement PLAYER, Pokecenter2FMovementData_PlayerTakesOneStepUp
+	applymovement PLAYER, Pokecenter2FMovementData_PlayerWalksLeftAndUp
 	end
 
 Script_WalkOutOfLinkTradeRoom:
@@ -652,9 +652,10 @@ Pokecenter2FMovementData_ReceptionistLooksRight:
 	turn_head RIGHT
 	step_end
 
-Pokecenter2FMovementData_PlayerTakesThreeStepsUp:
+Pokecenter2FMovementData_PlayerWalksIntoLinkRoom:
 	step UP
 	step UP
+	step LEFT
 	step UP
 	step_end
 
