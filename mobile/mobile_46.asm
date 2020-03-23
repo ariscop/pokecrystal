@@ -5058,23 +5058,23 @@ Function11a63c:
 	ret
 
 String_11a661:
-	db   "これから　モバイルセンターに"
-	next "でんわ<WO>かけます@"
+	db   "Going to dial"
+	next "Mobile Center@"
 
 String_11a679:
-	db   "モバイルアダプタ<NO>じゅんびは"
-	next "できて　いますか？@"
+	db   "Is the Mobile"
+	next "Adapter ready?@"
 
 String_11a692:
-	db   "でんわ<WO>かけています"
-	next "しばらく　おまちください@"
+	db   "Dialing..."
+	next "Please wait@"
 
 String_11a6aa:
-	db   "でんわをかけると　つうわりょう"
-	next "せつぞくりょう<GA>かかります@"
+	db   "There may be"
+	next "a charge@"
 
 String_11a6c8:
-	db   "せつぞく　しました@"
+	db   "I'm sorry@"
 
 String_11a6d2:
 	db   "つうしん　ちゅう@"
@@ -5102,35 +5102,35 @@ String_11a72a:
 	next "　　やく　　　ふん　　　びょう@"
 
 String_11a743:
-	db   "もっていない　データが"
-	next "あります！@"
+	db   "There is no"
+	next "data@"
 
 String_11a755:
-	db   "データ<WO>よみこみますか？@"
+	db   "Import data?@"
 
 String_11a762:
-	db   "おなじ　データ<WO>よみこんだ"
-	next "こと<GA>ありますが@"
+	db   "Read the same"
+	next "data@" ; ????
 
 String_11a779:
-	db   "そのデータ<WA>なくなっているか"
-	next "こわれて　います@"
+	db   "The data is"
+	next "broken@" ; missing or broken
 
 String_11a791:
-	db   "もっている　データと"
-	next "おなじデータしか　ありません！@"
+	db   "No new"
+	next "data@"
 
 String_11a7ac:
-	db   "データ<NO>よみこみを"
-	next "ちゅうし　しますか？@"
+	db   "Do you want to"
+	next "read the data?@"
 
 String_11a7c1:
-	db   "あたらしい　ニュースは"
-	next "ありません　でした@"
+	db   "There was no"
+	next "new news@"
 
 String_11a7d7:
-	db   "あたらしいニュース<GA>あります"
-	next "ニュース<WO>よみこみますか？@"
+	db   "There is new news"
+	next "Download?@"
 
 String_11a7f4:
 	db   "　　　　　　　　　　　　　　　@"
