@@ -783,16 +783,17 @@ PasswordSlowpokeLZ:
 INCBIN "gfx/pokedex/slowpoke_jp.2bpp.lz"
 
 String_172e31:
-	db "パスワード<WO>いれてください@"
+	db "Enter Password@"
 String_172e3f:
-	db "きりかえ　やめる　　けってい@"
+	;   ---- ---- ----
+	db "NUM  EXIT DONE@"
 String_172e4e:
-	db "きりかえ　やめる　　"
+	db "ALPH EXIT "
 String_172e58:
-	db "けってい@"
+	db "DONE@"
 String_172e5d:
-	db "せつぞくする　モバイルセンターを"
-	next "えらんで　ください@"
+	db "Please select"
+	next "mobile center@"
 
 Function172e78:
 	ld a, $7f
