@@ -475,10 +475,10 @@ MenuHeader_17d26a:
 MenuData_17d272:
 	db STATICMENU_CURSOR | STATICMENU_WRAP ; flags
 	db 4
-	db "New News@"
-	db "Old News@"
-	db "Settings@"
-	db "Quit@"
+	db "Fetch News@"
+	db "Read News@"
+	db "Explanation@"
+	db "Cancel@"
 
 MenuHeader_ChallengeExplanationCancel:
 	db MENU_BACKUP_TILES ; flags

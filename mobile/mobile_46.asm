@@ -5637,12 +5637,12 @@ Function11ad1b:
 	call ByteFill
 	xor a
 	ld [wJumptableIndex], a
-	ld [wcf64], a
-	ld [wcf65], a
-	ld [wcf66], a
+	ld [wcf64], a ; wPrevDexEntryJumptableIndex
+	ld [wcf65], a ; wPrevDexEntryBackup
+	ld [wcf66], a ; wPokedexStatus
 	ld [wcd30], a
 	ld a, $2
-	ld [wc7d4], a
+	ld [wCurDexMode], a
 	farcall Pokedex_OrderMonsByMode
 	ret
 
@@ -5772,9 +5772,9 @@ MenuHeader_11ae38:
 	db 0 ; default option
 
 String_11ae40:
-	db   "どちらでも"
-	next "♂オス"
-	next "♀メス"
+	db   "Any"
+	next "♂"
+	next "♀"
 	db   "@"
 
 Function11ae4e:
@@ -6011,12 +6011,13 @@ MenuHeader_11afe8:
 	db 0 ; default option
 
 String_11aff0:
-	db   "この　じょうけんで"
-	next "よろしいですか?@"
+	db   "Are you"
+	next "sure?@"
+	;next "よろしいですか?@"
 
 String_11b003:
-	db   "こうかんを"
-	next "ちゅうししますか？@"
+	db   "Cancel"
+	next "Trade?@"
 
 MenuHeader_11b013:
 	db MENU_BACKUP_TILES ; flags
@@ -6025,8 +6026,8 @@ MenuHeader_11b013:
 	db 1 ; default option
 
 String_11b01b:
-	db   "はい"
-	next "いいえ@"
+	db   "Yes"
+	next "No@"
 
 Function11b022:
 	ld a, [wcd2e]
@@ -6119,7 +6120,7 @@ Function11b099:
 	ld a, [wc7d0]
 	ld e, a
 	ld d, $0
-	ld hl, wc6d0
+	ld hl, wPokedexOrder
 	add hl, de
 	ld e, l
 	ld d, h

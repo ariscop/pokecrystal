@@ -873,8 +873,8 @@ MenuHeader_1005b2:
 MenuData_1005ba:
 	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING ; flags
 	db 2
-	db "はい@"
-	db "いいえ@"
+	db "Yes@"
+	db "No@"
 
 Function1005c3:
 	ld a, [wcd26]
@@ -1050,7 +1050,7 @@ String1006c2:
 String1006c6:
 	db "びょう@"
 String1006ca:
-	db "１じかんいじょう@"
+	db "1 Hour@"
 
 Function1006d3:
 	call UpdateTime

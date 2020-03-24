@@ -265,8 +265,8 @@ MenuHeader_0x892a3:
 MenuData_0x892ab:
 	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING ; flags
 	db 2 ; items
-	db "はい@"
-	db "いいえ@"
+	db "Yes@"
+	db "No@"
 
 Function892b4:
 	call Function8931b

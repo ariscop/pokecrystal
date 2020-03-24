@@ -53,7 +53,7 @@ Function49f16:
 	ld hl, wMenuCursorY
 	ld a, [hl]
 	cp 1
-	jp z, Function4a098 ; my folder
+	jp z, Function4a098 ; card folder
 	cp 2
 	jp z, Function4a0b9 ; greeting
 	cp 3
@@ -100,7 +100,7 @@ Function49f16:
 	jp .joy_loop
 
 MobileString1:
-	db   "My folder"
+	db   "Card Folder"
 	next "Greeting"
 	next "Profile"
 	next "Settings"
@@ -329,9 +329,9 @@ asm_4a19d:
 	jp Function4a195
 
 String_4a1ef:
-	db   "モバイルセンター¯えらぶ"
-	next "ログインパスワード¯いれる"
-	next "もどる@"
+	db   "Mobile Select"
+	next "Login Password"
+	next "Back@"
 
 Function4a20e:
 	ld a, $1
@@ -359,13 +359,13 @@ Function4a239:
 	jp Function4a13b
 
 Strings_4a23d:
-	db   "いつも　せつぞく¯する"
-	next "モバイルセンター¯えらびます@"
+	db   "Select"
+	next "Mobile Center@"
 
-	db   "モバイルセンター<NI>せつぞくするとき"
-	next "つかうパスワード¯ほぞんできます@"
+	db   "Your"
+	next "Password@"
 
-	db   "まえ<NO>がめん　<NI>もどります@"
+	db   "Return@"
 
 	db   "@"
 
@@ -755,7 +755,7 @@ Function4a5b0:
 	jp Function4a545
 
 String_4a5c5:
-	db "じこしょうかい@"
+	db "Greeting@"
 String_4a5cd:
 	db "たいせん　<GA>はじまるとき@"
 String_4a5da:
@@ -763,7 +763,7 @@ String_4a5da:
 String_4a5e6:
 	db "たいせん　<NI>まけたとき@"
 String_4a5f2:
-	db "もどる@"
+	db "Back@"
 
 Strings_4a5f6:
 	db "めいし　や　ニュース　<NI>のせる@"
