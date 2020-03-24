@@ -19,17 +19,46 @@ Function8b342::
 	ret
 
 .dw
-	dw .zero
-	dw .one
-	dw .two
+	dw .zero ; 75b7
+	dw .one  ; 75c5
+	dw .two  ; 75db
 
 .zero
+	ld hl, BattleTowerOutside_MapAttributes
+	call Function8b35d
+	ret nz
+	call Function8b363
+	ret c
+	ld c, MUSIC_ROUTE_36
 	ret
 
 .one
+	ld hl, GoldenrodPokecenter1F_MapAttributes
+	call Function8b35d
+	jr z, .skip
+	ld hl, PokecomCenterAdminOfficeMobile_MapAttributes
+	call Function8b35d
+	ret nz
+.skip
+	call Function8b363
+	ret c
+	ld c, MUSIC_POKEMON_CENTER
 	ret
 
 .two
+	ld hl, Pokecenter2F_MapAttributes
+	call Function8b35d
+	ret nz
+	ld hl, wBackupMapGroup
+	ldi a, [hl]
+	cp a, GROUP_GOLDENROD_POKECENTER_1F
+	ret nz
+	ld a, [hl] ; wBackupMapNumber
+	cp a, MAP_GOLDENROD_POKECENTER_1F
+	ret nz
+	call Function8b363
+	ret nc
+	ld c, MUSIC_MOBILE_CENTER
 	ret
 
 Function8b35d:
