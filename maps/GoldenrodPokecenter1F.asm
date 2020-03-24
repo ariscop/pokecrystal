@@ -11,11 +11,7 @@ GoldenrodPokecenter1F_MapScripts:
 	callback MAPCALLBACK_OBJECTS, script6735
 
 script671d:
-	;Dummied out as it breaks my testing save
-	end
-	; something to do wit returning from a trade and
-	; the egg ticket event
-	setval $15
+	setval $10
 	special BattleTowerAction
 	iffalse .script6729
 	prioritysjump script686f
