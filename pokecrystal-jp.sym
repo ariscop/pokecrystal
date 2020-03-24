@@ -157,6 +157,8 @@
 00:2f25 TossItem
 00:2f38 ReceiveItem
 00:2f5e Random
+00:2f9d GetSRAMBank
+00:2fad CloseSRAM
 00:2fd7 ClearSprites
 00:2ff2 CopyBytes
 00:300d ByteFill
@@ -466,6 +468,8 @@
 41:4859 GetMapScreenCoords
 41:4859 GetMapScreenCoords
 47:4000 BattleTowerText
+5c:4691 BattleTowerAction
+5c:46a0 BattleTowerAction.dw
 00:c2a7 wMusicFade
 00:c2a9 wMusicFadeId
 00:c2c0 wMapMusic
