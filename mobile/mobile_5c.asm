@@ -780,7 +780,7 @@ ChooseMobileCenterAttrmap:
 INCBIN "gfx/mobile/mobile_center.attrmap"
 
 PasswordSlowpokeLZ:
-INCBIN "gfx/pokedex/slowpoke.2bpp.lz"
+INCBIN "gfx/pokedex/slowpoke_jp.2bpp.lz"
 
 String_172e31:
 	db "パスワード<WO>いれてください@"
