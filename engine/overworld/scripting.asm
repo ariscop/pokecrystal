@@ -940,7 +940,7 @@ Script_applymovement:
 
 ApplyMovement:
 	push bc
-	ld a, c
+	ld a, c ; farcall clobbers a -- bug?
 	farcall SetFlagsForMovement_1
 	pop bc
 
