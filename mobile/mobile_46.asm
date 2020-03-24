@@ -6427,7 +6427,7 @@ Function11b239:
 Function11b242:
 	hlcoord 3, 4
 	ld de, wStringBuffer3
-	call PlaceString
+	;call PlaceString
 	xor a
 	ld [wMonType], a
 	farcall GetGender
@@ -6521,7 +6521,7 @@ Function11b295:
 	ld de, String_11b30e
 
 .asm_11b2e7
-	ld a, $6
+	ld a, NAME_LENGTH ; NAME_LENGTH_JAPANESE
 	ld bc, wStringBuffer4
 .asm_11b2ec
 	push af
