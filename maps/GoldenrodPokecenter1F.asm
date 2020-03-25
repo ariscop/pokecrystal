@@ -71,9 +71,9 @@ GoldenrodPokecenter1FLinkReceptionistScript
 	ifnotequal $00, .script67e4
 	writetext UnknownText_0x61111 ; 6a9e
 	promptbutton
-	special Function11ac3e
-	ifequal $00, .script67d5
-	ifequal $02, .script67bb
+	special Function11ac3e    ; $00 cancel
+	ifequal $00, .script67d5  ; $01 Chosen mon
+	ifequal $02, .script67bb  ; $02 Unseen mon?
 	writetext UnknownText_0x6113b ; 6ab9
 	sjump .script67be
 .script67bb
