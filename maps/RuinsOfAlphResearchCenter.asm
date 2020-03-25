@@ -125,7 +125,15 @@ RuinsOfAlphResearchCenterScientist2Script:
 	end
 
 .GotAllUnown:
-	writetext RuinsOfAlphResearchCenterScientist2Text_GotAllUnown
+	special Mobile_DummyReturnFalse
+	iftrue .UnownAndMobileActive
+	writetext RuinsOfAlphResearchCenterUnusedText1
+	waitbutton
+	closetext
+	end
+
+.UnownAndMobileActive
+	writetext RuinsOfAlphResearchCenterUnusedText2
 	waitbutton
 	closetext
 	end

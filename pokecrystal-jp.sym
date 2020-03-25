@@ -241,6 +241,16 @@
 15:69FD GoldenrodPokecenter1FGrampsScript
 15:6a09 GoldenrodPokecenter1FLassScript
 15:6a0c PokeComInfoSign
+15:763d GoldenrodPokecenter1F_MapEvents
+16:44cb RuinsOfAlphOutside_MapEvents
+16:4e06 RuinsOfAlphResearchCenter_MapScripts
+16:4e64 RuinsOfAlphResearchCenterScientist3Script
+16:4e78 RuinsOfAlphResearchCenterScientist1Script
+16:4ea7 RuinsOfAlphResearchCenterScientist2Script
+16:4ed3 RuinsOfAlphResearchCenterComputer
+16:4eec RuinsOfAlphResearchCenterPrinter
+16:4f0b RuinsOfAlphResearchCenterBookshelf
+16:528d RuinsOfAlphResearchCenter_MapEvents
 1d:7393 Pokecenter2F_MapScripts
 1d:73AD Pokecenter2F_MapScripts.Scene0
 1d:73C1 Pokecenter2F_MapScripts.Scene1
