@@ -409,55 +409,43 @@ GoldenrodPokecenter1FGrampsScript:
 GoldenrodPokecenter1FLassScript:
 	jumptextfaceplayer GoldenrodPokecenter1FLassText
 
-GoldenrodPokecenter1FLassPrimeScript:
-	;special a0
-	;iftrue .script69ad
-	;jumptextfaceplayer UnknownText_0x61dfd ; 72ad
-	;checkevent EVENT_33F
-	;iftrue 69d3
-	;opentext
-	;writetext UnknownText_0x61e5c ; 72eb
-	;waitbutton
-	;closetext
-	;readvar 9
-	;ifequal 2, 69c7
-	;#### 68 05 23 6A 03 CB 69
-;.script69c7
-	;checkjustbattled ???
-	;memjump 6a27
-
-	faceplayer
+GoldenrodPokecenter1FBlockingLassScript:
+	special Mobile_DummyReturnFalse
+	iftrue .script69ad
+	jumptextfaceplayer UnknownText_0x61dfd ; 72ad
+.script69ad
+	checkevent EVENT_33F ; Because this event is set in the scene
+	iftrue .script69d3   ; script, this code never runs
+	faceplayer           ; unused in JP too it seems
 	opentext
-	writetext GoldenrodPokecenter1FPokefanFDoYouHaveEonMailText
-	waitbutton
-	writetext GoldenrodPokecenter1FAskGiveAwayAnEonMailText
-	yesorno
-	iffalse .NoEonMail
-	takeitem EON_MAIL
-	iffalse .NoEonMail
-	writetext GoldenrodPokecenter1FPlayerGaveAwayTheEonMailText
-	waitbutton
-	writetext GoldenrodPokecenter1FPokefanFThisIsForYouText
-	waitbutton
-	verbosegiveitem REVIVE
-	iffalse .NoRoom
-	writetext GoldenrodPokecenter1FPokefanFDaughterWillBeDelightedText
+	writetext UnknownText_0x61e5c ; 72eb
 	waitbutton
 	closetext
+	readvar 9
+	ifequal 2, .script69c7
+	applymovement 5, .movement6a23
+	sjump .script69cb
+.script69c7
+	applymovement 5, .movement6a72
+.script69cb
+	setevent EVENT_33F
+	moveobject 5, 12, 9
 	end
+.script69d3
+	jumptextfaceplayer UnknownText_0x61eb2
 
-.NoEonMail:
-	writetext GoldenrodPokecenter1FPokefanFTooBadText
-	waitbutton
-	closetext
-	end
-
-.NoRoom:
-	giveitem EON_MAIL
-	writetext GoldenrodPokecenter1FPokefanFAnotherTimeThenText
-	waitbutton
-	closetext
-	end
+.movement6a23
+	slow_step RIGHT
+	slow_step RIGHT
+	turn_head UP
+	step_end
+.movement6a72
+	slow_step DOWN
+	slow_step RIGHT
+	slow_step RIGHT
+	slow_step UP
+	turn_head UP
+	step_end
 
 GoldenrodPokeCenter1FLinkReceptionistApproachPlayerAtLeftDoorwayTileMovement:
 	step UP
@@ -1179,7 +1167,7 @@ GoldenrodPokecenter1F_MapEvents:
 	object_event  7,  7, SPRITE_NURSE, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, GoldenrodPokecenter1FNurseScript, -1
 	object_event 16,  8, SPRITE_LINK_RECEPTIONIST, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, GoldenrodPokecenter1FLinkReceptionistScript, -1
 	object_event 13,  5, SPRITE_SUPER_NERD, SPRITEMOVEDATA_WALK_UP_DOWN, 0, 1, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, GoldenrodPokecenter1FSuperNerdScript, -1
-	object_event 18,  9, SPRITE_LASS, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, GoldenrodPokecenter1FLassPrimeScript, -1
+	object_event 18,  9, SPRITE_LASS, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, GoldenrodPokecenter1FBlockingLassScript, -1
 	object_event 23,  8, SPRITE_YOUNGSTER, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, GoldenrodPokecenter1FYoungsterScript, -1
 	object_event 30,  9, SPRITE_TEACHER, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, GoldenrodPokecenter1FTeacherScript, -1
 	object_event 30,  5, SPRITE_ROCKER, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, GoldenrodPokecenter1FRockerScript, -1
