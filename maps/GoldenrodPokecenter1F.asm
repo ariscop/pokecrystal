@@ -307,66 +307,71 @@ PokeComNewsMachine:
 GoldenrodPokecenter1F_GSBallSceneLeft:
 	setval BATTLETOWERACTION_CHECKMOBILEEVENT
 	special BattleTowerAction
-	ifequal MOBILE_EVENT_OBJECT_GS_BALL, .gsball
-	end
-
-.gsball
+	iffalse .cancel
 	checkevent EVENT_GOT_GS_BALL_FROM_POKECOM_CENTER
 	iftrue .cancel
-	playsound SFX_EXIT_BUILDING
-	moveobject GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST, 3, 15
-	disappear GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST
-	appear GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST
-	playmusic MUSIC_SHOW_ME_AROUND
-	applymovement GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST, GoldenrodPokeCenter1FLinkReceptionistApproachPlayerAtLeftDoorwayTileMovement
-	turnobject PLAYER, UP
-	opentext
-	writetext GoldenrodPokeCenter1FLinkReceptionistPleaseAcceptGSBallText
-	waitbutton
-	verbosegiveitem GS_BALL
-	setevent EVENT_GOT_GS_BALL_FROM_POKECOM_CENTER
-	setevent EVENT_CAN_GIVE_GS_BALL_TO_KURT
-	writetext GoldenrodPokeCenter1FLinkReceptionistPleaseDoComeAgainText
-	waitbutton
-	closetext
-	applymovement GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST, GoldenrodPokeCenter1FLinkReceptionistWalkToStairsFromLeftDoorwayTileMovement
-	special RestartMapMusic
-	disappear GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST
-	playsound SFX_EXIT_BUILDING
+	moveobject GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST, $c, $b
+	sjump script6967
 .cancel
 	end
 
 GoldenrodPokecenter1F_GSBallSceneRight:
 	setval BATTLETOWERACTION_CHECKMOBILEEVENT
 	special BattleTowerAction
-	ifequal MOBILE_EVENT_OBJECT_GS_BALL, .gsball
-	end
-
-.gsball
+	iffalse .cancel
 	checkevent EVENT_GOT_GS_BALL_FROM_POKECOM_CENTER
 	iftrue .cancel
-	playsound SFX_EXIT_BUILDING
-	moveobject GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST, 3, 15
+	moveobject GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST, $d, $b
+	sjump script6967
+.cancel
+	end
+
+script6967: ; gsball event
 	disappear GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST
 	appear GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST
 	playmusic MUSIC_SHOW_ME_AROUND
-	applymovement GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST, GoldenrodPokeCenter1FLinkReceptionistApproachPlayerAtRightDoorwayTileMovement
+	applymovement GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST, .movement6a0f
 	turnobject PLAYER, UP
 	opentext
-	writetext GoldenrodPokeCenter1FLinkReceptionistPleaseAcceptGSBallText
+	writetext GoldenrodPokeCenter1FLinkReceptionistPleaseAcceptGSBallText ; 7577
 	waitbutton
 	verbosegiveitem GS_BALL
 	setevent EVENT_GOT_GS_BALL_FROM_POKECOM_CENTER
 	setevent EVENT_CAN_GIVE_GS_BALL_TO_KURT
-	writetext GoldenrodPokeCenter1FLinkReceptionistPleaseDoComeAgainText
+	writetext GoldenrodPokeCenter1FLinkReceptionistPleaseDoComeAgainText ; 75c9
 	waitbutton
 	closetext
-	applymovement GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST, GoldenrodPokeCenter1FLinkReceptionistWalkToStairsFromRightDoorwayTileMovement
+	applymovement GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST, .movement6a19
 	special RestartMapMusic
+	moveobject GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST, $10, $8
 	disappear GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST
-	playsound SFX_EXIT_BUILDING
-.cancel
+	appear GOLDENRODPOKECENTER1F_LINK_RECEPTIONIST
 	end
+
+.movement6a0f
+	step LEFT
+	step LEFT
+	step LEFT
+	step LEFT
+	step LEFT
+	step LEFT
+	step DOWN
+	step DOWN
+	step DOWN
+	step_end
+
+.movement6a19
+	step UP
+	step UP
+	step UP
+	step RIGHT
+	step RIGHT
+	step RIGHT
+	step RIGHT
+	step RIGHT
+	step RIGHT
+	step_end
+
 
 GoldenrodPokecenter1FSuperNerdScript:
 	special Mobile_DummyReturnFalse
