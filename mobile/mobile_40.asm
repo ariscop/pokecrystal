@@ -7466,9 +7466,9 @@ MenuHeader_103747:
 MenuData_10374f:
 	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING ; flags
 	db 3
-	db "はい@"
-	db "やめる@"
-	db "せつめい@"
+	db "Yes@"
+	db "No@"
+	db "Info@"
 
 UnknownText_0x10375d:
 	text_far UnknownText_0x1c422a

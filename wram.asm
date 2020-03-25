@@ -1746,7 +1746,8 @@ wTrainerHUDTiles:: ds 4
 
 NEXTU ; d002
 ; mobile participant nicknames
-	ds 4
+	ds 3 ; Party selection?
+	db   ; unused?
 wMobileParticipant1Nickname:: ds NAME_LENGTH_JAPANESE
 wMobileParticipant2Nickname:: ds NAME_LENGTH_JAPANESE
 wMobileParticipant3Nickname:: ds NAME_LENGTH_JAPANESE
