@@ -549,6 +549,53 @@ GoldenrodCityMoveTutorMoveText:
 	text_start
 	done
 
+TempDebugNpc:
+	faceplayer
+	opentext
+	writetext .opentext
+	yesorno
+	iffalse .endmenu
+	loadmenu .NewsTestMenu
+	verticalmenu
+	closewindow
+	ifequal 1, .one
+	ifequal 2, .two
+	ifequal 3, .three
+	sjump .endmenu
+.success
+	waitsfx
+	playsound SFX_SAVE
+.endmenu
+	closetext
+	end
+
+.opentext
+	text "Load Test News?"
+	done
+.one
+	callasm Unreferenced_Function1f4003
+	sjump .success
+.two
+	callasm Unreferenced_Function1f4dbe
+	sjump .success
+.three
+	callasm Function1f5d9f
+	sjump .success
+
+.NewsTestMenu
+	db MENU_BACKUP_TILES ; flags
+	menu_coords 0, 2, 15, TEXTBOX_Y - 1
+	dw .NewsTestMenu_Entries
+	db 1 ; default option
+
+.NewsTestMenu_Entries
+	db STATICMENU_CURSOR ; flags
+	db 4 ; items
+	db "One@"
+	db "Two@"
+	db "Three@"
+	db "Exit@"
+
 GoldenrodCity_MapEvents:
 	db 0, 0 ; filler
 
@@ -600,4 +647,5 @@ GoldenrodCity_MapEvents:
 	object_event 29, 20, SPRITE_ROCKET, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, GoldenrodCityRocket4Script, EVENT_RADIO_TOWER_ROCKET_TAKEOVER
 	object_event 29,  7, SPRITE_ROCKET, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, GoldenrodCityRocket5Script, EVENT_RADIO_TOWER_ROCKET_TAKEOVER
 	object_event 31, 10, SPRITE_ROCKET, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, GoldenrodCityRocket6Script, EVENT_RADIO_TOWER_ROCKET_TAKEOVER
-	object_event 12, 22, SPRITE_POKEFAN_M, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, MoveTutorScript, EVENT_GOLDENROD_CITY_MOVE_TUTOR
+	;object_event 12, 22, SPRITE_POKEFAN_M, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, MoveTutorScript, EVENT_GOLDENROD_CITY_MOVE_TUTOR
+	object_event 16, 28, SPRITE_POKEFAN_M, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, TempDebugNpc, -1
