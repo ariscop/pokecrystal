@@ -229,7 +229,7 @@ BattleTurn:
 	ret
 
 Stubbed_Function3c1bf:
-	ret
+;	ret
 	ld a, 5 ; MBC30 bank used by JP Crystal; inaccessible by MBC3
 	call GetSRAMBank
 	ld hl, $a89b ; address of MBC30 bank

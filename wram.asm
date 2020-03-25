@@ -1716,9 +1716,9 @@ wTrainerHUDTiles:: ds 4
 NEXTU ; d002
 ; mobile participant nicknames
 	ds 4
-wMobileParticipant1Nickname:: ds NAME_LENGTH_JAPANESE
-wMobileParticipant2Nickname:: ds NAME_LENGTH_JAPANESE
-wMobileParticipant3Nickname:: ds NAME_LENGTH_JAPANESE
+wMobileParticipant1Nickname:: ds NAME_LENGTH;_JAPANESE
+wMobileParticipant2Nickname:: ds NAME_LENGTH;_JAPANESE
+wMobileParticipant3Nickname:: ds NAME_LENGTH;_JAPANESE
 
 NEXTU ; d002
 ; earthquake data buffer
@@ -1745,7 +1745,7 @@ wd004:: db
 	ds 1
 wd006:: ds 2
 wd008:: ds 2
-	ds 2
+wCardPhoneNumber::	ds 2
 wd00c:: ds 1
 wd00d:: ds 1
 	ds 1

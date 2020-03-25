@@ -449,11 +449,11 @@ Function1082fa:
 MobileTradeAnim_ShowPlayerMonToBeSent:
 	ld de, MUSIC_EVOLUTION
 	call PlayMusic2
-	ld a, $80
+	ld a, $88;$80
 	ldh [hSCX], a
 	xor a
 	ldh [hSCY], a
-	ld a, $87
+	ld a, $8f;$87
 	ldh [hWX], a
 	ld a, $50
 	ldh [hWY], a
@@ -572,11 +572,11 @@ MobileTradeAnim_ShowOTMonFromTrade:
 MobileTradeAnim_ShowPlayerMonForGTS:
 	ld de, MUSIC_EVOLUTION
 	call PlayMusic2
-	ld a, $80
+	ld a, $88;$80
 	ldh [hSCX], a
 	xor a
 	ldh [hSCY], a
-	ld a, $87
+	ld a, $8f;$87
 	ldh [hWX], a
 	ld a, $50
 	ldh [hWY], a
@@ -1252,20 +1252,20 @@ MobileTradeAnim_DisplayEggData:
 	call MobileTradeAnim_ClearTilemap
 	ld a, HIGH(vBGMap1)
 	ldh [hBGMapAddress + 1], a
-	hlcoord 5, 0
+	hlcoord 3, 0;5, 0
 	ld b, 6
-	ld c, 9
+	ld c, 13;9
 	call Textbox
-	hlcoord 6, 2
+	hlcoord 4, 2;6, 2
 	ld de, .EggTemplate
 	call PlaceString
 	call MobileTradeAnim_MonDisplay_UpdateBGMap
 	ret
 
 .EggTemplate:
-	db   "タマゴ"
-	next "おや/？？？？？"
-	next "<ID>№<DOT>？？？？？"
+	db   "EGG";"タマゴ"
+	next "OT/?????";"おや/？？？？？"
+	next "<ID>№.?????";"<ID>№<DOT>？？？？？"
 	db   "@"
 
 Function108a33:
@@ -1273,38 +1273,38 @@ Function108a33:
 	call MobileTradeAnim_ClearTilemap
 	ld a, HIGH(vBGMap1)
 	ldh [hBGMapAddress + 1], a
-	hlcoord 5, 0
+	hlcoord 3, 0;5, 0
 	ld b, 6
-	ld c, 9
+	ld c, 13;9
 	call Textbox
-	hlcoord 7, 4
+	hlcoord 5, 4;7, 4
 	ld de, .OddEgg
 	call PlaceString
 	call MobileTradeAnim_MonDisplay_UpdateBGMap
 	ret
 
 .OddEgg:
-	db "なぞのタマゴ@"
+	db "ODD EGG@";"なぞのタマゴ@"
 
 MobileTradeAnim_LoadMonTemplate:
 	call WaitTop
 	call MobileTradeAnim_ClearTilemap
 	ld a, HIGH(vBGMap1)
 	ldh [hBGMapAddress + 1], a
-	hlcoord 4, 0
+	hlcoord 3, 0;4, 0
 	ld b,  6
-	ld c, 10
+	ld c, 13;10
 	call Textbox
-	hlcoord 5, 0
+	hlcoord 4, 0;5, 0
 	ld de, .MonTemplate
 	call PlaceString
 	ret
 
 .MonTemplate:
-	db   "─　№<DOT>"
+	db   "─── №.";"─　№<DOT>"
 	next ""
-	next "おや／"
-	next "<ID>№<DOT>"
+	next "OT/";"おや／"
+	next "<ID>№.";"<ID>№<DOT>"
 	db   "@"
 
 MobileTradeAnim_MonDisplay_UpdateBGMap:
@@ -1315,13 +1315,13 @@ MobileTradeAnim_MonDisplay_UpdateBGMap:
 	ret
 
 MobileTradeAnim_MonDisplay_PrintSpeciesNumber:
-	hlcoord 9, 0
+	hlcoord 10, 0;9, 0
 	lb bc, PRINTNUM_LEADINGZEROS | 1, 3
 	call PrintNum
 	ret
 
 MobileTradeAnim_MonDisplay_PrintSpeciesName:
-	hlcoord 5, 2
+	hlcoord 4, 2;5, 2
 	call PlaceString
 	ret
 
@@ -1331,7 +1331,7 @@ MobileTradeAnim_MonDisplay_PrintOTNameAndGender:
 	xor a
 .got_gender
 	push af
-	hlcoord 8, 4
+	hlcoord 7, 4;8, 4
 	call PlaceString
 	inc bc
 	pop af
@@ -1349,7 +1349,7 @@ MobileTradeAnim_MonDisplay_PrintOTNameAndGender:
 	db "♀"
 
 MobileTradeAnim_MonDisplay_PrintIDNumber:
-	hlcoord 8, 6
+	hlcoord 7, 6;8, 6
 	lb bc, PRINTNUM_LEADINGZEROS | 2, 5
 	call PrintNum
 	ret

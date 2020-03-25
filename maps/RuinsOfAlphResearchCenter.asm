@@ -113,19 +113,27 @@ RuinsOfAlphResearchCenterScientist2Script:
 	ifequal NUM_UNOWN, .GotAllUnown
 	checkevent EVENT_MADE_UNOWN_APPEAR_IN_RUINS
 	iftrue .UnownAppeared
-	writetext RuinsOfAlphResearchCenterScientist2Text
+	writetext RuinsOfAlphResearchCenterScientist2Text ; 50D2
 	waitbutton
 	closetext
 	end
 
 .UnownAppeared:
-	writetext RuinsOfAlphResearchCenterScientist2Text_UnownAppeared
+	writetext RuinsOfAlphResearchCenterScientist2Text_UnownAppeared ; 50FC
 	waitbutton
 	closetext
 	end
 
 .GotAllUnown:
-	writetext RuinsOfAlphResearchCenterScientist2Text_GotAllUnown
+	special Mobile_DummyReturnFalse
+	iftrue .mobile
+	writetext RuinsOfAlphResearchCenterUnusedText1 ; 5141
+	waitbutton
+	closetext
+	end
+
+.mobile
+	writetext RuinsOfAlphResearchCenterUnusedText2 ; 517F
 	waitbutton
 	closetext
 	end
@@ -167,7 +175,7 @@ RuinsOfAlphResearchCenterPrinter:
 	closetext
 	end
 
-RuinsOfAlphResearchCenterPhoto:
+RuinsOfAlphResearchCenterPhoto: ; 5208
 ; unreferenced
 	jumptext RuinsOfAlphResearchCenterProfSilktreePhotoText
 

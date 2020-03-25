@@ -151,7 +151,7 @@ Function11425c:
 	ld [MBC3SRamBank], a
 	ret
 
-Stubbed_Function114268:
+Stubbed_Function114268: ; TODO
 	ret
 
 Function114269:
@@ -6566,8 +6566,149 @@ INCBIN "gfx/unknown/1174d6.attrmap"
 SECTION "Mobile Stadium", ROMX
 
 GiveOddEgg:
-	farcall _GiveOddEgg
-	ret
+;	farcall _GiveOddEgg
+;	ret
+	call Call_045_765d
+    call Call_045_766b
+    ret
+
+
+Call_045_765d:
+    xor a
+    ;ld [$cf57], a
+    ;ld [$cf58], a
+    ;ld [$cf59], a
+    ;ld [$cf5a], a
+	ld [wJumptableIndex], a
+	ld [wcf64], a
+	ld [wcf65], a
+	ld [wcf66], a
+    ret
+
+
+Call_045_766b:
+jr_045_766b:
+    call Call_045_767b
+    ld a, [wJumptableIndex]
+    bit 7, a
+    jr nz, jr_045_767a
+
+    call DelayFrame;$045a
+    jr jr_045_766b
+
+jr_045_767a:
+    ret
+
+
+Call_045_767b:
+    ;ld a, $46
+    ;ld hl, $42d5
+    ;rst $08
+	farcall Function1182d5
+    ld a, [wScriptVar]
+    and a
+    jp nz, .Jump_045_770c
+
+    ld a, EGG_TICKET
+	ld [wCurItem], a
+	ld a, 1
+	ld [wItemQuantityChangeBuffer], a
+	ld a, -1
+	ld [wCurItemQuantity], a
+	ld hl, wNumItems
+	call TossItem
+
+    ldh a, [rSVBK]
+    push af
+    ld a, $03
+    ldh [rSVBK], a
+    ld hl, $d002
+    ;ld de, $c608
+    ;ld bc, $003c
+	ld de, wOddEgg
+	ld bc, NICKNAMED_MON_STRUCT_LENGTH + NAME_LENGTH
+    call CopyBytes
+    pop af
+    ldh [rSVBK], a
+    ld a, EGG
+    ;ld [$cd1e], a
+    ;ld a, $1d
+    ;ld [$cd14], a
+    ;ld a, $cd
+    ;ld [$cd15], a
+    ;ld a, $08
+    ;ld [$cd16], a
+    ;ld a, $c6
+    ;ld [$cd17], a
+	ld [wMobileMonSpeciesBuffer], a
+
+	; load pointer to (wMobileMonSpeciesBuffer - 1) in wMobileMonSpeciesPointerBuffer
+	ld a, LOW(wMobileMonSpeciesBuffer - 1)
+	ld [wMobileMonSpeciesPointerBuffer], a
+	ld a, HIGH(wMobileMonSpeciesBuffer - 1)
+	ld [wMobileMonSpeciesPointerBuffer + 1], a
+	; load pointer to wOddEgg in wMobileMonStructurePointerBuffer
+	ld a, LOW(wOddEgg)
+	ld [wMobileMonStructurePointerBuffer], a
+	ld a, HIGH(wOddEgg)
+	ld [wMobileMonStructurePointerBuffer + 1], a
+
+    ld hl, .Odd;$7712
+    ld de, wOddEggOTName;$cd1f
+    ld bc, NAME_LENGTH;$0006
+    call CopyBytes
+    ;ld a, $1f
+    ;ld [$cd18], a
+    ;ld a, $cd
+    ;ld [$cd19], a
+    ;ld a, $38
+    ;ld [$cd1a], a
+    ;ld a, $c6
+    ;ld [$cd1b], a
+	; load pointer to wOddEggOTName in wMobileMonOTNamePointerBuffer
+	ld a, LOW(wOddEggOTName)
+	ld [wMobileMonOTNamePointerBuffer], a
+	ld a, HIGH(wOddEggOTName)
+	ld [wMobileMonOTNamePointerBuffer + 1], a
+	; load pointer to wOddEggName in wMobileMonNicknamePointerBuffer
+	ld a, LOW(wOddEggName)
+	ld [wMobileMonNicknamePointerBuffer], a
+	ld a, HIGH(wOddEggName)
+	ld [wMobileMonNicknamePointerBuffer + 1], a
+
+    ;ld a, $46
+    ;ld hl, $7c91
+    ;rst $08
+	farcall AddMobileMonToParty
+    ;ld a, $05
+    ;ld hl, $4a4c
+    ;rst $08
+	farcall SaveAfterLinkTrade
+    ld a, [wPartyCount]
+    dec a
+    ld hl, wPartyMonOT
+    ld de, NAME_LENGTH;$0006
+
+.jr_045_7702:
+    add hl, de
+    dec a
+    jr nz, .jr_045_7702
+
+    inc hl
+    inc hl
+    ld a, $50
+    ld [hl+], a
+    ld [hl], a
+
+.Jump_045_770c:
+    ld a, $80
+    ld [wJumptableIndex], a
+    ret
+
+.Odd:
+	db "ODD@@@@@@@@@"
+
+
 
 Function11765d:
 	ldh a, [hInMenu]
@@ -7033,20 +7174,20 @@ MenuHeader_1179bd:
 	db 0 ; default option
 
 YessNoString_1179c5:
-	db   "はい"
-	next "いいえ@"
+	db   "YES";"はい"
+	next "NO@";"いいえ@"
 
 AskSavePasswordString:
-	db   "こ<NO>パスワード¯ほぞんして"
-	line "おきますか？@"
+	db   "Save this";"こ<NO>パスワード¯ほぞんして"
+	line "PASSWORD?@";"おきますか？@"
 
 NotAPokemonPasswordString:
-	db   "パスワード<PKMN>にゅうりょく"
-	line "されていません！@"
+	db   "Not a valid";"パスワード<PKMN>にゅうりょく"
+	line "PASSWORD!@";"されていません！@"
 
 SavedPasswordString:
-	db   "ログインパスワード¯ほぞん"
-	line "しました@"
+	db   "Saved the LOG-IN";"ログインパスワード¯ほぞん"
+	line "PASSWORD.@";"しました@"
 
 MobilePassword_IncrementJumptable:
 	ld hl, wcd49
@@ -7373,8 +7514,8 @@ MenuHeader_117cc4:
 	db 0 ; default item
 
 YesNo117ccc:
-	db   "はい"
-	next "いいえ@"
+	db   "YES";"はい"
+	next "NO@";"いいえ@"
 
 MobileStadiumEntryText:
 	text_far _MobileStadiumEntryText

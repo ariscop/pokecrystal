@@ -408,9 +408,9 @@ Function171a95:
 	jp Function171c66
 
 String_171aa7:
-	db   "モバイルアダプタに"
-	next "せつぞく　しています"
-	next "しばらく　おまちください"
+	db   "Connecting to";"モバイルアダプタに"
+	next "MOBILE ADAPTER…";"せつぞく　しています"
+	;next "しばらく　おまちください"
 	db   "@"
 
 Function171ac9:
@@ -654,8 +654,8 @@ MenuHeader_171c6b:
 	db 0 ; default option
 
 String_171c73:
-	db   "モバイルセンターを　けってい"
-	next "しました@"
+	db   "MOBILE CENTER";"モバイルセンターを　けってい"
+	next "set.@";"しました@"
 
 Function171c87:
 	call DisableLCD
@@ -678,7 +678,7 @@ Function171c87:
 	hlcoord 3, 2
 	ld de, String_172e31
 	call PlaceString
-	hlcoord 3, 16
+	hlcoord 2, 16;3, 16
 	ld de, String_172e3f
 	call PlaceString
 	ret
@@ -716,7 +716,7 @@ Function171cf0:
 	decoord 0, 7
 	ld bc, $8c
 	call CopyBytes
-	hlcoord 3, 16
+	hlcoord 2, 16;3, 16
 	ld de, String_172e3f
 	jp PlaceString
 
@@ -725,7 +725,7 @@ Function171cf0:
 	decoord 0, 7
 	ld bc, $8c
 	call CopyBytes
-	hlcoord 3, 16
+	hlcoord 2, 16;3, 16
 	ld de, String_172e4e
 	jp PlaceString
 
@@ -806,19 +806,19 @@ Attrmap_172955:
 INCBIN "gfx/unknown/172955.attrmap"
 
 LZ_172abd:
-INCBIN "gfx/pokedex/slowpoke.2bpp.lz"
+INCBIN "gfx/pokedex/slowpoke_mobile.2bpp.lz"
 
 String_172e31:
-	db "パスワード<WO>いれてください@"
+	db "Enter PASSWORD@";"パスワード<WO>いれてください@"
 String_172e3f:
-	db "きりかえ　やめる　　けってい@"
+	db "SWITCH CANCEL OK@";"きりかえ　やめる　　けってい@"
 String_172e4e:
-	db "きりかえ　やめる　　"
+	db "SWITCH CANCEL";"きりかえ　やめる　　"
 String_172e58:
-	db "けってい@"
+	db "OK@";"けってい@"
 String_172e5d:
-	db "せつぞくする　モバイルセンターを"
-	next "えらんで　ください@"
+	db   "Select CENTER";"せつぞくする　モバイルセンターを"
+	next "to connect to@";"えらんで　ください@"
 
 Function172e78:
 	ld a, $7f
@@ -901,11 +901,11 @@ GameBoyN64GFX:
 INCBIN "gfx/trade/game_boy_n64.2bpp"
 
 Tilemap_1733af:
-if DEF(_CRYSTAL11)
-INCBIN "gfx/unknown/1733af_corrupt.tilemap"
-else
+;if DEF(_CRYSTAL11)
+;INCBIN "gfx/unknown/1733af_corrupt.tilemap"
+;else
 INCBIN "gfx/unknown/1733af.tilemap"
-endc
+;endc
 
 Attrmap_173517:
 INCBIN "gfx/unknown/173517.attrmap"

@@ -475,21 +475,22 @@ MenuHeader_17d26a:
 MenuData_17d272:
 	db STATICMENU_CURSOR | STATICMENU_WRAP ; flags
 	db 4
-	db "ニュース¯よみこむ@"
-	db "ニュース¯みる@"
-	db "せつめい@"
-	db "やめる@"
+	db "Receive NEWS@";"ニュース¯よみこむ@"
+	db "View NEWS@";"ニュース¯みる@"
+	db "Explanation@";"せつめい@"
+	db "Cancel@";"やめる@"
 
 MenuHeader_ChallengeExplanationCancel:
 	db MENU_BACKUP_TILES ; flags
-	menu_coords 0, 0, 14, 7
+	menu_coords 0, 0, 19, 9;14, 7
 	dw MenuData_ChallengeExplanationCancel
 	db 1 ; default option
 
 MenuData_ChallengeExplanationCancel:
 	db STATICMENU_CURSOR | STATICMENU_WRAP ; flags
-	db 3
+	db 4
 	db "Challenge@"
+	db "Update HONOR ROLL@" ; check leaders?
 	db "Explanation@"
 	db "Cancel@"
 
@@ -1115,56 +1116,56 @@ asm_17d721:
 	ld [wcd77], a
 	ret
 
-Jumptable17d72a:
-	dw Function17d78c
-	dw Function17d78d
-	dw Function17d7b4
-	dw Function17d7c2
-	dw Function17d7d3
-	dw Function17d7e5
-	dw Function17d818
-	dw Function17d833
-	dw Function17d85d
-	dw Function17d902
-	dw Function17d93a
-	dw Function17d98b
-	dw Function17d9e3
-	dw Function17da31
-	dw Function17da9c
-	dw Function17dadc
-	dw Function17db2d
-	dw Function17db56
-	dw Function17db77
-	dw Function17dbe9
-	dw Function17dc1f
-	dw Function17dc9f
-	dw Function17dca9
-	dw Function17dccf
-	dw Function17dd13
-	dw Function17dd30
-	dw Function17dd49
-	dw Function17ddcd
-	dw Function17de32
-	dw Function17de91
-	dw Function17ded9
-	dw Function17e0fd
-	dw Function17e133
-	dw Function17e165
-	dw Function17e1a1
-	dw Function17e254
-	dw Function17e261
-	dw Function17e270
-	dw Function17e27f
-	dw Function17e293
-	dw Function17e2a7
-	dw IncCrashCheckPointer_SaveGameData
-	dw IncCrashCheckPointer_SaveAfterLinkTrade
-	dw IncCrashCheckPointer_SaveBox
-	dw IncCrashCheckPointer_SaveChecksum
-	dw IncCrashCheckPointer_SaveTrainerRankingsChecksum
-	dw Function17e3e0
-	dw Function17e3f0
-	dw Function17e409
+Jumptable17d72a: ; news script commands
+	dw Function17d78c ; 0
+	dw Function17d78d ; 1
+	dw Function17d7b4 ; 2
+	dw Function17d7c2 ; 3
+	dw Function17d7d3 ; 4
+	dw Function17d7e5 ; 5
+	dw Function17d818 ; 6
+	dw Function17d833 ; 7
+	dw Function17d85d ; 8
+	dw Function17d902 ; 9
+	dw Function17d93a ; a
+	dw Function17d98b ; b
+	dw Function17d9e3 ; c
+	dw Function17da31 ; d
+	dw Function17da9c ; e
+	dw Function17dadc ; f
+	dw Function17db2d ; 10
+	dw Function17db56 ; 11
+	dw Function17db77 ; 12
+	dw Function17dbe9 ; 13
+	dw Function17dc1f ; 14
+	dw Function17dc9f ; 15
+	dw Function17dca9 ; 16
+	dw Function17dccf ; 17
+	dw Function17dd13 ; 18
+	dw Function17dd30 ; 19
+	dw Function17dd49 ; 1a
+	dw Function17ddcd ; 1b
+	dw Function17de32 ; 1c
+	dw Function17de91 ; 1d
+	dw Function17ded9 ; 1e
+	dw Function17e0fd ; 1f
+	dw Function17e133 ; 20
+	dw Function17e165 ; 21
+	dw Function17e1a1 ; 22
+	dw Function17e254 ; 23
+	dw Function17e261 ; 24
+	dw Function17e270 ; 25
+	dw Function17e27f ; 26
+	dw Function17e293 ; 27
+	dw Function17e2a7 ; 28
+	dw IncCrashCheckPointer_SaveGameData ; 29
+	dw IncCrashCheckPointer_SaveAfterLinkTrade ; 2a
+	dw IncCrashCheckPointer_SaveBox ; 2b
+	dw IncCrashCheckPointer_SaveChecksum ; 2c
+	dw IncCrashCheckPointer_SaveTrainerRankingsChecksum ; 2d
+	dw Function17e3e0 ; 2e
+	dw Function17e3f0 ; 2f
+	dw Function17e409 ; 30
 
 Function17d78c:
 	ret
@@ -1885,8 +1886,8 @@ Function17dc1f:
 MenuData_17dc96:
 	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING | STATICMENU_WRAP ; flags
 	db 2
-	db "はい@"
-	db "いいえ@"
+	db "YES@";"はい@"
+	db "NO@";"いいえ@"
 
 Function17dc9f:
 	call IncCrashCheckPointer
@@ -4456,671 +4457,3 @@ Function17f524:
 .asm_17f53a
 	scf
 	jr .asm_17f536
-
-BattleTowerMobileError:
-	call FadeToMenu
-	xor a
-	ld [wc303], a
-	ldh a, [rSVBK]
-	push af
-	ld a, $1
-	ldh [rSVBK], a
-
-	call DisplayMobileError
-
-	pop af
-	ldh [rSVBK], a
-	call ExitAllMenus
-	ret
-
-DisplayMobileError:
-.loop
-	call JoyTextDelay
-	call .RunJumptable
-	ld a, [wc303]
-	bit 7, a
-	jr nz, .quit
-	farcall HDMATransferAttrMapAndTileMapToWRAMBank3
-	jr .loop
-
-.quit
-	call .deinit
-	ret
-
-.deinit
-	ld a, [wc300]
-	cp $22
-	jr z, .asm_17f597
-	cp $31
-	jr z, .asm_17f58a
-	cp $33
-	ret nz
-	ld a, [wc301]
-	cp $1
-	ret nz
-	ld a, [wc302]
-	cp $2
-	ret nz
-	jr .asm_17f5a1
-
-.asm_17f58a
-	ld a, [wc301]
-	cp $3
-	ret nz
-	ld a, [wc302]
-	and a
-	ret nz
-	jr .asm_17f5a1
-
-.asm_17f597
-	ld a, [wc301]
-	and a
-	ret nz
-	ld a, [wc302]
-	and a
-	ret nz
-
-.asm_17f5a1
-	ld a, BANK(sMobileLoginPassword)
-	call GetSRAMBank
-	xor a
-	ld [sMobileLoginPassword], a
-	call CloseSRAM
-	ret
-
-.RunJumptable:
-	jumptable .Jumptable, wc303
-
-.Jumptable:
-	dw Function17f5c3
-	dw Function17ff23
-	dw Function17f5d2
-
-Function17f5c3:
-	call Function17f5e4
-	farcall FinishExitMenu
-	ld a, $1
-	ld [wc303], a
-	ret
-
-Function17f5d2:
-	call Function17f5e4
-	farcall HDMATransferAttrMapAndTileMapToWRAMBank3
-	call SetPalettes
-	ld a, $1
-	ld [wc303], a
-	ret
-
-Function17f5e4:
-	ld a, $8
-	ld [wMusicFade], a
-	ld de, MUSIC_NONE
-	ld a, e
-	ld [wMusicFadeID], a
-	ld a, d
-	ld [wMusicFadeID + 1], a
-	ld a, " "
-	hlcoord 0, 0
-	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
-	call ByteFill
-	ld a, $6
-	hlcoord 0, 0, wAttrMap
-	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
-	call ByteFill
-	hlcoord 2, 1
-	ld b, $1
-	ld c, $e
-	call Function3eea
-	hlcoord 1, 4
-	ld b, $c
-	ld c, $10
-	call Function3eea
-	hlcoord 3, 2
-	ld de, String_17f6dc
-	call PlaceString
-	call Function17ff3c
-	jr nc, .asm_17f632
-	hlcoord 11, 2
-	call Function17f6b7
-
-.asm_17f632
-	ld a, [wc300]
-	cp $d0
-	jr nc, .asm_17f684
-	cp $10
-	jr c, .asm_17f679
-	sub $10
-	cp $24
-	jr nc, .asm_17f679
-	ld e, a
-	ld d, $0
-	ld hl, Table_17f706
-	add hl, de
-	add hl, de
-	ld a, [wc301]
-	ld e, a
-	ld a, [wc302]
-	ld d, a
-	ld a, [hli]
-	ld c, a
-	ld a, [hl]
-	ld h, a
-	ld l, c
-	ld a, [hli]
-	and a
-	jr z, .asm_17f679
-	ld c, a
-.asm_17f65d
-	ld a, [hli]
-	ld b, a
-	ld a, [hli]
-	cp $ff
-	jr nz, .asm_17f667
-	cp b
-	jr z, .asm_17f66e
-
-.asm_17f667
-	xor d
-	jr nz, .asm_17f674
-	ld a, b
-	xor e
-	jr nz, .asm_17f674
-
-.asm_17f66e
-	ld a, [hli]
-	ld e, a
-	ld a, [hl]
-	ld d, a
-	jr .asm_17f67d
-
-.asm_17f674
-	inc hl
-	inc hl
-	dec c
-	jr nz, .asm_17f65d
-
-.asm_17f679
-	ld a, $d9
-	jr .asm_17f684
-
-.asm_17f67d
-	hlcoord 2, 6
-	call PlaceString
-	ret
-
-.asm_17f684
-	sub $d0
-	ld e, a
-	ld d, 0
-	ld hl, Table_17f699
-	add hl, de
-	add hl, de
-	ld a, [hli]
-	ld e, a
-	ld a, [hl]
-	ld d, a
-	hlcoord 2, 6
-	call PlaceString
-	ret
-
-Table_17f699:
-	dw String_17fedf
-	dw String_17fdd9
-	dw String_17fdd9
-	dw String_17fe03
-	dw String_17fd84
-	dw String_17fe63
-	dw String_17fdb2
-	dw String_17fe4b
-	dw String_17fe03
-	dw String_17fe03
-	dw String_17fe03
-
-Palette_17f6af:
-	RGB  5,  5, 16
-	RGB  8, 19, 28
-	RGB  0,  0,  0
-	RGB 31, 31, 31
-
-Function17f6b7:
-	ld a, [wc300]
-	call .bcd_two_digits
-	inc hl
-	ld a, [wc302]
-	and $f
-	call .bcd_digit
-	ld a, [wc301]
-	call .bcd_two_digits
-	ret
-
-.bcd_two_digits
-	ld c, a
-	and $f0
-	swap a
-	call .bcd_digit
-	ld a, c
-	and $f
-
-.bcd_digit
-	add "0"
-	ld [hli], a
-	ret
-
-String_17f6dc:
-	db "つうしんエラー　　　ー@"
-
-String_17f6e8:
-	db   "みていぎ<NO>エラーです"
-	next "プログラム<WO>"
-	next "かくにん　してください"
-	db   "@"
-
-Table_17f706:
-	dw Unknown_17f74e
-	dw Unknown_17f753
-	dw Unknown_17f758
-	dw Unknown_17f75d
-	dw Unknown_17f762
-	dw Unknown_17f767
-	dw Unknown_17f778
-	dw Unknown_17f77d
-	dw Unknown_17f782
-	dw Unknown_17f782
-	dw Unknown_17f782
-	dw Unknown_17f782
-	dw Unknown_17f782
-	dw Unknown_17f782
-	dw Unknown_17f782
-	dw Unknown_17f782
-	dw Unknown_17f782
-	dw Unknown_17f787
-	dw Unknown_17f78c
-	dw Unknown_17f791
-	dw Unknown_17f796
-	dw Unknown_17f79b
-	dw Unknown_17f7a0
-	dw Unknown_17f7a5
-	dw Unknown_17f7a5
-	dw Unknown_17f7a5
-	dw Unknown_17f7a5
-	dw Unknown_17f7a5
-	dw Unknown_17f7a5
-	dw Unknown_17f7a5
-	dw Unknown_17f7a5
-	dw Unknown_17f7a5
-	dw Unknown_17f7a5
-	dw Unknown_17f7ea
-	dw Unknown_17f7ff
-	dw Unknown_17f844
-
-Unknown_17f74e: db 1
-	dbbw $0, $0, String_17f891
-
-Unknown_17f753: db 1
-	dbbw $0, $0, String_17f8d1
-
-Unknown_17f758: db 1
-	dbbw $0, $0, String_17f913
-
-Unknown_17f75d: db 1
-	dbbw $0, $0, String_17f8d1
-
-Unknown_17f762: db 1
-	dbbw $0, $0, String_17fa71
-
-Unknown_17f767: db 4
-	dbbw $0, $0, String_17f946
-	dbbw $1, $0, String_17f946
-	dbbw $2, $0, String_17f946
-	dbbw $3, $0, String_17f946
-
-Unknown_17f778: db 1
-	dbbw $0, $0, String_17f98e
-
-Unknown_17f77d: db 1
-	dbbw $0, $0, String_17f98e
-
-Unknown_17f782: db 1
-	dbbw $0, $0, String_17f98e
-
-Unknown_17f787: db 1
-	dbbw $0, $0, String_17f98e
-
-Unknown_17f78c: db 1
-	dbbw $0, $0, String_17f9d0
-
-Unknown_17f791: db 1
-	dbbw $0, $0, String_17fa14
-
-Unknown_17f796: db 1
-	dbbw $0, $0, String_17fcbf
-
-Unknown_17f79b: db 1
-	dbbw $0, $0, String_17fa71
-
-Unknown_17f7a0: db 1
-	dbbw $0, $0, String_17fbfe
-
-Unknown_17f7a5: db 17
-	dbbw $0, $0, String_17f98e
-	dbbw $21, $2, String_17fcbf
-	dbbw $21, $4, String_17fcbf
-	dbbw $50, $4, String_17faf9
-	dbbw $51, $4, String_17fcbf
-	dbbw $52, $4, String_17fcbf
-	dbbw $0, $5, String_17f98e
-	dbbw $1, $5, String_17f98e
-	dbbw $2, $5, String_17f98e
-	dbbw $3, $5, String_17f98e
-	dbbw $4, $5, String_17f98e
-	dbbw $50, $5, String_17faf9
-	dbbw $51, $5, String_17faf9
-	dbbw $52, $5, String_17fcbf
-	dbbw $53, $5, String_17faf9
-	dbbw $54, $5, String_17fcbf
-	dbbw $ff, $ff, String_17fcbf
-
-Unknown_17f7ea: db 5
-	dbbw $0, $0, String_17f98e
-	dbbw $2, $0, String_17fb2a
-	dbbw $3, $0, String_17fb6e
-	dbbw $4, $0, String_17f98e
-	dbbw $ff, $ff, String_17fcbf
-
-Unknown_17f7ff: db 17
-	dbbw $0, $0, String_17f98e
-	dbbw $1, $3, String_17f98e
-	dbbw $2, $3, String_17f98e
-	dbbw $0, $4, String_17f98e
-	dbbw $1, $4, String_17f98e
-	dbbw $3, $4, String_17fbb6
-	dbbw $4, $4, String_17fbb6
-	dbbw $5, $4, String_17f98e
-	dbbw $6, $4, String_17f98e
-	dbbw $7, $4, String_17f98e
-	dbbw $8, $4, String_17fbfe
-	dbbw $0, $5, String_17fa49
-	dbbw $1, $5, String_17f98e
-	dbbw $2, $5, String_17fa49
-	dbbw $3, $5, String_17fab0
-	dbbw $4, $5, String_17fa49
-	dbbw $ff, $ff, String_17fa49
-
-Unknown_17f844: db 19
-	dbbw $1, $1, String_17fc3e
-	dbbw $2, $1, String_17fc88
-	dbbw $3, $1, String_17fcff
-	dbbw $4, $1, String_17fd84
-	dbbw $5, $1, String_17fd84
-	dbbw $6, $1, String_17fd47
-	dbbw $1, $2, String_17fb6e
-	dbbw $2, $2, String_17f98e
-	dbbw $3, $2, String_17fd84
-	dbbw $4, $2, String_17f98e
-	dbbw $5, $2, String_17fa49
-	dbbw $6, $2, String_17fd84
-	dbbw $99, $2, String_17fc88
-	dbbw $1, $3, String_17fa49
-	dbbw $1, $4, String_17fa49
-	dbbw $2, $4, String_17fa49
-	dbbw $3, $4, String_17fa49
-	dbbw $4, $4, String_17fa49
-	dbbw $ff, $ff, String_17fa49
-
-String_17f891:
-	db   "モバイルアダプタが　ただしく"
-	next "さしこまれていません"
-	next "とりあつかいせつめいしょを"
-	next "ごらんのうえ　しっかりと"
-	next "さしこんで　ください"
-	db   "@"
-
-String_17f8d1:
-	db   "でんわが　うまく　かけられないか"
-	next "でんわかいせんが　こんでいるので"
-	next "つうしん　できません"
-	next "しばらく　まって"
-	next "かけなおして　ください"
-	db   "@"
-
-String_17f913:
-	db   "でんわかいせんが　こんでいるため"
-	next "でんわが　かけられません"
-	next "しばらく　まって"
-	next "かけなおして　ください"
-	db   "@"
-
-String_17f946:
-	db   "モバイルアダプタの　エラーです"
-	next "しばらく　まって"
-	next "かけなおして　ください"
-	next "なおらない　ときは"
-	next "モバイルサポートセンターへ"
-	next "おといあわせください"
-	db   "@"
-
-String_17f98e:
-	db   "つうしんエラーです"
-	next "しばらく　まって"
-	next "かけなおして　ください"
-	next "なおらない　ときは"
-	next "モバイルサポートセンターへ"
-	next "おといあわせください"
-	db   "@"
-
-String_17f9d0:
-	db   "ログインパスワードか"
-	next "ログイン　アイディーに"
-	next "まちがいがあります"
-	next "パスワードを　かくにんして"
-	next "しばらく　まって"
-	next "かけなおして　ください"
-	db   "@"
-
-String_17fa14:
-	db   "でんわが　きれました"
-	next "とりあつかいせつめいしょを"
-	next "ごらんのうえ"
-	next "しばらく　まって"
-	next "かけなおして　ください"
-	db   "@"
-
-String_17fa49:
-	db   "モバイルセンターの"
-	next "つうしんエラーです"
-	next "しばらくまって"
-	next "かけなおして　ください"
-	db   "@"
-
-String_17fa71:
-	db   "モバイルアダプタに"
-	next "とうろくされた　じょうほうが"
-	next "ただしく　ありません"
-	next "モバイルトレーナーで"
-	next "しょきとうろくを　してください"
-	db   "@"
-
-String_17fab0:
-	db   "モバイルセンターが"
-	next "こんでいて　つながりません"
-	next "しばらくまって"
-	next "かけなおして　ください"
-	next "くわしくは　とりあつかい"
-	next "せつめいしょを　ごらんください"
-	db   "@"
-
-String_17faf9:
-	db   "あてさき　メールアドレスに"
-	next "まちがいがあります"
-	next "ただしい　メールアドレスを"
-	next "いれなおしてください"
-	db   "@"
-
-String_17fb2a:
-	db   "メールアドレスに"
-	next "まちがいが　あります"
-	next "とりあつかいせつめいしょを"
-	next "ごらんのうえ"
-	next "モバイルトレーナーで"
-	next "しょきとうろくを　してください"
-	db   "@"
-
-String_17fb6e:
-	db   "ログインパスワードに"
-	next "まちがいが　あるか"
-	next "モバイルセンターの　エラーです"
-	next "パスワードを　かくにんして"
-	next "しばらく　まって"
-	next "かけなおして　ください"
-	db   "@"
-
-String_17fbb6:
-	db   "データの　よみこみが　できません"
-	next "しばらくまって"
-	next "かけなおして　ください"
-	next "なおらない　ときは"
-	next "モバイルサポートセンターへ"
-	next "おといあわせください"
-	db   "@"
-
-String_17fbfe:
-	db   "じかんぎれです"
-	next "でんわが　きれました"
-	next "でんわを　かけなおしてください"
-	next "くわしくは　とりあつかい"
-	next "せつめいしょを　ごらんください"
-	db   "@"
-
-String_17fc3e:
-	db   "ごりよう　りょうきんの　"
-	next "おしはらいが　おくれたばあいには"
-	next "ごりようが　できなくなります"
-	next "くわしくは　とりあつかい"
-	next "せつめいしょを　ごらんください"
-	db   "@"
-
-String_17fc88:
-	db   "おきゃくさまの　ごつごうにより"
-	next "ごりようできません"
-	next "くわしくは　とりあつかい"
-	next "せつめいしょを　ごらんください"
-	db   "@"
-
-String_17fcbf:
-	db   "でんわかいせんが　こんでいるか"
-	next "モバイルセンターの　エラーで"
-	next "つうしんが　できません"
-	next "しばらく　まって"
-	next "かけなおして　ください"
-	db   "@"
-
-String_17fcff:
-	db   "ごりよう　りょうきんが"
-	next "じょうげんを　こえているため"
-	next "こんげつは　ごりようできません"
-	next "くわしくは　とりあつかい"
-	next "せつめいしょを　ごらんください"
-	db   "@"
-
-String_17fd47:
-	db   "げんざい　モバイルセンターの"
-	next "てんけんを　しているので"
-	next "つうしんが　できません"
-	next "しばらく　まって"
-	next "かけなおして　ください"
-	db   "@"
-
-String_17fd84:
-	db   "データの　よみこみが　できません"
-	next "くわしくは　とりあつかい"
-	next "せつめいしょを　ごらんください"
-	db   "@"
-
-String_17fdb2:
-	db   "３ぷん　いじょう　なにも"
-	next "にゅうりょく　しなかったので"
-	next "でんわが　きれました"
-	db   "@"
-
-String_17fdd9:
-	db   "つうしんが　うまく"
-	next "できませんでした"
-	next "もういちど　はじめから"
-	next "やりなおしてください"
-	db   "@"
-
-String_17fe03:
-	db   "データの　よみこみが　できません"
-	next "しばらくまって"
-	next "かけなおして　ください"
-	next "なおらない　ときは"
-	next "モバイルサポートセンターへ"
-	next "おといあわせください"
-	db   "@"
-
-String_17fe4b:
-	db   "まちじかんが　ながいので"
-	next "でんわが　きれました"
-	db   "@"
-
-String_17fe63:
-	db   "あいての　モバイルアダプタと"
-	next "タイプが　ちがいます"
-	next "くわしくは　とりあつかい"
-	next "せつめいしょを　ごらんください"
-	db   "@"
-
-String_17fe9a: ; unused
-	db   "ポケモンニュースが"
-	next "あたらしくなっているので"
-	next "レポートを　おくれません"
-	next "あたらしい　ポケモンニュースの"
-	next "よみこみを　さきに　してください"
-	db   "@"
-
-String_17fedf:
-	db   "つうしんの　じょうきょうが"
-	next "よくないか　かけるあいてが"
-	next "まちがっています"
-	next "もういちど　かくにんをして"
-	next "でんわを　かけなおして　ください"
-	db   "@"
-
-Function17ff23:
-	ldh a, [hJoyPressed]
-	and a
-	ret z
-	ld a, $8
-	ld [wMusicFade], a
-	ld a, [wMapMusic]
-	ld [wMusicFadeID], a
-	xor a
-	ld [wMusicFadeID + 1], a
-	ld hl, wc303
-	set 7, [hl]
-	ret
-
-Function17ff3c:
-	nop
-	ld a, [wc300]
-	cp $d0
-	ret c
-	hlcoord 10, 2
-	ld de, String_17ff68
-	call PlaceString
-	ld a, [wc300]
-	push af
-	sub $d0
-	inc a
-	ld [wc300], a
-	hlcoord 14, 2
-	ld de, wc300
-	lb bc, PRINTNUM_LEADINGZEROS | 1, 3
-	call PrintNum
-	pop af
-	ld [wc300], a
-	and a
-	ret
-
-String_17ff68:
-	db "１０１@"

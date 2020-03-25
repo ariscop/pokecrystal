@@ -600,7 +600,7 @@ Unreferenced_Function1704ca:
 .asm_1704e0
 	ret
 
-Function1704e1:
+Function1704e1: ; honor roll
 	call SpeechTextbox
 	call FadeToMenu
 	call InitBattleTowerChallengeRAM
@@ -652,7 +652,7 @@ Function1704e1:
 
 	ld hl, s5_a8b2
 	ld de, wc608
-	ld bc, 150
+	ld bc, 150 ; NAME_LENGTH_JAPANESE * 30
 	call CopyBytes
 
 	call CloseSRAM
@@ -1285,7 +1285,7 @@ BattleTowerAction_EggTicket: ; BattleTowerAction $0e
 	jr nz, .not_egg
 	push hl
 	ld hl, wPartyMonOT
-	ld de, NAME_LENGTH_JAPANESE
+	ld de, NAME_LENGTH;_JAPANESE
 	ld a, b
 	and a
 	jr z, .skip
@@ -1295,7 +1295,7 @@ BattleTowerAction_EggTicket: ; BattleTowerAction $0e
 	jr nz, .loop2
 .skip
 	ld de, String_MysteryJP
-	ld a, NAME_LENGTH_JAPANESE
+	ld a, NAME_LENGTH;_JAPANESE
 .compare_loop
 	push af
 	ld a, [de]
@@ -1335,7 +1335,8 @@ endr
 	ret
 
 String_MysteryJP:
-	db "なぞナゾ@@" ; MYSTERY
+	;db "なぞナゾ@@" ; MYSTERY
+	db "ODD@@@@@@@@"
 
 Function1709aa: ; BattleTowerAction $0f
 	ldh a, [rSVBK]

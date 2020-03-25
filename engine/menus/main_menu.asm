@@ -165,10 +165,38 @@ MainMenu_GetWhichMenu:
 	bit STATUSFLAGS_MAIN_MENU_MOBILE_CHOICES_F, a
 	ld a, $1 ; Continue
 	jr z, .ok
-	jr .ok
+;	jr .ok
+
+	hlcoord 1, 14
+    farcall Mobile_AlwaysReturnNotCarry
+    jr nc, .ok
+
+    ld a, $7
+    call GetSRAMBank
+    ld a, [$a000]
+    call CloseSRAM
+    and a
+    ld a, $3
+    ret z
+
+	ld a, $4
+    ret
 
 .ok
-	jr .ok2
+;	jr .ok2
+    hlcoord 1, 14
+    farcall Mobile_AlwaysReturnNotCarry
+    jr nc, .ok2
+
+    ld a, $7
+    call GetSRAMBank
+    ld a, [$a000]
+    call CloseSRAM
+    and a
+    ld a, $1
+    ret z
+
+	ret
 
 .ok2
 	ld a, $1 ; Continue
@@ -179,10 +207,37 @@ MainMenu_GetWhichMenu:
 	ld a, [wStatusFlags]
 	bit STATUSFLAGS_MAIN_MENU_MOBILE_CHOICES_F, a
 	jr z, .ok3
-	jr .ok3
+;	jr .ok3
+
+	hlcoord 1, 14
+    farcall Mobile_AlwaysReturnNotCarry
+    jr nc, .ok3
+
+    ld a, $7
+    call GetSRAMBank
+    ld a, [$a000]
+    call CloseSRAM
+    and a
+    ld a, $2
+    ret z
+
+    ld a, $05 ; TODO disassember error?
+    ret
 
 .ok3
-	jr .ok4
+	hlcoord 1, 14
+    farcall Mobile_AlwaysReturnNotCarry
+    jr nc, .ok4
+
+    ld a, $7
+    call GetSRAMBank
+    ld a, [$a000]
+    call CloseSRAM
+    and a
+    ld a, $6
+    ret z
+
+	ret
 
 .ok4
 	ld a, $6 ; Mystery Gift

@@ -479,7 +479,7 @@ PlacePartyMonMobileBattleSelection:
 	ret z
 	ld c, a
 	ld b, 0
-	hlcoord 12, 1
+	hlcoord 12, 2;12, 1
 .loop
 	push bc
 	push hl
@@ -493,7 +493,7 @@ PlacePartyMonMobileBattleSelection:
 	dec c
 	jr nz, .loop
 	ld a, l
-	ld e, MON_NAME_LENGTH
+	ld e, MON_NAME_LENGTH + 20
 	sub e
 	ld l, a
 	ld a, h
@@ -508,7 +508,7 @@ PlacePartyMonMobileBattleSelection:
 .loop2
 	push hl
 	push bc
-	hlcoord 12, 1
+	hlcoord 12, 2;12, 1
 .loop3
 	and a
 	jr z, .done
@@ -542,11 +542,11 @@ PlacePartyMonMobileBattleSelection:
 	jr .loop2
 
 .String_Banme:
-	db "　ばんめ　　@" ; Place
+	db "  PLACE @";"　ばんめ　　@" ; Place
 .String_Sanka_Shinai:
-	db "さんかしない@" ; Cancel
+	db "NO ENTRY@";"さんかしない@" ; Cancel
 .String_Kettei_Yameru:
-	db "けってい　　やめる@" ; Quit
+	db "OK  　　CANCEL@";"けってい　　やめる@" ; Quit
 .Strings_1_2_3:
 	db "１@", "２@", "３@" ; 1st, 2nd, 3rd
 

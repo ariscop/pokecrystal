@@ -272,7 +272,7 @@ _SaveGameData:
 	farcall BackupPartyMonMail
 	farcall BackupMobileEventIndex
 	farcall SaveRTC
-	ld a, BANK(sBattleTowerChallengeState)
+	ld a, BANK(sBattleTowerChallengeState); TODO the battle tower stuff doesn't happen in jp Call_005_4c04 bank 005
 	call GetSRAMBank
 	ld a, [sBattleTowerChallengeState]
 	cp BATTLETOWER_RECEIVED_REWARD
@@ -351,7 +351,12 @@ ErasePreviousSave:
 	call EraseHallOfFame
 	call EraseLinkBattleStats
 	call EraseMysteryGift
+	call Unreferenced_Function14d18
+	; TODO call EraseBattleTowerStatus is here in jp crystal (it was changed)
 	call SaveData
+	call Unreferenced_Function14d6c
+	call Unreferenced_Function14d83
+	call Unreferenced_Function14d93
 	call EraseBattleTowerStatus
 	ld a, BANK(sStackTop)
 	call GetSRAMBank
@@ -411,7 +416,7 @@ Unreferenced_Function14d18:
 	db $11, $0c, $0c, $06, $06, $04
 .DataEnd
 
-EraseBattleTowerStatus:
+EraseBattleTowerStatus: ; TODO Call_005_4d09 in crystal jp
 	ld a, BANK(sBattleTowerChallengeState)
 	call GetSRAMBank
 	xor a
@@ -831,13 +836,26 @@ _SaveData:
 	; garbage from wd479. This isn't an issue, since ErasePreviousSave is followed by a regular
 	; save that unwrites the garbage.
 
-	ld hl, wd479
-	ld a, [hli]
-	ld [$a60e + 0], a
-	ld a, [hli]
-	ld [$a60e + 1], a
+;	ld hl, wd479
+;	ld a, [hli]
+;	ld [$a60e + 0], a
+;	ld a, [hli]
+;	ld [$a60e + 1], a
 
-	jp CloseSRAM
+;	jp CloseSRAM
+
+	ld a, $04
+    call GetSRAMBank
+    ld hl, wCrystalData
+    ld de, sCrystalData
+    ld bc, wCrystalDataEnd - wCrystalData
+    call CopyBytes
+    ld hl, wd479
+	ld a, [hli]
+    ld [$a60e + 0], a
+    ld a, [hli]
+    ld [$a60e + 1], a
+    jp CloseSRAM
 
 _LoadData:
 	ld a, BANK(sCrystalData)
@@ -850,13 +868,26 @@ _LoadData:
 	; This block originally had some mobile functionality to mirror _SaveData above, but instead it
 	; (harmlessly) writes the aforementioned wEventFlags to the unused wd479.
 
-	ld hl, wd479
-	ld a, [$a60e + 0]
-	ld [hli], a
-	ld a, [$a60e + 1]
-	ld [hli], a
+;	ld hl, wd479
+;	ld a, [$a60e + 0]
+;	ld [hli], a
+;	ld a, [$a60e + 1]
+;	ld [hli], a
 
-	jp CloseSRAM
+;	jp CloseSRAM
+
+	ld a, $04
+    call GetSRAMBank
+    ld hl, sCrystalData
+    ld de, wCrystalData
+    ld bc, wCrystalDataEnd - wCrystalData
+    call CopyBytes
+    ld hl, wd479
+    ld a, [$a60e + 0]
+    ld [hli], a
+    ld a, [$a60e + 1]
+    ld [hli], a
+    jp CloseSRAM
 
 GetBoxAddress:
 	ld a, [wCurBox]

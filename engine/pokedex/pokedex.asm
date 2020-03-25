@@ -1675,8 +1675,8 @@ Pokedex_ABCMode:
 	push bc
 	ld a, [de]
 	ld [wTempSpecies], a
-	call Pokedex_CheckSeen
-	jr z, .skipabc
+	;call Pokedex_CheckSeen
+	;jr z, .skipabc
 	ld a, [wTempSpecies]
 	ld [hli], a
 	ld a, [wDexListingEnd]

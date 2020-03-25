@@ -88,11 +88,11 @@ Mobile_InitAnimatedMonIcon:
 	ld [hl], a
 	ld hl, SPRITEANIMSTRUCT_XCOORD
 	add hl, bc
-	ld a, 9 * 8
+	ld a, 6 * 8
 	ld [hl], a
 	ld hl, SPRITEANIMSTRUCT_YCOORD
 	add hl, bc
-	ld a, 9 * 8
+	ld a, 16 * 8
 	ld [hl], a
 	ret
 
@@ -109,7 +109,7 @@ Mobile_InitPartyMenuBGPal71:
 	ld [hl], a
 	ld hl, SPRITEANIMSTRUCT_YCOORD
 	add hl, bc
-	ld a, 12 * 8
+	ld a, 9 * 8
 	ld [hl], a
 	ld a, c
 	ld [wc608], a

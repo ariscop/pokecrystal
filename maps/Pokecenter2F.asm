@@ -414,7 +414,7 @@ Script_WalkOutOfMobileBattleRoom:
 Pokecenter2F_CheckGender:
 	checkflag ENGINE_PLAYER_IS_FEMALE
 	iftrue .Female
-	applymovementlasttalked Pokecenter2FMovementData_ReceptionistWalksUpAndLeft_LookRight
+	applymovementlasttalked Pokecenter2FMovementData_ReceptionistWalksUpAndLeft_LookRight_2
 	applymovement PLAYER, Pokecenter2FMovementData_PlayerTakesThreeStepsUp
 	end
 
@@ -426,16 +426,16 @@ Pokecenter2F_CheckGender:
 	waitbutton
 	closetext
 	applymovementlasttalked Pokecenter2FMovementData_ReceptionistLooksRight
-	turnobject PLAYER, LEFT
+	turnobject PLAYER, RIGHT
 	opentext
 	writetext Text_ChangeTheLook
 	waitbutton
 	closetext
 	playsound SFX_TINGLE
-	applymovement PLAYER, Pokecenter2FMovementData_PlayerSpinsClockwiseEndsFacingRight
+	applymovement PLAYER, Pokecenter2FMovementData_PlayerSpinsClockwiseEndsFacingLeft
 	setval (PAL_NPC_RED << 4)
 	special SetPlayerPalette
-	applymovement PLAYER, Pokecenter2FMovementData_PlayerSpinsClockwiseEndsFacingLeft
+	applymovement PLAYER, Pokecenter2FMovementData_PlayerSpinsClockwiseEndsFacingRight
 	setflag ENGINE_KRIS_IN_CABLE_CLUB
 	special ReplaceKrisSprite
 	opentext
@@ -459,10 +459,10 @@ Script_WalkOutOfLinkTradeRoom:
 	applymovement PLAYER, Pokecenter2FMovementData_PlayerTakesOneStepDown_2
 	clearflag ENGINE_KRIS_IN_CABLE_CLUB
 	playsound SFX_TINGLE
-	applymovement PLAYER, Pokecenter2FMovementData_PlayerSpinsClockwiseEndsFacingRight
+	applymovement PLAYER, Pokecenter2FMovementData_PlayerSpinsClockwiseEndsFacingLeft
 	setval (PAL_NPC_BLUE << 4)
 	special SetPlayerPalette
-	applymovement PLAYER, Pokecenter2FMovementData_PlayerSpinsClockwiseEndsFacingLeft
+	applymovement PLAYER, Pokecenter2FMovementData_PlayerSpinsClockwiseEndsFacingRight
 	special ReplaceKrisSprite
 	applymovement PLAYER, Pokecenter2FMovementData_PlayerTakesTwoStepsDown_2
 	applymovement POKECENTER2F_TRADE_RECEPTIONIST, Pokecenter2FMovementData_ReceptionistStepsRightAndDown
@@ -644,17 +644,18 @@ Pokecenter2FMovementData_ReceptionistStepsRightLooksDown:
 
 Pokecenter2FMovementData_ReceptionistWalksUpAndLeft_LookRight_2:
 	slow_step UP
-	slow_step LEFT
-	turn_head RIGHT
+	slow_step RIGHT
+	turn_head LEFT
 	step_end
 
 Pokecenter2FMovementData_ReceptionistLooksRight:
-	turn_head RIGHT
+	turn_head LEFT
 	step_end
 
 Pokecenter2FMovementData_PlayerTakesThreeStepsUp:
 	step UP
 	step UP
+	step LEFT
 	step UP
 	step_end
 
@@ -664,6 +665,7 @@ Pokecenter2FMovementData_PlayerTakesTwoStepsUp:
 	step_end
 
 Pokecenter2FMovementData_PlayerTakesOneStepUp:
+	step LEFT
 	step UP
 	step_end
 
@@ -691,6 +693,7 @@ Pokecenter2FMovementData_PlayerWalksRightAndUp:
 
 Pokecenter2FMovementData_PlayerTakesThreeStepsDown:
 	step DOWN
+	step RIGHT
 	step DOWN
 	step DOWN
 	step_end
@@ -705,7 +708,7 @@ Pokecenter2FMovementData_PlayerTakesOneStepDown:
 	step_end
 
 Pokecenter2FMovementData_ReceptionistStepsRightAndDown:
-	slow_step RIGHT
+	slow_step LEFT
 	slow_step DOWN
 	step_end
 
@@ -716,8 +719,8 @@ Pokecenter2FMovementData_ReceptionistStepsRightLooksDown_2:
 
 Pokecenter2FMovementData_ReceptionistStepsRightLooksDown_3:
 	slow_step UP
-	slow_step LEFT
-	turn_head RIGHT
+	slow_step RIGHT
+	turn_head LEFT
 	step_end
 
 Pokecenter2FMovementData_ReceptionistStepsLeftLooksRight:
@@ -768,6 +771,7 @@ Pokecenter2FMovementData_PlayerSpinsClockwiseEndsFacingDown:
 
 Pokecenter2FMovementData_PlayerTakesOneStepDown_2:
 	step DOWN
+	step RIGHT
 	step_end
 
 Pokecenter2FMovementData_PlayerTakesTwoStepsDown_2:
@@ -1025,8 +1029,8 @@ Pokecenter2F_MapEvents:
 
 	db 6 ; warp events
 	warp_event  0,  7, POKECENTER_2F, -1
-	warp_event  5,  0, TRADE_CENTER, 1
-	warp_event  9,  0, COLOSSEUM, 1
+	warp_event  4,  0, TRADE_CENTER, 1
+	warp_event  8,  0, COLOSSEUM, 1
 	warp_event 13,  2, TIME_CAPSULE, 1
 	warp_event  6,  0, MOBILE_TRADE_ROOM, 1
 	warp_event 10,  0, MOBILE_BATTLE_ROOM, 1

@@ -1,7 +1,7 @@
 MobileAdapterGFX::
 INCBIN "gfx/mobile/mobile_adapter.2bpp"
 
-Function17a68f::
+Function17a68f:: ; phone number entry screen
 	call Function17a6a8
 	call Function17a751
 	ld hl, $d088
@@ -508,8 +508,8 @@ Function17a99e:
 	ret
 
 String_17a9b2:
-	db   "でんわばんごうが　ただしく"
-	next "はいって　いません！"
+	db   "Invalid phone" ;"でんわばんごうが　ただしく"
+	next "number!" ;"はいって　いません！"
 	db   "@"
 
 Function17a9cb:

@@ -1,4 +1,4 @@
-Unreferenced_Function16c000:
+MobileAdapterCheck:
 	; Only for CGB
 	ldh a, [hCGB]
 	and a
@@ -523,7 +523,7 @@ Function16cb0f:
 	ld [wd1ee], a
 	ld a, $4
 	ld [wd1ed], a
-	ld a, $a0
+	ld a, $a0 + $10
 	ld [wd1ef], a
 	xor a
 	ld [wd1f0], a
@@ -548,14 +548,14 @@ Function16cb40:
 	xor a
 	ld [hl], a
 	ld a, [wd1ef]
-	cp $a0
+	cp $a0 + $10
 	jr nz, .asm_16cb57
-	ld a, $a7
+	ld a, $a7 + $10
 	ld [wd1ef], a
 	ret
 
 .asm_16cb57
-	ld a, $a0
+	ld a, $a0 + $10
 	ld [wd1ef], a
 	ret
 
@@ -670,7 +670,7 @@ Function16cc02:
 Function16cc18:
 	ld hl, vTiles1
 	ld de, GFX_16cca3
-	lb bc, BANK(GFX_16cca3), 46
+	lb bc, BANK(GFX_16cca3), 46 + $10
 	call Get2bpp
 	ret
 
@@ -692,11 +692,15 @@ Function16cc25:
 	jp FarCopyWRAM
 
 Function16cc49:
-	hlcoord 4, 15
+	hlcoord 4, 14
 	ld a, $80
 	call Function16cc5a
+
+	hlcoord 4, 15
+	ld a, $90;$80
+	call Function16cc5a
 	hlcoord 4, 16
-	ld a, $90
+	ld a, $A0;$90
 	call Function16cc5a
 	ret
 
@@ -710,8 +714,8 @@ Function16cc5a:
 	ret
 
 Function16cc62:
-	hlcoord 0, 15, wAttrMap
-	ld bc, $0028
+	hlcoord 0, 14, wAttrMap;0, 15, wAttrMap
+	ld bc, $0028 + $14
 	ld a, $1
 	call ByteFill
 	ret

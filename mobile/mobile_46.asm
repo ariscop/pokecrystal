@@ -139,11 +139,11 @@ Function11811a:
 _BattleTowerRoomMenu:
 	xor a
 	ld [wcd38], a
-Function118125:
+Function118125: ; jr_046_4125
 	call BattleTowerRoomMenu_InitRAM
-	ld a, $3
+	ld a, $23;$3
 	ld [wcd33], a
-	ld a, $d
+	ld a, $2d;$d
 	ld [wcd34], a
 	ld a, $4
 	ld [wc3f0], a
@@ -155,7 +155,7 @@ Function118125:
 	call JoyTextDelay
 	call Function118473
 	ld a, [wcf66]
-	cp $f
+	cp $32;$f
 	jr c, .skip
 	ld a, [wcd34]
 	ld [wcf66], a
@@ -624,26 +624,78 @@ Function1184ec:
 	dw Function119ac9
 	dw Function118e76
 
-BattleTowerRoomMenu_Jumptable:
+BattleTowerRoomMenu_Jumptable: ; Call_046_454d in jp crystal
 	jumptable .Jumptable, wcf66
 
-.Jumptable:
-	dw BattleTowerRoomMenu_PickLevelMessage
-	dw BattleTowerRoomMenu_PlacePickLevelMenu
-	dw BattleTowerRoomMenu_UpdatePickLevelMenu
-	dw BattleTowerRoomMenu_DoNothing
-	dw BattleTowerRoomMenu_PartyMonTopsThisLevelMessage
-	dw BattleTowerRoomMenu_WaitForMessage
-	dw BattleTowerRoomMenu_DelayRestartMenu
-	dw BattleTowerRoomMenu_QuitMessage
-	dw BattleTowerRoomMenu_PlaceYesNoMenu
-	dw BattleTowerRoomMenu_UpdateYesNoMenu
-	dw BattleTowerRoomMenu_UberRestrictionMessage
-	dw BattleTowerRoomMenu_WaitForMessage
-	dw BattleTowerRoomMenu_DelayRestartMenu
-	dw Function118e76 ; mobile
-	dw BattleTowerRoomMenu_CallRoomMenu2 ; mobile
-	dw Function118e76 ; mobile
+.Jumptable: ; should be 51 long? at 11855c in jp crystal, last byte at 1185c1
+;	dw BattleTowerRoomMenu_PickLevelMessage
+;	dw BattleTowerRoomMenu_PlacePickLevelMenu
+;	dw BattleTowerRoomMenu_UpdatePickLevelMenu
+;	dw BattleTowerRoomMenu_DoNothing
+;	dw BattleTowerRoomMenu_PartyMonTopsThisLevelMessage
+;	dw BattleTowerRoomMenu_WaitForMessage
+;	dw BattleTowerRoomMenu_DelayRestartMenu
+;	dw BattleTowerRoomMenu_QuitMessage
+;	dw BattleTowerRoomMenu_PlaceYesNoMenu
+;	dw BattleTowerRoomMenu_UpdateYesNoMenu
+;	dw BattleTowerRoomMenu_UberRestrictionMessage
+;	dw BattleTowerRoomMenu_WaitForMessage
+;	dw BattleTowerRoomMenu_DelayRestartMenu
+;	dw Function118e76 ; mobile
+;	dw BattleTowerRoomMenu_CallRoomMenu2 ; mobile
+;	dw Function118e76 ; mobile
+
+	dw BattleTowerRoomMenu_PickLevelMessage; locations extracted from rom 6849
+	dw BattleTowerRoomMenu_PlacePickLevelMenu ;7C49
+	dw BattleTowerRoomMenu_UpdatePickLevelMenu ;C849
+	dw RemovedFunction8 ;9A4A
+	dw Function11886e ;B448
+	dw Function118880 ;C648
+	dw Function11878d ;D347
+	dw Function1188b0 ;F648
+	dw Function11878d ;D347
+	dw Function1188b8 ;FE48
+	dw Function11878d ;D347
+	dw Function1188c0 ;0649
+	dw Function11878d ;D347
+	dw Function1188c8 ;0E49
+	dw Function11878d ;D347
+	dw Function118903; end of english table 4949
+	dw Function118a65;Function118a7a 4E4D
+	dw Function11878d ;D347
+	dw Function11891c ;6249
+	dw Function118a54 ;3D4D
+	dw Function11878d ;D347
+	dw RemovedFunction ;A84A
+	dw RemovedFunction2 ;D84A
+	dw RemovedFunction3 ;244B
+	dw RemovedFunction4 ;4D4C
+	dw RemovedFunction5 ;D54C
+	dw RemovedFunction6 ;DE4C
+	dw RemovedFunction7 ;154D
+	dw Function11878d ;D347
+	dw Unreferenced_Function118d35 ;5B50
+	dw Function118e6d ;9351
+	dw Function11878d ;D347
+	dw Function118e76 ;9C51
+	dw Function118e7e ;A451
+	dw Function11878d ;D347
+	dw BattleTowerRoomMenu_DoNothing ;5E40
+	dw BattleTowerRoomMenu_PartyMonTopsThisLevelMessage ;B260
+	dw BattleTowerRoomMenu_WaitForMessage ;BB60
+	dw BattleTowerRoomMenu_DelayRestartMenu ;C860
+	dw BattleTowerRoomMenu_QuitMessage ;1261
+	dw BattleTowerRoomMenu_PlaceYesNoMenu ;2E61
+	dw BattleTowerRoomMenu_UpdateYesNoMenu ;3B61
+	dw BattleTowerRoomMenu_UberRestrictionMessage ;A760
+	dw BattleTowerRoomMenu_WaitForMessage ;BB60
+	dw BattleTowerRoomMenu_DelayRestartMenu ;C860
+	dw Function118e76 ;9C51
+	dw BattleTowerRoomMenu_CallRoomMenu2;Function118e7e AD51
+	dw RemovedFunction9 ;6060
+	dw RemovedFunction10 ;6960
+	dw RemovedFunction11 ;7660
+	dw Function118e76 ;9C51
 
 Function11857c:
 	jumptable .Jumptable, wcf66
@@ -1176,7 +1228,7 @@ BattleTowerRoomMenu_PlacePickLevelMenu:
 	ldh [rSVBK], a
 	call BattleTowerRoomMenu_IncrementJumptable
 
-BattleTowerRoomMenu_UpdatePickLevelMenu:
+BattleTowerRoomMenu_UpdatePickLevelMenu: ; TODO was changed
 	hlcoord 13, 8
 	ld de, String_119d07
 	call PlaceString
@@ -1283,8 +1335,12 @@ BattleTowerRoomMenu_UpdatePickLevelMenu:
 	ret c
 
 .asm_118a30
-	ld a, [wcd4f]
-	ld [w3_d800], a
+;	ld a, [wcd4f]
+;	ld [w3_d800], a
+
+	ld hl, Text_LinkingWithCenter;$621a
+	call BattleTowerRoomMenu_SetMessage
+
 	jp BattleTowerRoomMenu_IncrementJumptable
 
 .b_button
@@ -1303,6 +1359,428 @@ BattleTowerRoomMenu_UpdatePickLevelMenu:
 	ld a, $0
 	ld [wMobileInactivityTimerFrames], a
 	ret
+
+
+RemovedFunction8: ; 4A9A
+    ld a, [$c31a];$c340
+    and a
+    ret nz
+
+    ld a, [wcd4f];$cd43
+    ld [$cd61], a ;$cd55 ???
+    jp BattleTowerRoomMenu_IncrementJumptable
+
+RemovedFunction:
+    ld a, [wcd89];$cd7d
+    bit 0, a
+    jr nz, jr_046_4aba
+
+    ld hl, $c3ee
+    ld a, [hl+]
+    or [hl]
+    jr z, jr_046_4abf
+
+    cp $0a
+    jr nc, jr_046_4ac4
+
+jr_046_4aba:
+    ld a, $d3
+    jp Function118805;Jump_046_484b
+
+
+jr_046_4abf:
+    ld a, $d4
+    jp Function118805;Jump_046_484b
+
+
+jr_046_4ac4:
+    ld a, [wcd38];$cd2c
+    and a
+    jr nz, jr_046_4acf
+
+    ld hl, Text_EnterWhichBattleRoom;RemovedMenuText;$627b
+    jr jr_046_4ad2
+
+jr_046_4acf:
+    ld hl, Text_WhichBattleRoom;RemovedMenuText2;$6293
+
+jr_046_4ad2:
+    call BattleTowerRoomMenu_SetMessage;Call_046_6ef1
+    call BattleTowerRoomMenu_IncrementJumptable;Call_046_635f
+
+RemovedFunction2:
+    ld a, [$c31a];$c340
+    and a
+    ret nz
+
+    ld hl, MenuData_119cff;$6189
+    call $1d00
+    call $1c86
+    call $1cc8
+    call $31e8
+    ld hl, $ce7e
+    ld a, $40
+    or [hl]
+    ld [hl], a
+    call $31cc
+    ld a, $01
+    ld [$cd3f], a
+    xor a
+    ld [$cd40], a
+    ld a, [$c3ee]
+    ldh [$b3], a
+    ld a, [$c3ef]
+    ldh [$b4], a
+    ld a, $0a
+    ldh [$b7], a
+    ld b, $02
+    call $30f0
+    and a
+    ldh a, [$b6]
+    add $01
+    ld [$cd41], a
+    ldh a, [$b5]
+    adc $00
+    ld [$cd42], a
+    call BattleTowerRoomMenu_IncrementJumptable;Call_046_635f
+
+RemovedFunction3:
+    ld hl, $c550
+    ld de, $6193
+    call $1057
+    ld hl, $c578
+    ld de, $6193
+    call $1057
+    ld a, [$cd3f]
+    ld hl, $cd41
+    cp [hl]
+    jr nz, jr_046_4b51
+
+    ld a, [$cd40]
+    inc hl
+    cp [hl]
+    jr nz, jr_046_4b51
+
+    ld hl, $c564
+    ld de, $6216
+    call $1057
+    jr jr_046_4b79
+
+jr_046_4b51:
+    ld hl, $c564
+    push hl
+    ld de, $cd3f
+    ld bc, $8103
+    call $3164
+    pop hl
+    ldh a, [rSVBK]
+    push af
+    ld a, $01
+    ldh [rSVBK], a
+    ld de, $d07c
+    ld a, $03
+
+jr_046_4b6b:
+    push af
+    ld a, [hl+]
+    ld [de], a
+    inc de
+    pop af
+    dec a
+    jr nz, jr_046_4b6b
+
+    ld a, $50
+    ld [de], a
+    pop af
+    ldh [rSVBK], a
+
+jr_046_4b79:
+    ld hl, $ffa7
+    ld a, [hl]
+    and $01
+    jp nz, Jump_046_4c02
+
+    ld a, [hl]
+    and $80
+    jr nz, jr_046_4ba0
+
+    ld a, [hl]
+    and $40
+    jr nz, jr_046_4bcc
+
+    ld a, [hl]
+    and $20
+    jr nz, jr_046_4ba0
+
+    ld a, [hl]
+    and $10
+    jr nz, jr_046_4bcc
+
+    ld a, [hl]
+    and $02
+    jp nz, Jump_046_4c2d
+
+    call Function11a9f0;Call_046_6f21
+
+jr_046_4b9f:
+    ret
+
+
+jr_046_4ba0:
+    xor a
+    ld [$cd7e], a
+    ld [$cd7f], a
+    ld a, [$cd3f]
+    ld l, a
+    ld a, [$cd40]
+    ld h, a
+    ld de, $ffff
+    add hl, de
+    ld a, h
+    ld [$cd40], a
+    ld a, l
+    ld [$cd3f], a
+    or h
+    jr nz, jr_046_4b9f
+
+    ld a, [$cd41]
+    ld [$cd3f], a
+    ld a, [$cd42]
+    ld [$cd40], a
+    jr jr_046_4b9f
+
+jr_046_4bcc:
+    xor a
+    ld [$cd7e], a
+    ld [$cd7f], a
+    ld a, [$cd3f]
+    ld l, a
+    ld a, [$cd40]
+    ld h, a
+    ld de, $0001
+    add hl, de
+    ld a, l
+    ld [$cd3f], a
+    ld a, h
+    ld [$cd40], a
+    ld a, [$cd42]
+    ld hl, $cd40
+    cp [hl]
+    jr nz, jr_046_4b9f
+
+    dec hl
+    ld a, [$cd41]
+    cp [hl]
+    jr nc, jr_046_4b9f
+
+    ld a, $01
+    ld [$cd3f], a
+    xor a
+    ld [$cd40], a
+    jr jr_046_4b9f
+
+Jump_046_4c02:
+    xor a
+    ld [$cd7e], a
+    ld [$cd7f], a
+    call PlayClickSFX;$1fcc
+    ld a, [$cd3f]
+    ld hl, $cd41
+    cp [hl]
+    jr nz, jr_046_4c1c
+
+    inc hl
+    ld a, [$cd40]
+    cp [hl]
+    jr z, jr_046_4c30
+
+jr_046_4c1c:
+    ldh a, [rSVBK]
+    push af
+    ld a, $01
+    ldh [rSVBK], a
+    call $1be2
+    pop af
+    ldh [rSVBK], a
+    call BattleTowerRoomMenu_IncrementJumptable;Call_046_635f
+    ret
+
+
+Jump_046_4c2d:
+    call PlayClickSFX;$1fcc
+
+jr_046_4c30:
+    ldh a, [rSVBK]
+    push af
+    ld a, $01
+    ldh [rSVBK], a
+    call $1be2
+    pop af
+    ldh [rSVBK], a
+    ld a, $27
+    ld [$cf5a], a
+    ld a, $15
+    ld [$cd3a], a
+    ld a, $1e
+    ld [$cd3b], a
+    ret
+
+RemovedFunction4:
+    xor a
+    ld b, a
+    ld c, a
+    ld a, [$cd43]
+    cp $0a
+    jr nz, jr_046_4c5a
+
+    ld c, $01
+    xor a
+
+jr_046_4c5a:
+    ld [$cd55], a
+    ld a, [$cd3f]
+    ld l, a
+    ld a, [$cd40]
+    ld h, a
+    ld de, $ffff
+    add hl, bc
+    add hl, de
+    ld a, l
+    and $0f
+    ldh [$b3], a
+    ld a, l
+    and $f0
+    swap a
+    ldh [$b4], a
+    ld a, h
+    and $0f
+    ldh [$b5], a
+    call Function11a80c;Call_046_6d3d
+    call Function118b42;Call_046_4e2b
+    ret c
+
+    ld a, [$cd2c]
+    and a
+    jr nz, jr_046_4c92
+
+    ld a, [$cd4f]
+    ld l, a
+    ld a, [$cd50]
+    ld h, a
+    jr jr_046_4cae
+
+jr_046_4c92:
+    ld a, $01
+    ldh [rSVBK], a
+    ld hl, $d071
+    ld de, $cd5d
+    ld bc, $0016
+    call $2ff2
+    ld a, $03
+    ldh [rSVBK], a
+    ld a, [$cd53]
+    ld l, a
+    ld a, [$cd54]
+    ld h, a
+
+jr_046_4cae:
+    dec hl
+    dec hl
+    dec hl
+    dec hl
+    dec hl
+    dec hl
+    dec hl
+    ld de, $cd55
+    ld a, $04
+
+jr_046_4cba:
+    push af
+    ld a, [de]
+    inc de
+    add $30
+    ld [hl-], a
+    pop af
+    dec a
+    jr nz, jr_046_4cba
+
+    ld hl, $dffc
+    ld de, $cd58
+    ld c, $04
+
+jr_046_4ccc:
+    ld a, [de]
+    dec de
+    ld [hl+], a
+    dec c
+    jr nz, jr_046_4ccc
+
+    call BattleTowerRoomMenu_IncrementJumptable;Call_046_635f
+
+RemovedFunction5:
+    ld hl, Text_ThisBattleRoomPleaseWait;$62a3
+    call BattleTowerRoomMenu_SetMessage;Call_046_6ef1
+    call BattleTowerRoomMenu_IncrementJumptable;Call_046_635f
+
+RemovedFunction6:
+    ld a, [$c340]
+    and a
+    ret nz
+
+    ld a, [$cd2c]
+    and a
+    jr nz, jr_046_4cf3
+
+    ld a, [$cd47]
+    ld l, a
+    ld a, [$cd48]
+    ld h, a
+    jr jr_046_4cfb
+
+jr_046_4cf3:
+    ld a, [$cd4b]
+    ld l, a
+    ld a, [$cd4c]
+    ld h, a
+
+jr_046_4cfb:
+    call Function118e39;Call_046_515f
+    ld a, $09
+    ld [$cd30], a
+    ld a, $27
+    ld [$cd39], a
+    ld a, $15
+    ld [$cd3a], a
+    ld a, $1e
+    ld [$cd3b], a
+    call BattleTowerRoomMenu_IncrementJumptable;Call_046_635f
+
+RemovedFunction7:
+    call BattleTowerRoomMenu2;Call_046_6409
+    ret c
+
+    call $045a
+    ld a, [$cd2c]
+    and a
+    jr nz, jr_046_4d2c
+
+    ld a, [$cd47]
+    ld l, a
+    ld a, [$cd48]
+    ld h, a
+    jr jr_046_4d34
+
+jr_046_4d2c:
+    ld a, [$cd4b]
+    ld l, a
+    ld a, [$cd4c]
+    ld h, a
+
+jr_046_4d34:
+    ld de, $d200
+    ld bc, $0e00
+    jp Function118ae4;Jump_046_4dcd
+
 
 Function118a54:
 	ld a, [wcd55]
@@ -1487,19 +1965,19 @@ Function118b9a:
 	charmap " ", $20 ; revert to ascii
 
 ExchangeDownloadURL:
-	db "http://gameboy.datacenter.ne.jp/cgb/download?name=/01/CGB-BXTJ/exchange/index.txt", 0
+	db "http://gameboy.datacenter.ne.jp/cgb/download?name=/01/CGB-BXTE/exchange/index.txt", 0
 
 BattleDownloadURL:
-	db "http://gameboy.datacenter.ne.jp/cgb/download?name=/01/CGB-BXTJ/battle/index.txt", 0
+	db "http://gameboy.datacenter.ne.jp/cgb/download?name=/01/CGB-BXTE/battle/index.txt", 0
 
 NewsDownloadURL:
-	db "http://gameboy.datacenter.ne.jp/cgb/download?name=/01/CGB-BXTJ/news/index.txt", 0
+	db "http://gameboy.datacenter.ne.jp/cgb/download?name=/01/CGB-BXTE/news/index.txt", 0
 
 MenuDownloadURL:
-	db "http://gameboy.datacenter.ne.jp/cgb/download?name=/01/CGB-BXTJ/POKESTA/menu.cgb", 0
+	db "http://gameboy.datacenter.ne.jp/cgb/download?name=/01/CGB-BXTE/POKESTA/menu.cgb", 0
 
 IndexDownloadURL:
-	db "http://gameboy.datacenter.ne.jp/cgb/download?name=/01/CGB-BXTJ/tamago/index.txt", 0
+	db "http://gameboy.datacenter.ne.jp/cgb/download?name=/01/CGB-BXTE/tamago/index.txt", 0
 
 Unreferenced_Function118d35:
 	ld hl, $d200
@@ -3776,6 +4254,65 @@ Function119c3e:
 	and a
 	ret
 
+RemovedFunction9:
+    ld hl, Text_RegisteringRecord;$6081 ???
+    call BattleTowerRoomMenu_SetMessage;Call_046_6ef1
+    call BattleTowerRoomMenu_IncrementJumptable;Call_046_635f
+
+RemovedFunction10:
+    ld a, [$c340]
+    and a
+    ret nz
+
+    ld a, $80
+    ld [$cd44], a
+    call BattleTowerRoomMenu_IncrementJumptable;Call_046_635f
+
+RemovedFunction11:
+    ld hl, $cd44
+    dec [hl]
+    ret nz
+
+    ld a, $15
+    ld [$cf5a], a
+    ret
+
+
+;    nop
+;    rst $30
+;    inc [hl]
+;    ld a, a
+;    pop bc
+;    ld [c], a
+;    or e
+;    cp [hl]
+;    sbc $bc
+;    ret nz
+
+;    ld a, a
+;    add hl, de
+;    sub e
+;    and [hl]
+;    and [hl]
+;    db $e3
+;    sbc a
+;    jp z, $b54f
+
+;    push bc
+;    inc l
+;    rr l
+;    pop bc
+;    ld [c], a
+;    or e
+;    cp [hl]
+;    sbc $7f
+;    inc sp
+;    or a
+;    rst $08
+;    cp [hl]
+;    sbc $e7
+;    ld d, a
+
 BattleTowerRoomMenu_UberRestrictionMessage:
 	ld hl, Text_UberRestriction
 	call BattleTowerRoomMenu_SetMessage
@@ -3879,6 +4416,14 @@ Strings_Ll0ToL40:
 
 String_119d8c:
 	db "CANCEL@"
+
+RemovedMenuText:
+	db "test@@"
+	db "test2@@"
+
+RemovedMenuText2:
+	db "test3@@"
+	db "test4@@"
 
 BattleTower_LevelCheck:
 	ldh a, [rSVBK]
@@ -5056,79 +5601,81 @@ Function11a63c:
 	ret
 
 String_11a661:
-	db   "これから　モバイルセンターに"
-	next "でんわ<WO>かけます@"
+	db   "Communication"
+	next "with CENTER.@"
 
 String_11a679:
-	db   "モバイルアダプタ<NO>じゅんびは"
-	next "できて　いますか？@"
+	db   "Is your MOBILE"
+	next "ADAPTER ready?@"
 
 String_11a692:
-	db   "でんわ<WO>かけています"
-	next "しばらく　おまちください@"
+	db   "Please wait"
+	next "a moment…@"
 
 String_11a6aa:
-	db   "でんわをかけると　つうわりょう"
-	next "せつぞくりょう<GA>かかります@"
+	db   "Charges will"
+	next "apply.@"
 
 String_11a6c8:
-	db   "せつぞく　しました@"
+	db   "Connected.@";"せつぞく　しました@"
 
 String_11a6d2:
-	db   "つうしん　ちゅう@"
+	db   "Communicating…@";"つうしん　ちゅう@"
 
 String_11a6db:
-	db   "つうしん　ちゅう"
-	next "セレクト　エーでちゅうし@"
+	db   "Communication";"つうしん　ちゅう" ; ???
+	next "canceled.@";"セレクト　エーでちゅうし@"
 
 String_11a6f1:
-	db   "この　サービスには"
-	next "つうわりょう<NO>ほかに@"
+	db   "This is a";"この　サービスには" ; ???
+	next "paid service.@";"つうわりょう<NO>ほかに@"
 
 String_11a706:
-	db   "おかね<GA>@"
+	db   "Cost:@";"おかね<GA>@"
 
 String_11a70b:
-	db   "えん"
-	next "かかります　よろしい　ですか？@"
+	db   "Yen";"えん"
+	next "Is this OK?@";"かかります　よろしい　ですか？@" ; Are you sure you want to do this?
 
 String_11a71e:
-	db   "つうしん　しゅうりょう@"
+	db   "Communication";"つうしん　しゅうりょう@" ; ???
+	next "ended.@"
 
 String_11a72a:
-	db   "つないだ　じかん"
+	db   "Connected for";"つないだ　じかん"
 	next "　　やく　　　ふん　　　びょう@"
 
 String_11a743:
-	db   "もっていない　データが"
-	next "あります！@"
+	db   "No data";"もっていない　データが"
+	next "available!@";"あります！@" ; no data available
 
 String_11a755:
-	db   "データ<WO>よみこみますか？@"
+	db   "Read the";"データ<WO>よみこみますか？@"
+	next "data?@"
 
 String_11a762:
-	db   "おなじ　データ<WO>よみこんだ"
-	next "こと<GA>ありますが@"
+	db   "Read the";"おなじ　データ<WO>よみこんだ"
+	next "same data.@";"こと<GA>ありますが@"
 
 String_11a779:
-	db   "そのデータ<WA>なくなっているか"
-	next "こわれて　います@"
+	db   "The data was";"そのデータ<WA>なくなっているか"
+	next "corrupted.@";"こわれて　います@"
 
 String_11a791:
 	db   "もっている　データと"
-	next "おなじデータしか　ありません！@"
+	next "おなじデータしか　ありません！@" ; There is only the same data you have
 
 String_11a7ac:
-	db   "データ<NO>よみこみを"
-	next "ちゅうし　しますか？@"
+	db   "Stop reading"
+	next "data?@"
 
 String_11a7c1:
-	db   "あたらしい　ニュースは"
-	next "ありません　でした@"
+	db   "There was no"
+	next "new NEWS.@"
 
 String_11a7d7:
-	db   "あたらしいニュース<GA>あります"
-	next "ニュース<WO>よみこみますか？@"
+	db   "Receive the"
+	next "new NEWS?@"
 
 String_11a7f4:
 	db   "　　　　　　　　　　　　　　　@"
@@ -5558,7 +6105,7 @@ Function11ac51:
 	ld [wOptions], a
 	ret
 
-Function11acb7:
+Function11acb7: ; mobile phone animation?
 	ld hl, TilemapPack_11ba44
 	ld a, [wcd49]
 	ld c, a
@@ -5570,12 +6117,36 @@ Function11acb7:
 	sla c
 	rl b
 	add hl, bc
-	decoord 6, 6
+	decoord 5, 12 ;6, 6
 	ld a, [hli]
 	ld [de], a
-	decoord 0, 7
-	ld bc, 7
-	call CopyBytes
+	decoord 4, 6 ;0, 7
+	;ld bc, 7
+	;call CopyBytes
+
+	; vertical
+	ld a, [hli]
+	ld [de], a
+	decoord 4, 7
+	ld a, [hli]
+	ld [de], a
+	decoord 4, 8
+	ld a, [hli]
+	ld [de], a
+	decoord 4, 9
+	ld a, [hli]
+	ld [de], a
+	decoord 4, 10
+	ld a, [hli]
+	ld [de], a
+	decoord 4, 11
+	ld a, [hli]
+	ld [de], a
+	decoord 4, 12
+	ld a, [hli]
+	ld [de], a
+
+
 	ld a, [wcd49]
 	inc a
 	ld [wcd49], a
@@ -5596,9 +6167,33 @@ Function11acb7:
 	sla c
 	rl b
 	add hl, bc
-	decoord 3, 9
-	ld bc, 7
-	call CopyBytes
+	decoord 2, 8 ;3, 9 ; wanted pokemon animation coordinates
+	;ld bc, 7
+	;call CopyBytes
+
+	; vertical
+	ld a, [hli]
+	ld [de], a
+	decoord 2, 9
+	ld a, [hli]
+	ld [de], a
+	decoord 2, 10
+	ld a, [hli]
+	ld [de], a
+	decoord 2, 11
+	ld a, [hli]
+	ld [de], a
+	decoord 2, 12
+	ld a, [hli]
+	ld [de], a
+	decoord 2, 13
+	ld a, [hli]
+	ld [de], a
+	decoord 2, 14
+	ld a, [hli]
+	ld [de], a
+
+
 	ld a, [wcd4a]
 	inc a
 	ld [wcd4a], a
@@ -5675,11 +6270,11 @@ Function11ad95:
 	ld hl, MenuHeader_11ae38
 	call LoadMenuHeader
 	call MenuBox
-	hlcoord 12, 12
+	hlcoord 10, 12 ;12, 12
 	ld de, String_11ae40
 	call PlaceString
-	hlcoord 10, 10, wAttrMap
-	lb bc, 8, 8
+	hlcoord 8, 10, wAttrMap ;10, 10, wAttrMap
+	lb bc, 8, 10 ;8
 	call Function11afd6
 	farcall ReloadMapPart
 	call Function11ad8a
@@ -5740,7 +6335,7 @@ Function11adc4:
 	ld [hl], a
 	and a
 	jr z, .asm_11ae28
-	hlcoord 2, 14
+	hlcoord 7, 4 ;2, 14
 	ld a, [wMenuCursorY]
 	cp $2
 	jr z, .asm_11ae23
@@ -5765,21 +6360,21 @@ Function11adc4:
 
 MenuHeader_11ae38:
 	db MENU_BACKUP_TILES ; flags
-	menu_coords 10, 10, 17, SCREEN_HEIGHT - 1
+	menu_coords  8, 10, 17, SCREEN_HEIGHT - 1
 	dw NULL
 	db 0 ; default option
 
 String_11ae40:
-	db   "どちらでも"
-	next "♂オス"
-	next "♀メス"
+	db   "EITHER"
+	next "♂MALE" ; male
+	next "♀FEMALE" ; female
 	db   "@"
 
 Function11ae4e:
 	ld hl, MenuHeader_11afe8
 	call LoadMenuHeader
 	call MenuBox
-	hlcoord 10, 14
+	hlcoord 8, 14 ;10, 14
 	ld de, String_11aff0
 	call PlaceString
 	ld hl, MenuHeader_11b013
@@ -5791,8 +6386,8 @@ Function11ae4e:
 	hlcoord 14, 7, wAttrMap
 	lb bc, 5, 6
 	call Function11afd6
-	hlcoord 9, 12, wAttrMap
-	lb bc, 6, 11
+	hlcoord 7, 12, wAttrMap ;9, 12, wAttrMap
+	lb bc, 6, 13 ;11
 	call Function11afd6
 	farcall ReloadMapPart
 	call Function11ad8a
@@ -5820,7 +6415,7 @@ Function11ae98:
 	ret z
 	call PlayClickSFX
 .asm_11aeb4
-	hlcoord 2, 14
+	hlcoord 7, 4 ;2, 14
 	ld a, $7f
 	ld [hl], a
 	ld a, $1
@@ -5869,7 +6464,7 @@ Function11af04:
 	ld hl, MenuHeader_11afe8
 	call LoadMenuHeader
 	call MenuBox
-	hlcoord 10, 14
+	hlcoord 8, 14 ;10, 14
 	ld de, String_11b003
 	call PlaceString
 	ld hl, MenuHeader_11b013
@@ -5881,8 +6476,8 @@ Function11af04:
 	hlcoord 14, 7, wAttrMap
 	lb bc, 5, 6
 	call Function11afd6
-	hlcoord 9, 12, wAttrMap
-	lb bc, 6, 11
+	hlcoord 7, 12, wAttrMap ;9, 12, wAttrMap
+	lb bc, 6, 13 ;11
 	call Function11afd6
 	farcall ReloadMapPart
 	call Function11ad8a
@@ -5910,7 +6505,7 @@ Function11af4e:
 	ret z
 	call PlayClickSFX
 .asm_11af6a
-	hlcoord 2, 14
+	hlcoord 7, 4 ;2, 14
 	ld a, $7f
 	ld [hl], a
 	ld a, $1
@@ -5977,9 +6572,9 @@ asm_11afbd:
 	ret
 
 Unknown_11afcc:
-	dwcoord 11, 12
-	dwcoord 11, 14
-	dwcoord 11, 16
+	dwcoord 9, 12 ;11, 12
+	dwcoord 9, 14 ;11, 14
+	dwcoord 9, 16 ;11, 16
 
 Unknown_11afd2:
 	dwcoord 15,  8
@@ -6004,17 +6599,17 @@ Function11afd6:
 
 MenuHeader_11afe8:
 	db MENU_BACKUP_TILES ; flags
-	menu_coords 9, 12, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1
+	menu_coords 7, 12, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1
 	dw NULL
 	db 0 ; default option
 
 String_11aff0:
-	db   "この　じょうけんで"
-	next "よろしいですか?@"
+	db   "Is this"
+	next "correct?@"
 
 String_11b003:
-	db   "こうかんを"
-	next "ちゅうししますか？@"
+	db   "Do you want"
+	next "to quit?@"
 
 MenuHeader_11b013:
 	db MENU_BACKUP_TILES ; flags
@@ -6023,8 +6618,8 @@ MenuHeader_11b013:
 	db 1 ; default option
 
 String_11b01b:
-	db   "はい"
-	next "いいえ@"
+	db   "YES"
+	next "NO@"
 
 Function11b022:
 	ld a, [wcd2e]
@@ -6066,7 +6661,7 @@ Function11b03d:
 .done
 	dec hl
 	push hl
-	ld e, 4
+	ld e, 2
 	ld d, 0
 	add hl, de
 	ld e, l
@@ -6089,16 +6684,16 @@ Function11b03d:
 	ld hl, .FemaleString
 
 .got_string
-	ld bc, 4 ; string length
+	ld bc, 2 ; string length
 	call CopyBytes
 	ret
 
-.MaleString: db "オスの　"
-.FemaleString: db "メスの　"
+.MaleString: db "♂　"
+.FemaleString: db "♀　"
 
 Function11b082:
 	call Function11b242
-	ld a, $7
+	ld a, $4 ;7 menu height
 	ld [wc7d3], a
 	call Function11b099
 	call Function11b295
@@ -6107,8 +6702,8 @@ Function11b082:
 	jp Function11ad8a
 
 Function11b099:
-	ld c, $6
-	hlcoord 11, 1
+	ld c, $B ;6 menu width
+	hlcoord 7, 7;11, 1
 	ld a, [wc7d3]
 	add a
 	ld b, a
@@ -6121,7 +6716,7 @@ Function11b099:
 	add hl, de
 	ld e, l
 	ld d, h
-	hlcoord 11, 2
+	hlcoord 7, 8;11, 2
 	ld a, [wc7d3]
 .loop
 	push af
@@ -6422,14 +7017,14 @@ Function11b239:
 	ld l, a
 	ret
 
-Function11b242:
-	hlcoord 3, 4
+Function11b242: ; pokemon to trade
+	hlcoord 8, 2 ;3, 4
 	ld de, wStringBuffer3
 	call PlaceString
 	xor a
 	ld [wMonType], a
 	farcall GetGender
-	hlcoord 1, 4
+	hlcoord 7, 2 ;1, 4
 	ld a, [wCurPartySpecies]
 	ld bc, wcd2f
 	ld [bc], a
@@ -6478,11 +7073,11 @@ Function11b279:
 .asm_11b294
 	ret
 
-Function11b295:
-	hlcoord 4, 13
-	ld de, String_11b308
-	call PlaceString
-	hlcoord 4, 14
+Function11b295: ; pokemon to receive
+	;hlcoord 8, 3 ;4, 13
+	;ld de, String_11b308
+	;call PlaceString
+	hlcoord 8, 4 ;4, 14
 	ld de, String_11b308
 	call PlaceString
 	call Function11b20b
@@ -6500,7 +7095,7 @@ Function11b295:
 	add hl, bc
 	ld e, [hl]
 	farcall FlyFunction_GetMonIcon
-	hlcoord 4, 14
+	hlcoord 8, 4 ;4, 14
 	push hl
 	call GetPokemonName
 	jr .asm_11b2e7
@@ -6512,14 +7107,14 @@ Function11b295:
 	ld b, a
 	ld hl, $0007
 	add hl, bc
-	ld a, $50
+	ld a, $60 ;$50 move pokemon icon off screen
 	ld [hl], a
-	hlcoord 4, 13
+	hlcoord 8, 4 ;4, 13
 	push hl
 	ld de, String_11b30e
 
 .asm_11b2e7
-	ld a, $6
+	ld a, MON_NAME_LENGTH ;6 crash fix
 	ld bc, wStringBuffer4
 .asm_11b2ec
 	push af
@@ -6543,10 +7138,10 @@ String_11b303:
 	db "ほしい#@"
 
 String_11b308:
-	db "　　　　　@"
+	db "　　　　　　　　　　@"
 
 String_11b30e:
-	db "みはっけん@"
+	db "?????@" ;"みはっけん@"
 
 Function11b314:
 	call Function11b31b
@@ -6559,9 +7154,9 @@ Function11b31b:
 	cp 2
 	jr c, .tilemap_1
 	ld a, [wc7d1]
-	cp 4
+	cp 1 ;4
 	jr nc, .tilemap_3
-	cp 3
+	cp 0 ;3
 	jr c, .tilemap_1
 	ld a, [wJumptableIndex]
 	cp 2
@@ -6586,20 +7181,20 @@ Function11b31b:
 	ret
 
 .Coords:
-	dbpixel 3, 11, 2, 6 ;  0
-	dbpixel 3, 12, 2, 6 ;  1
-	dbpixel 3, 13, 2, 6 ;  2
-	dbpixel 3, 14, 2, 6 ;  3
-	dbpixel 3, 15, 2, 6 ;  4
-	dbpixel 3, 16, 2, 6 ;  5
-	dbpixel 3, 17, 2, 6 ;  6
-	dbpixel 4, 11, 2, 6 ;  7
-	dbpixel 4, 12, 2, 6 ;  8
-	dbpixel 4, 13, 2, 6 ;  9
-	dbpixel 4, 14, 2, 6 ; 10
-	dbpixel 4, 15, 2, 6 ; 11
-	dbpixel 4, 16, 2, 6 ; 12
-	dbpixel 4, 17, 2, 6 ; 13
+	dbpixel  9,  7, 2, 6 ;  0
+	dbpixel  9,  8, 2, 6 ;  1
+	dbpixel  9,  9, 2, 6 ;  2
+	dbpixel  9, 15, 2, 9 ;  3
+	dbpixel  9, 16, 2, 6 ;  4
+	dbpixel  9, 17, 2, 6 ;  5
+	dbpixel  9, 18, 2, 1 ;  6
+	dbpixel 10,  7, 2, 6 ;  7
+	dbpixel 10,  8, 2, 6 ;  8
+	dbpixel 10,  9, 2, 6 ;  9
+	dbpixel 10, 15, 2, 9 ; 10
+	dbpixel 10, 16, 2, 6 ; 11
+	dbpixel 10, 17, 2, 6 ; 12
+	dbpixel 10, 18, 2, 1 ; 13
 	db -1
 
 .Tilemap1: ; vtiles
@@ -6677,34 +7272,34 @@ Function11b397:
 	inc de
 	jr .loop
 
-Unreferenced_Function11b3b6:
-.loop
-	ld a, [hl]
-	cp -1
-	ret z
-	ld a, [wcd4d]
-	and $7
-	swap a
-	add [hl]
-	inc hl
-	ld [de], a
-	inc de
-	ld a, [hli]
-	ld [de], a
-	inc de
-	push hl
-	ld l, c
-	ld h, b
-	ld a, [wcd4e]
-	add [hl]
-	inc bc
-	ld [de], a
-	inc de
-	pop hl
-	ld a, $5
-	ld [de], a
-	inc de
-	jr .loop
+;Unreferenced_Function11b3b6: removed because bank space needed
+;.loop
+;	ld a, [hl]
+;	cp -1
+;	ret z
+;	ld a, [wcd4d]
+;	and $7
+;	swap a
+;	add [hl]
+;	inc hl
+;	ld [de], a
+;	inc de
+;	ld a, [hli]
+;	ld [de], a
+;	inc de
+;	push hl
+;	ld l, c
+;	ld h, b
+;	ld a, [wcd4e]
+;	add [hl]
+;	inc bc
+;	ld [de], a
+;	inc de
+;	pop hl
+;	ld a, $5
+;	ld [de], a
+;	inc de
+;	jr .loop
 
 Function11b3d9:
 	ld de, wVirtualOAMSprite28

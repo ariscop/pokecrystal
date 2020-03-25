@@ -184,11 +184,13 @@ sHallOfFameEnd::
 
 SECTION "SRAM Crystal Data", SRAM
 
-sMobileEventIndex:: db ; be3c
+;sMobileEventIndex::
+	db ; be3c
 
 sCrystalData:: ds wCrystalDataEnd - wCrystalData
 
-sMobileEventIndexBackup:: db ; be44
+;sMobileEventIndexBackup::
+	db ; be44
 
 
 SECTION "SRAM Battle Tower", SRAM
@@ -247,7 +249,7 @@ s4_a013:: ds 36 ; a013
 
 SECTION "SRAM Mobile 2", SRAM
 
-	ds 1 ; former location for sMobileEventIndex, moved to 1:BE3C in English
+sMobileEventIndex::	ds 1 ; former location for sMobileEventIndex, moved to 1:BE3C in English
 
 sTrainerRankings:: ; a001
 sTrainerRankingGameTimeHOF:: ds 4
@@ -295,7 +297,7 @@ sTrainerRankingBugContestScore:: ds 2
 sTrainerRankingsChecksum:: ds 2
 sTrainerRankingsEnd:: ; a083
 
-	ds 1 ; Former location for sMobileEventIndexBackup, moved to 1:BE44 in English
+sMobileEventIndexBackup::	ds 1 ; Former location for sMobileEventIndexBackup, moved to 1:BE44 in English
 
 sTrainerRankingsBackup:: ds sTrainerRankingsEnd - sTrainerRankings ; a084
 

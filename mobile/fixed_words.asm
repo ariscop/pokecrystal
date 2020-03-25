@@ -707,14 +707,14 @@ Function11c4be:
 	ret
 
 String_11c4db:
-	db   "６つのことば¯くみあわせます"
-	next "かえたいところ¯えらぶと　でてくる"
-	next "ことばのグループから　いれかえたい"
-	next "たんご¯えらんでください"
+	db   "Combine 6 words.";"６つのことば¯くみあわせます"
+	next "Select the space";"かえたいところ¯えらぶと　でてくる"
+	next "to change and";"ことばのグループから　いれかえたい"
+	next "choose a new word.";"たんご¯えらんでください"
 	db   "@"
 
 String_11c51b:
-	db "ぜんぶけす　やめる　　　けってい@"
+	db "RESET　QUIT　　OK@";"ぜんぶけす　やめる　　　けってい@"
 
 Function11c52c:
 	call EZChat_ClearBottom12Rows
@@ -902,7 +902,7 @@ Function11c618:
 	ret
 
 EZChatString_Stop_Mode_Cancel:
-	db "けす　　　　モード　　　やめる@"
+	db "ERASE　MODE　　CANCEL@";"けす　　　　モード　　　やめる@"
 
 Coords_11c63a:
 	dwcoord  1,  7
@@ -1357,13 +1357,13 @@ BCD2String:
 	ret
 
 MobileString_Page:
-	db "ぺージ@"
+	db "PAGE@";"ぺージ@"
 
 MobileString_Prev:
-	db "まえ@"
+	db "PREV@";"まえ@"
 
 MobileString_Next:
-	db "つぎ@"
+	db "NEXT@";"つぎ@"
 
 Function11c8f6:
 	ld a, [wcd20] ; wcd20
@@ -1592,12 +1592,12 @@ Function11ca19:
 	ret
 
 String_11ca38:
-	db   "とうろくちゅう<NO>あいさつ¯ぜんぶ"
-	next "けしても　よろしいですか？@"
+	db   "Want to erase";"とうろくちゅう<NO>あいさつ¯ぜんぶ"
+	next "all words?@";"けしても　よろしいですか？@"
 
 String_11ca57:
-	db   "はい"
-	next "いいえ@"
+	db   "YES";"はい"
+	next "NO@";"いいえ@"
 
 Function11ca5e:
 	xor a
@@ -1718,12 +1718,12 @@ Function11cab3:
 	ret
 
 String_11cb1c:
-	db   "あいさつ<NO>とうろく¯ちゅうし"
-	next "しますか？@"
+	db   "Want to stop";"あいさつ<NO>とうろく¯ちゅうし"
+	next "setting a MESSAGE?@";"しますか？@"
 
 String_11cb31:
-	db   "とうろくちゅう<NO>あいさつ<WA>ほぞん"
-	next "されません<GA>よろしい　ですか？@"
+	db   "Quit without sav-";"とうろくちゅう<NO>あいさつ<WA>ほぞん"
+	next "ing the MESSAGE?  @";"されません<GA>よろしい　ですか？@"
 
 Function11cb52:
 	ld hl, Unknown_11cc01
@@ -1851,20 +1851,20 @@ Unknown_11cc01:
 	dw String_11cc60
 
 String_11cc09:
-	db   "じこしょうかい　は"
-	next "この　あいさつで　いいですか？@"
+	db   "Shown to introduce";"じこしょうかい　は"
+	next "yourself. OK?@";"この　あいさつで　いいですか？@"
 
 String_11cc23:
-	db   "たいせん　<GA>はじまるとき　は"
-	next "この　あいさつで　いいですか？@"
+	db   "Shown when begin-";"たいせん　<GA>はじまるとき　は"
+	next "ning a battle. OK?@";"この　あいさつで　いいですか？@"
 
 String_11cc42:
-	db   "たいせん　<NI>かったとき　は"
-	next "この　あいさつで　いいですか？@"
+	db   "Shown when win-";"たいせん　<NI>かったとき　は"
+	next "ning a battle. OK?@";"この　あいさつで　いいですか？@"
 
 String_11cc60:
-	db   "たいせん　<NI>まけたとき　は"
-	next "この　あいさつで　いいですか？@"
+	db   "Shown when los-";"たいせん　<NI>まけたとき　は"
+	next "ing a battle. OK?@";"この　あいさつで　いいですか？@"
 
 Unknown_11cc7e:
 	dw String_11cc86
@@ -1873,20 +1873,20 @@ Unknown_11cc7e:
 	dw String_11ccd4
 
 String_11cc86:
-	db   "じこしょうかい　の"
-	next "あいさつ¯とうろくした！@"
+	db   "MESSAGE set!@";"じこしょうかい　の"
+	;next "あいさつ¯とうろくした！@"
 
 String_11cc9d:
-	db   "たいせん　<GA>はじまるとき　の"
-	next "あいさつ¯とうろくした！@"
+	db   "MESSAGE set!@";"たいせん　<GA>はじまるとき　の"
+	;next "あいさつ¯とうろくした！@"
 
 String_11ccb9:
-	db   "たいせん　<NI>かったとき　の"
-	next "あいさつ¯とうろくした！@"
+	db   "MESSAGE set!@";"たいせん　<NI>かったとき　の"
+	;next "あいさつ¯とうろくした！@"
 
 String_11ccd4:
-	db   "たいせん　<NI>まけたとき　の"
-	next "あいさつ¯とうろくした！@"
+	db   "MESSAGE set!@";"たいせん　<NI>まけたとき　の"
+	;next "あいさつ¯とうろくした！@"
 
 Function11ccef:
 	ld de, Unknown_11cfc6
@@ -1907,7 +1907,8 @@ Function11cd04:
 	ret
 
 String_11cd10:
-	db "なにか　ことば¯いれてください@"
+	db "Please enter some";"なにか　ことば¯いれてください@"
+	next "words.@"
 
 Function11cd20:
 	call EZChat_ClearBottom12Rows
@@ -2005,17 +2006,17 @@ Function11cdaa:
 
 String_11cdc7:
 ; Words will be displayed by category
-	db   "ことば¯しゅるいべつに"
-	next "えらべます@"
+	db   "Display words";"ことば¯しゅるいべつに"
+	next "by category@";"えらべます@"
 
 String_11cdd9:
 ; Words will be displayed in alphabetical order
-	db   "ことば¯アイウエオ　の"
-	next "じゅんばんで　ひょうじ　します@"
+	db   "Display words in";"ことば¯アイウエオ　の"
+	next "alphabetical order@";"じゅんばんで　ひょうじ　します@"
 
 String_11cdf5:
-	db   "しゅるいべつ　モード"  ; Category mode
-	next "アイウエオ　　モード@" ; ABC mode
+	db   "GROUP MODE";"しゅるいべつ　モード"  ; Category mode
+	next "ABC MODE@";"アイウエオ　　モード@" ; ABC mode
 
 Function11ce0b:
 	call EZChat_ClearBottom12Rows
@@ -3240,7 +3241,7 @@ GFX_11d67e:
 INCBIN "gfx/pokedex/select_start.2bpp"
 
 LZ_11d6de:
-INCBIN "gfx/pokedex/slowpoke.2bpp.lz"
+INCBIN "gfx/pokedex/slowpoke_mobile.2bpp.lz"
 
 MobileEZChatCategoryNames:
 ; Fixed message categories

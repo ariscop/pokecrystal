@@ -24,13 +24,51 @@ Function8b342::
 	dw .two
 
 .zero
-	ret
+    ld hl, BattleTowerOutside_MapAttributes
+    call Function8b35d
+    ret nz
+
+    call Function8b363
+    ret c
+
+    ld c, MUSIC_ROUTE_36
+    ret
 
 .one
-	ret
+    ld hl, GoldenrodPokecenter1F_MapAttributes
+    call Function8b35d
+    jr z, .not_pcc
+
+    ld hl, PokecomCenterAdminOfficeMobile_MapAttributes
+    call Function8b35d
+    ret nz
+
+.not_pcc
+    call Function8b363
+    ret c
+
+    ld c, MUSIC_POKEMON_CENTER
+    ret
 
 .two
-	ret
+    ld hl, Pokecenter2F_MapAttributes
+    call Function8b35d
+    ret nz
+
+    ld hl, wBackupMapGroup
+    ld a, [hli]
+    cp $0b
+    ret nz
+
+    ld a, [hl]
+    cp $14
+    ret nz
+
+    call Function8b363
+    ret nc
+
+    ld c, MUSIC_MOBILE_CENTER
+    ret
 
 Function8b35d:
 	ld a, h
@@ -859,10 +897,10 @@ Function8b84b:
 	ret
 
 Function8b855:
-	ld a, $28
+	ld a, $23;$28
 	ld hl, wd002
 	ld [hli], a
-	ld c, $28
+	ld c, $23;$28
 	xor a
 .asm_8b85e
 	inc a
@@ -918,14 +956,14 @@ Function8b88c:
 	call PlaceString
 	pop hl
 	ld d, $0
-	ld e, $6
+	ld e, PLAYER_NAME_LENGTH + 14 ;$6
 	add hl, de
 	push hl
 	ld de, String_89116
 	call Function8931b
 	call Function8934a
 	jr c, .asm_8b8c0
-	ld hl, $0006
+	ld hl, PLAYER_NAME_LENGTH ;$0006
 	add hl, bc
 	ld d, h
 	ld e, l
@@ -974,10 +1012,10 @@ Unknown_8b903:
 	dw String_8b92a
 	dw String_8b938
 
-String_8b90b: db "めいしを　えらんでください@"        ; Please select a noun.
-String_8b919: db "どの　めいしと　いれかえますか？@"    ; OK to swap with any noun?
-String_8b92a: db "あいてを　えらんでください@"        ; Please select an opponent.
-String_8b938: db "いれる　ところを　えらんでください@" ; Please select a location.
+String_8b90b: db "Choose a CARD.@"        ; Please select a noun.
+String_8b919: db "Move to where?@"    ; OK to swap with any noun?
+String_8b92a: db "Choose a friend.@"        ; Please select an opponent.
+String_8b938: db "Put to where?@" ; Please select a location.
 
 Function8b94a:
 	ld [wd033], a
@@ -1048,9 +1086,9 @@ MenuHeader_0x8b9b1:
 MenuData_0x8b9b9:
 	db STATICMENU_CURSOR | STATICMENU_WRAP ; flags
 	db 3 ; items
-	db "へんしゅう@" ; EDIT
-	db "いれかえ@"   ; REPLACE
-	db "やめる@"     ; QUIT
+	db "EDIT@" ; EDIT
+	db "SWITCH@"   ; REPLACE
+	db "CANCEL@"     ; QUIT
 
 MenuHeader_0x8b9ca:
 	db MENU_BACKUP_TILES ; flags
@@ -1061,22 +1099,22 @@ MenuHeader_0x8b9ca:
 MenuData_0x8b9d2:
 	db STATICMENU_CURSOR | STATICMENU_WRAP ; flags
 	db 5 ; items
-	db "みる@"       ; VIEW
-	db "へんしゅう@" ; EDIT
-	db "いれかえ@"   ; REPLACE
-	db "けす@"       ; ERASE
-	db "やめる@"     ; QUIT
+	db "VIEW@"       ; VIEW
+	db "EDIT@" ; EDIT
+	db "SWITCH@"   ; REPLACE
+	db "ERASE@"       ; ERASE
+	db "CANCEL@"     ; QUIT
 
-Function8b9e9:
+Function8b9e9 ; check if entry is filled out?
 	call OpenSRAMBank4
 	call Function8931b
 	call Function8932d
 	jr nc, .asm_8b9f6
 	jr .asm_8b9ff
 .asm_8b9f6
-	ld hl, $11
+	ld hl, $11 + 4
 	add hl, bc
-	call Function89b45
+	call Function89b45 ; decode number?
 	jr c, .asm_8ba08
 .asm_8b9ff
 	call Function892b4

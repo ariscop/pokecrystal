@@ -5,14 +5,14 @@
 	const BATTLETOWER1F_BUG_CATCHER
 	const BATTLETOWER1F_GRANNY
 
-BattleTower1F_MapScripts:
+BattleTower1F_MapScripts: ; 67096 in jp crystal
 	db 2 ; scene scripts
 	scene_script .Scene0 ; SCENE_DEFAULT
 	scene_script .Scene1 ; SCENE_FINISHED
 
 	db 0 ; callbacks
 
-.Scene0:
+.Scene0: ; 70A0
 	setval BATTLETOWERACTION_CHECKSAVEFILEISYOURS
 	special BattleTowerAction
 	iffalse .SkipEverything
@@ -20,8 +20,8 @@ BattleTower1F_MapScripts:
 	special BattleTowerAction
 	ifequal $0, .SkipEverything
 	ifequal $2, .LeftWithoutSaving
-	ifequal $3, .SkipEverything
-	ifequal $4, .SkipEverything
+;	ifequal $3, .SkipEverything
+;	ifequal $4, .SkipEverything
 	opentext
 	writetext Text_WeveBeenWaitingForYou
 	waitbutton
@@ -29,8 +29,12 @@ BattleTower1F_MapScripts:
 	prioritysjump Script_ResumeBattleTowerChallenge
 	end
 
-.LeftWithoutSaving
+.LeftWithoutSaving ; 70BF
+	setval BATTLETOWERACTION_13
+	special BattleTowerAction
+	ifnotequal $00, .skip;$70CB
 	prioritysjump BattleTower_LeftWithoutSaving
+.skip
 	setval BATTLETOWERACTION_CHALLENGECANCELED
 	special BattleTowerAction
 	setval BATTLETOWERACTION_06
@@ -40,43 +44,77 @@ BattleTower1F_MapScripts:
 .Scene1:
 	end
 
-BattleTower1FRulesSign:
+BattleTower1FRulesSign: ; 70D8
 	opentext
-	writetext Text_ReadBattleTowerRules
+	writetext Text_CheckTheLeaderHonorRoll;Text_ReadBattleTowerRules
 	yesorno
 	iffalse .skip
-	writetext Text_BattleTowerRules
-	waitbutton
+	;writetext Text_BattleTowerRules
+	;waitbutton
+	db $0F, $78, $00
+
 .skip:
 	closetext
 	end
 
-BattleTower1FReceptionistScript:
-	setval BATTLETOWERACTION_GET_CHALLENGE_STATE ; readmem sBattleTowerChallengeState
-	special BattleTowerAction
-	ifequal $3, Script_BeatenAllTrainers2 ; maps/BattleTowerBattleRoom.asm
+BattleTower1FReceptionistScript: ;70E5
+	;setval BATTLETOWERACTION_GET_CHALLENGE_STATE ; readmem sBattleTowerChallengeState
+	;special BattleTowerAction
+	;ifequal $3, Script_BeatenAllTrainers2 ; maps/BattleTowerBattleRoom.asm
 	opentext
-	writetext Text_BattleTowerWelcomesYou
+
+	setval BATTLETOWERACTION_CHECKSAVEFILEISYOURS
+	special BattleTowerAction
+	iffalse .idk2;$711F
+	setval BATTLETOWERACTION_13
+	special BattleTowerAction
+	ifnotequal $00, .idk2;$711F
+	setval BATTLETOWERACTION_05
+	special BattleTowerAction
+	ifequal $00, .idk2;$711F
+	ifequal $08, .idk1;$711B
+	writetext Text_RegisterRecordOnFile_Mobile;$7709 ???
+	yesorno
+	iffalse .idk2;$711F
+	writetext Text_SaveBeforeConnecting_Mobile; $76A1
+	yesorno
+	iffalse Script_BattleTowerHopeToServeYouAgain;$71E3
+	special TryQuickSave
+	iffalse Script_BattleTowerHopeToServeYouAgain;$71E3
+	sjump Idk4;$71BB
+
+.idk1
+	writetext Text_BattleTowerWelcomesYou;???$77DC
+	waitbutton
+
+.idk2
+	writetext Text_BattleTowerWelcomesYou;$72DE
 	buttonsound
 	setval BATTLETOWERACTION_CHECK_EXPLANATION_READ ; if new save file: bit 1, [sBattleTowerSaveFileFlags]
 	special BattleTowerAction
 	ifnotequal $0, Script_Menu_ChallengeExplanationCancel
-	sjump Script_BattleTowerIntroductionYesNo
+	jump Script_BattleTowerIntroductionYesNo
 
-Script_Menu_ChallengeExplanationCancel:
+Script_Menu_ChallengeExplanationCancel: ; $712F
 	writetext Text_WantToGoIntoABattleRoom
 	setval TRUE
 	special Menu_ChallengeExplanationCancel
-	ifequal 1, Script_ChooseChallenge
-	ifequal 2, Script_BattleTowerExplanation
-	sjump Script_BattleTowerHopeToServeYouAgain
+	ifequal 1, Script_ChooseChallenge ; 714A
+	ifequal 2, UnreferencedScript_0x9e4be ; 71F1
+	ifequal 3, Script_BattleTowerExplanation ; 71D8
+	ifequal 5, UnreferencedScript_0x9e4ea ; $721D
+	sjump Script_BattleTowerHopeToServeYouAgain ; 71E3
 
 Script_ChooseChallenge:
-	setval BATTLETOWERACTION_RESETDATA ; ResetBattleTowerTrainerSRAM
+	setval BATTLETOWERACTION_0D
 	special BattleTowerAction
+	iftrue UnreferencedScript_0x9e53b;$726E
+
+;	setval BATTLETOWERACTION_RESETDATA ; ResetBattleTowerTrainerSRAM
+;	special BattleTowerAction
 	special CheckForBattleTowerRules
 	ifnotequal FALSE, Script_WaitButton
-	writetext Text_SaveBeforeEnteringBattleRoom
+	writetext Text_SaveBeforeConnecting_Mobile
 	yesorno
 	iffalse Script_Menu_ChallengeExplanationCancel
 	setscene SCENE_DEFAULT
@@ -87,20 +125,26 @@ Script_ChooseChallenge:
 	special BattleTowerAction
 	special BattleTowerRoomMenu
 	ifequal $a, Script_Menu_ChallengeExplanationCancel
-	ifnotequal $0, Script_MobileError
+	ifnotequal $0, Script_MobileError ; 7283
 	setval BATTLETOWERACTION_11
 	special BattleTowerAction
 	writetext Text_RightThisWayToYourBattleRoom
 	waitbutton
-	closetext
-	setval BATTLETOWERACTION_CHOOSEREWARD
+
+	setval BATTLETOWERACTION_SAVELEVELGROUP
 	special BattleTowerAction
-	sjump Script_WalkToBattleTowerElevator
+	setval BATTLETOWERACTION_0C ; start timer?
+	special BattleTowerAction
+
+;	closetext
+;	setval BATTLETOWERACTION_CHOOSEREWARD
+;	special BattleTowerAction
+;	sjump Script_WalkToBattleTowerElevator
 
 Script_ResumeBattleTowerChallenge:
 	closetext
-	setval BATTLETOWERACTION_LOADLEVELGROUP ; load choice of level group
-	special BattleTowerAction
+;	setval BATTLETOWERACTION_LOADLEVELGROUP ; load choice of level group
+;	special BattleTowerAction
 Script_WalkToBattleTowerElevator:
 	musicfadeout MUSIC_NONE, 8
 	setmapscene BATTLE_TOWER_BATTLE_ROOM, SCENE_DEFAULT
@@ -117,55 +161,71 @@ Script_WalkToBattleTowerElevator:
 	warpcheck
 	end
 
-Script_GivePlayerHisPrize:
-	setval BATTLETOWERACTION_1C
-	special BattleTowerAction
-	setval BATTLETOWERACTION_GIVEREWARD
-	special BattleTowerAction
-	ifequal POTION, Script_YourPackIsStuffedFull
-	getitemname STRING_BUFFER_4, USE_SCRIPT_VAR
-	giveitem ITEM_FROM_MEM, 5
-	writetext Text_PlayerGotFive
-	setval BATTLETOWERACTION_1D
-	special BattleTowerAction
-	closetext
-	end
+.idk3: ; 71B4
+	writetext Text_AskRegisterRecord_Mobile;$7523
+	yesorno
+	iffalse Script_BattleTowerHopeToServeYouAgain;$71E3
 
-Script_YourPackIsStuffedFull:
-	writetext Text_YourPackIsStuffedFull
+Script_GivePlayerHisPrize: ; ???
+Idk4
+	special Function170114 ; 76
+	ifequal $0A, Script_BattleTowerHopeToServeYouAgain;$71E3
+	ifnotequal $00, Script_MobileError;$7283
+	setval BATTLETOWERACTION_06
+	special BattleTowerAction
+	writetext Text_YourRegistrationIsComplete;$753F
 	waitbutton
 	closetext
 	end
 
-Script_BattleTowerIntroductionYesNo:
+;	setval BATTLETOWERACTION_1C
+;	special BattleTowerAction
+;	setval BATTLETOWERACTION_GIVEREWARD
+;	special BattleTowerAction
+;	ifequal POTION, Script_YourPackIsStuffedFull
+;	getitemname STRING_BUFFER_4, USE_SCRIPT_VAR
+;	giveitem ITEM_FROM_MEM, 5
+;	writetext Text_PlayerGotFive
+;	setval BATTLETOWERACTION_1D
+;	special BattleTowerAction
+;	closetext
+;	end
+
+;Script_YourPackIsStuffedFull:
+;	writetext Text_YourPackIsStuffedFull
+;	waitbutton
+;	closetext
+;	end
+
+Script_BattleTowerIntroductionYesNo: ; 71D1
 	writetext Text_WouldYouLikeToHearAboutTheBattleTower
 	yesorno
 	iffalse Script_BattleTowerSkipExplanation
 Script_BattleTowerExplanation:
-	writetext Text_BattleTowerIntroduction_2
+	writetext Text_BattleTowerIntroduction_1
 Script_BattleTowerSkipExplanation:
 	setval BATTLETOWERACTION_SET_EXPLANATION_READ
 	special BattleTowerAction
 	sjump Script_Menu_ChallengeExplanationCancel
 
-Script_BattleTowerHopeToServeYouAgain:
+Script_BattleTowerHopeToServeYouAgain: ; 71E3
 	writetext Text_WeHopeToServeYouAgain
 	waitbutton
 	closetext
 	end
 
-UnreferencedScript_0x9e4b6:
+UnreferencedScript_0x9e4b6: ; 71E9
 	special BattleTowerMobileError
 	closetext
 	end
 
-Script_WaitButton:
+Script_WaitButton: ; 71EE
 	waitbutton
 	closetext
 	end
 
-UnreferencedScript_0x9e4be:
-	writetext Text_SaveBeforeEnteringBattleRoom
+UnreferencedScript_0x9e4be: ; 71F1
+	writetext Text_SaveBeforeConnecting_Mobile; 76A1
 	yesorno
 	iffalse Script_Menu_ChallengeExplanationCancel
 	special TryQuickSave
@@ -183,7 +243,7 @@ UnreferencedScript_0x9e4be:
 	closetext
 	end
 
-UnreferencedScript_0x9e4ea:
+UnreferencedScript_0x9e4ea: ; 721D
 	setval BATTLETOWERACTION_LEVEL_CHECK
 	special BattleTowerAction
 	ifnotequal $0, Script_AMonLevelExceeds
@@ -218,7 +278,7 @@ continue:
 	waitbutton
 	sjump Script_ResumeBattleTowerChallenge
 
-UnreferencedScript_0x9e53b:
+UnreferencedScript_0x9e53b: ; 726E
 	writetext Text_FiveDayBattleLimit_Mobile
 	waitbutton
 	sjump Script_BattleTowerHopeToServeYouAgain
@@ -233,7 +293,7 @@ Script_MayNotEnterABattleRoomUnderL70:
 	waitbutton
 	sjump Script_Menu_ChallengeExplanationCancel
 
-Script_MobileError:
+Script_MobileError: ; 7283
 	special BattleTowerMobileError
 	closetext
 	end

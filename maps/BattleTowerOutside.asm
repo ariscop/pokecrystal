@@ -4,7 +4,7 @@
 	const BATTLETOWEROUTSIDE_SAILOR
 	const BATTLETOWEROUTSIDE_LASS
 
-BattleTowerOutside_MapScripts:
+BattleTowerOutside_MapScripts: ; 67cd3
 	db 0 ; scene scripts
 
 	db 2 ; callbacks
@@ -12,23 +12,57 @@ BattleTowerOutside_MapScripts:
 	callback MAPCALLBACK_OBJECTS, .Callback2
 
 .Callback1:
+	special Mobile_DummyReturnFalse
+	iftrue .doorsopen;$7CE6
+	changeblock 8, 8, $2C
+	return
+
+.doorsopen
+	changeblock 8, 8, $12
 	return
 
 .Callback2:
+	special Mobile_DummyReturnFalse
+	iffalse .nomobile
 	clearevent EVENT_BATTLE_TOWER_OUTSIDE_SAILOR
+
+.nomobile
 	return
 
 BattleTowerOutsideYoungsterScript:
-	jumptextfaceplayer BattleTowerOutsideYoungsterText
+	special Mobile_DummyReturnFalse
+	iftrue .mobile
+	jumptextfaceplayer BattleTowerOutsideYoungsterText_NotYetOpen
+
+.mobile
+	jumptextfaceplayer BattleTowerOutsideYoungsterText_Mobile
 
 BattleTowerOutsideBuenaScript:
+	special Mobile_DummyReturnFalse
+	iftrue .mobile
+	jumptextfaceplayer BattleTowerOutsideBuenaText_NotYetOpen
+
+.mobile
 	jumptextfaceplayer BattleTowerOutsideBuenaText
 
 BattleTowerOutsideSailorScript:
-	jumptextfaceplayer BattleTowerOutsideSailorText
+	jumptextfaceplayer BattleTowerOutsideSailorText_Mobile
 
 BattleTowerOutsideSign:
+	special Mobile_DummyReturnFalse
+	iftrue .mobile
+	jumptext BattleTowerOutsideSignText_NotYetOpen
+
+.mobile
 	jumptext BattleTowerOutsideSignText
+
+BattleTowerOutsideDoor:
+	special Mobile_DummyReturnFalse
+	iftrue .mobile
+	jumptext BattleTowerOutsideText_DoorsClosed
+
+.mobile
+	jumptext BattleTowerOutsideText_DoorsOpen
 
 BattleTowerOutsideYoungsterText_NotYetOpen:
 ; unreferenced
@@ -142,8 +176,10 @@ BattleTowerOutside_MapEvents:
 
 	db 0 ; coord events
 
-	db 1 ; bg events
+	db 3 ; bg events
 	bg_event 10, 10, BGEVENT_READ, BattleTowerOutsideSign
+	bg_event  8,  9, BGEVENT_READ, BattleTowerOutsideDoor; 67e8f
+	bg_event  9,  9, BGEVENT_READ, BattleTowerOutsideDoor
 
 	db 4 ; object events
 	object_event  6, 12, SPRITE_STANDING_YOUNGSTER, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, BattleTowerOutsideYoungsterScript, -1
