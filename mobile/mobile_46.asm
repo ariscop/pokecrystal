@@ -5641,7 +5641,10 @@ Function11ad1b:
 	ld [wcf65], a ; wPrevDexEntryBackup
 	ld [wcf66], a ; wPokedexStatus
 	ld [wcd30], a
-	ld a, $2
+	ld a, $2 ; TODO: It's possible to select an unseen pokemon if
+	         ; this is in johto or national mode, but alphabetical
+	         ; doesnt' show blank spaces
+	         ; Did this change betwene jp and eng?
 	ld [wCurDexMode], a
 	farcall Pokedex_OrderMonsByMode
 	ret
