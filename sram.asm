@@ -410,3 +410,7 @@ s5_bfff:: db ; bfff
 SECTION "SRAM Mobile 3", SRAM
 
 s6_a000:: ; a000
+
+SECTION "SRAM Mobile 4", SRAM
+
+s7_a000:: ; a000

@@ -152,7 +152,7 @@ MainMenu_GetWhichMenu:
 .next
 	ldh a, [hCGB]
 	cp $1
-	ld a, $1
+	ld a, $1 ; Continue
 	ret nz
 	ld a, BANK(sNumDailyMysteryGiftPartnerIDs)
 	call GetSRAMBank
@@ -162,24 +162,68 @@ MainMenu_GetWhichMenu:
 	jr nz, .mystery_gift
 	ld a, [wStatusFlags]
 	bit STATUSFLAGS_MAIN_MENU_MOBILE_CHOICES_F, a
-	jr z, .ok
+	ld a, $1
+	jr z, .next2
+	farcall Mobile_AlwaysReturnNotCarry
+	jr nc, .next2
+	ld a, BANK(s7_a000)
+	call GetSRAMBank
+	ld a, [s7_a000]
+	call CloseSRAM
+	and a
 	ld a, $3 ; MobileMenu
+	ret z
+	ld a, $4 ; MobileStudiumMenu
 	ret
 
-.ok
+.next2
+	farcall Mobile_AlwaysReturnNotCarry
+	jr nc, .jr5d67
+	ld a, BANK(s7_a000)
+	call GetSRAMBank
+	ld a, [s7_a000]
+	call CloseSRAM
+	and a
 	ld a, $1 ; Continue
+	ret z
+	; wat
+	ret
+
+.jr5d67
+	ld a, $1 ; Continue
+	; WAT
 	ret
 
 .mystery_gift
 	; This check makes no difference.
 	ld a, [wStatusFlags]
 	bit STATUSFLAGS_MAIN_MENU_MOBILE_CHOICES_F, a
-	jr z, .ok4
+	jr z, .next3
+	farcall Mobile_AlwaysReturnNotCarry
+	jr nc, .next3
+	ld a, BANK(s7_a000)
+	call GetSRAMBank
+	ld a, [s7_a000]
+	call CloseSRAM
+	and a
 	ld a, $2 ; MobileMysteryMenu
+	ret z
+	ld a, $5 ; MysteryMobileStudiumMenu
 	ret
 
-.ok4
+.next3
+	farcall Mobile_AlwaysReturnNotCarry
+	jr nc, .jr5da3
+	ld a, BANK(s7_a000)
+	call GetSRAMBank
+	ld a, [s7_a000]
+	call CloseSRAM
+	and a
 	ld a, $6 ; Mystery Gift
+	ret z
+	ret
+.jr5da3
+	ld a, $6
 	ret
 
 MainMenuJoypadLoop:
