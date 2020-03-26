@@ -5631,8 +5631,8 @@ Function11ad1b:
 	ld a, BANK(LoadMenuMonIcon)
 	ld e, MONICON_MOBILE2
 	rst FarCall
-	ld hl, $c6d0
-	ld bc, $0115
+	ld hl, wPokedexOrder
+	ld bc, $0115 ; wPokedexOrderEnd - wPokedexOrder + 15?
 	xor a
 	call ByteFill
 	xor a
