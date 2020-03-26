@@ -25,9 +25,12 @@
 00:0fc5 ClearScreen
 00:0fd2 TextBox
 00:1028 SpeachTextbox
+15:7ead DayCare_MapEvents
 00:1044 PrintTextboxText
 00:104b SetUpTextbox
 00:1801 DoesSpriteHaveFacings
+15:7dd3 DayCareManScript_Inside
+15:7dff DayCareLadyScript
 00:189d GetMapObject
 00:18a9 CheckObjectVisibility
 00:1921 _CopyObjectStruct

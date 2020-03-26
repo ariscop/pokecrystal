@@ -23,29 +23,20 @@ DayCare_MapScripts:
 DayCareManScript_Inside:
 	faceplayer
 	opentext
+	special Mobile_DummyReturnFalse
+	iffalse .AlreadyHaveOddEgg
 	checkevent EVENT_GOT_ODD_EGG
 	iftrue .AlreadyHaveOddEgg
-	writetext DayCareManText_GiveOddEgg
+	setval EGG_TICKET
+	special UnusedFindItemInPCOrBag
+	iftrue .AlreadyHaveOddEgg
+	writetext Text_DayCareManTalksAboutEggTicket
 	promptbutton
-	closetext
-	readvar VAR_PARTYCOUNT
-	ifequal PARTY_LENGTH, .PartyFull
-	special GiveOddEgg
-	opentext
-	writetext DayCareText_GotOddEgg
-	playsound SFX_KEY_ITEM
-	waitsfx
-	writetext DayCareText_DescribeOddEgg
+	verbosegiveitem EGG_TICKET
+	writetext DayCareText_ComeAgain
 	waitbutton
 	closetext
 	setevent EVENT_GOT_ODD_EGG
-	end
-
-.PartyFull:
-	opentext
-	writetext DayCareText_PartyFull
-	waitbutton
-	closetext
 	end
 
 .AlreadyHaveOddEgg:
