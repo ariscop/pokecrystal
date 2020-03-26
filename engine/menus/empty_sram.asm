@@ -1,12 +1,10 @@
 EmptyAllSRAMBanks:
-	ld a, 0
+BANKNO  SET 0
+REPT NUM_SRAM_BANKS
+	ld a, BANKNO
 	call .EmptyBank
-	ld a, 1
-	call .EmptyBank
-	ld a, 2
-	call .EmptyBank
-	ld a, 3
-	call .EmptyBank
+BANKNO  SET BANKNO + 1
+ENDR
 	ret
 
 .EmptyBank:
