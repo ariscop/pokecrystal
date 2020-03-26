@@ -333,7 +333,7 @@ s5_a894:: ds NAME_LENGTH_JAPANESE ; a894
 	ds $2
 
 s5_a89c:: ds 22 ; a89c
-s5_a8b2:: ds 150 ; a8b2
+s5_a8b2:: ds NAME_LENGTH_JAPANESE * 25 ; a8b2
 
 s5_a948:: ds 246 ; a948
 

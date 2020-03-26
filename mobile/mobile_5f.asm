@@ -424,21 +424,55 @@ Function17d1f1:
 Menu_ChallengeExplanationCancel:
 	ld a, [wScriptVar]
 	and a
-	jr nz, .English
+	jr nz, .Next
 	ld a, $4
 	ld [wScriptVar], a
 	ld hl, MenuHeader_17d26a ; Japanese Menu, where you can choose 'News' as an option
 	jr .Load_Interpret
 
-.English:
+.Next
+	farcall BattleTower_CheckSaveFileExistsAndIsYours
+	ld a, [wScriptVar]
+	and a
+	jr nz, .Next2
+.Back1
 	ld a, $4
 	ld [wScriptVar], a
 	ld hl, MenuHeader_ChallengeExplanationCancel ; English Menu
+	jr .Load_Interpret
+
+.Next2
+	call RemovedFunction_5f_5261
+	jr c, .Back1
+	ld a, $5
+	ld [wScriptVar], a
+	ld hl, MenuHeader_UnknownBattleTowerMenu
 
 .Load_Interpret:
 	call LoadMenuHeader
 	call Function17d246
 	call CloseWindow
+	ret
+
+RemovedFunction_5f_5261:
+	ld a, BANK(s5_aa8e)
+	call GetSRAMBank
+	ld hl, s5_aa8e
+	ld bc, $0594
+.loop
+	ldi a, [hl]
+	and a
+	jr nz, .return
+	dec bc
+	ld a, b
+	or a
+	and a
+	jr nz, .loop
+	call CloseSRAM
+	scf
+	ret
+.return
+	call CloseSRAM
 	ret
 
 Function17d246:
@@ -475,8 +509,8 @@ MenuHeader_17d26a:
 MenuData_17d272:
 	db STATICMENU_CURSOR | STATICMENU_WRAP ; flags
 	db 4
-	db "Fetch News@"
-	db "Read News@"
+	db "Receive NEWS@"
+	db "View NEWS@"
 	db "Explanation@"
 	db "Cancel@"
 
@@ -488,8 +522,24 @@ MenuHeader_ChallengeExplanationCancel:
 
 MenuData_ChallengeExplanationCancel:
 	db STATICMENU_CURSOR | STATICMENU_WRAP ; flags
-	db 3
+	db 4
 	db "Challenge@"
+	db "Update HONOR ROLL@" ; "れきだいりーダーをみる@"
+	db "Explanation@"
+	db "Cancel@"
+
+MenuHeader_UnknownBattleTowerMenu:
+	db MENU_BACKUP_TILES ; flags
+	menu_coords 0, 0, 16, 11
+	dw MenuData_UnknownBattleTowerMenu
+	db 1 ; default option
+
+MenuData_UnknownBattleTowerMenu:
+	db STATICMENU_CURSOR | STATICMENU_WRAP ; flags
+	db 5
+	db "Challenge@"
+	db "Update HONOR ROLL@" ; "れきだいりーダーをみる@"
+	db "unk@" ; "まえのへやに　ちょうせんする@", battle recordings?
 	db "Explanation@"
 	db "Cancel@"
 

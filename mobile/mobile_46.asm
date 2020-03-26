@@ -4913,16 +4913,16 @@ Function11a4fe:
 Function11a536:
 	ld hl, hJoyPressed
 	ld a, [hl]
-	and $1
+	and A_BUTTON
 	jr nz, .asm_11a5a7
 	ld a, [hl]
-	and $2
+	and B_BUTTON
 	jr nz, .asm_11a5a2
 	ld a, [hl]
-	and $40
+	and D_UP
 	jr nz, .asm_11a564
 	ld a, [hl]
-	and $80
+	and D_DOWN
 	jr nz, .asm_11a583
 .asm_11a54d
 	ld a, [wBattleTowerRoomMenu2JumptableIndex]
@@ -5693,22 +5693,22 @@ Function11ad95:
 	ld hl, Unknown_11afcc
 	call Function11afb7
 
-Function11adc4:
+Function11adc4: ; gts gender select menu
 	ld hl, hJoyPressed
 	ld a, [hl]
 	and a
 	ret z
 	ld a, [hl]
-	and $40
+	and D_UP
 	jr nz, .asm_11ade6
 	ld a, [hl]
-	and $80
+	and D_DOWN
 	jr nz, .asm_11aded
 	ld a, [hl]
-	and $1
+	and A_BUTTON
 	jr nz, .asm_11ae06
 	ld a, [hl]
-	and $2
+	and B_BUTTON
 	ret z
 	call PlayClickSFX
 	xor a
@@ -6184,15 +6184,15 @@ Function11b099:
 .EmptySlot:
 	db "ーーーーー@"
 
-Function11b0ff:
+Function11b0ff: ; gts pokemon select joy loop
 	ld hl, hJoyPressed
 	ld a, [hl]
-	and $2
+	and B_BUTTON
 	jr nz, .asm_11b141
 	ld a, [hl]
-	and $1
+	and A_BUTTON
 	jr nz, .asm_11b131
-	call Function11b175
+	call Function11b175 ; dpad handling
 	jr nc, .asm_11b125
 	ld a, [wcd4c]
 	inc a
@@ -6269,19 +6269,19 @@ Function11b175:
 	ld e, a
 	ld hl, hJoyLast
 	ld a, [hl]
-	and $40
+	and D_UP
 	jr nz, .asm_11b19a
 	ld a, [hl]
-	and $80
+	and D_DOWN
 	jr nz, .asm_11b1ae
 	ld a, d
 	cp e
 	jr nc, .asm_11b1ed
 	ld a, [hl]
-	and $20
+	and D_LEFT
 	jr nz, .asm_11b1c6
 	ld a, [hl]
-	and $10
+	and D_RIGHT
 	jr nz, .asm_11b1d8
 	jr .asm_11b1ed
 

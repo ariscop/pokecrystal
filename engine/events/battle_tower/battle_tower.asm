@@ -652,7 +652,7 @@ Function1704e1:
 
 	ld hl, s5_a8b2
 	ld de, wc608
-	ld bc, 150
+	ld bc, NAME_LENGTH_JAPANESE * 25
 	call CopyBytes
 
 	call CloseSRAM
