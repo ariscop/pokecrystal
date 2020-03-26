@@ -351,7 +351,12 @@ ErasePreviousSave:
 	call EraseHallOfFame
 	call EraseLinkBattleStats
 	call EraseMysteryGift
+	call Unreferenced_Function14d18
+	; TODO call EraseBattleTowerStatus is here in jp crystal (it was changed)
 	call SaveData
+	call Unreferenced_Function14d6c
+	call Unreferenced_Function14d83
+	call Unreferenced_Function14d93
 	call EraseBattleTowerStatus
 	ld a, BANK(sStackTop)
 	call GetSRAMBank

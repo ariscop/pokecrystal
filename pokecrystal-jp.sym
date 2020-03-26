@@ -206,6 +206,21 @@
 01:58b9 Function58b9
 01:58c5 SetFlagsForMovement_1
 01:5AE8 _MainMenu
+01:5b33 NewGame_ClearTilemapEtc
+01:5b43 MysteryGift
+01:5b53 OptionsMenu
+01:5b5a NewGame
+01:5b7e AreYouABoyOrAreYouAGirl
+01:5b96 ResetWRAM
+01:5b9d _ResetWRAM
+01:5d0c InitializeWorld
+01:5d4e Continue
+01:5dd9 Continue_MobileAdapterMenu
+01:5e1d ConfirmContinue
+01:5e31 Continue_CheckRTC_RestartClock
+01:5e46 FinishContinueFunction
+01:5e6e DisplaySaveInfoOnContinue
+01:5f89 OakSpeech
 01:6385 CrystalIntroSequence
 01:6393 StartTitleScreen
 01:63e4 StartTitleScreen.dw
@@ -241,6 +256,7 @@
 04:69CD predef_3b
 04:7499 Elevator
 05:4159 RefreshSprites
+05:4e87 TryLoadSaveFile
 05:53BA EnterMapSpawnPoint
 05:53fE RunMapSetupScript
 05:5412 MapSetupScripts
@@ -256,6 +272,7 @@
 05:5608 ApplyMapPalettes
 05:560F FadeMapMusicAndPalettes
 05:5622 ForceMapMusic
+05:5dbf _LoadData
 05:5fb5 OpenMartDialog
 09:44f4 Pokepic
 09:4539 ClosePokepic
@@ -298,6 +315,7 @@
 10:6629 predef_1a
 10:6683 predef_1b
 11:4000 FruitTreeScript
+12:402f InitMobileProfile
 12:535b LoadOW_BGPal7
 12:5c43 MainMenu
 12:5c7a MainMenu.quit
