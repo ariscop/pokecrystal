@@ -1776,6 +1776,7 @@ wd004:: db
 ; mobile?
 	ds 1
 wd006:: ds 2
+wCardPhoneNumber::
 wd008:: ds 2
 	ds 2
 wd00c:: ds 1

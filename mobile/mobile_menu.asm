@@ -13,11 +13,11 @@ Function49f16:
 	call MobileMenu_InitMenuBuffers
 	ld c, 12
 	call DelayFrames
-	hlcoord 4, 0
+	hlcoord 3, 0
 	ld b, 10
-	ld c, 10
+	ld c, 12
 	call Function48cdc
-	hlcoord 6, 2
+	hlcoord 5, 2
 	ld de, MobileString1
 	call PlaceString
 	hlcoord 0, 12
@@ -95,45 +95,45 @@ Function49f16:
 	ld [hl], b
 	ld b, $a
 	ld c, $1
-	hlcoord 5, 1
+	hlcoord 4, 1
 	call ClearBox
 	jp .joy_loop
 
 MobileString1:
-	db   "Card Folder"
-	next "Greeting"
-	next "Profile"
-	next "Settings"
-	next "Exit"
+	db   "CARD FOLDER"
+	next "MESSAGES"
+	next "PROFILE"
+	next "SETTINGS"
+	next "EXIT"
 	db   "@"
 
 MobileStrings2:
 
 String_0x49fe9:
-	db   "Make a lot"
-	next "Folder which can be saved@"
+	db   "Create and view"   ; "めいし¯つくったり"
+	next "friends' CARDS.@"  ; "ほぞんしておける　フォルダーです@"
 
 String_0x4a004:
-	db   "On the mobile platform"
-	next "I'll make a greeting@"
+	db   "Set MESSAGES"      ; "モバイルたいせんや　じぶんのめいしで"
+	next "shown to others.@" ; "つかう　あいさつ¯つくります@"
 
 String_0x4a026:
-	db   "Your prayer"
-	next "I can change it@"
+	db   "Change your age"   ; "あなた<NO>じゅうしょや　ねんれいの"
+	next "and address.@"     ; "せ<TTE>い¯かえられます@"
 
 String_0x4a042:
-	db  "When you visit mobile center"
-	next "I need something like@"
+	db   "Change connection" ; "モバイルセンター<NI>せつぞくするとき"
+	next "settings.@"        ; "ひつような　こと¯きめます@"
 
 String_0x4a062:
-	db   "Return to main menu"
-	next "@"
+	db   "Return to the"     ; "まえ<NO>がめん　<NI>もどります"
+	next "previous screen.@"
 
 MobileMenu_InitMenuBuffers:
 	ld hl, w2DMenuCursorInitY
 	ld a, 2
 	ld [hli], a
-	ld a, 5 ; w2DMenuCursorInitX
+	ld a, 4 ; w2DMenuCursorInitX
 	ld [hli], a
 	ld a, 5 ; w2DMenuNumRows
 	ld [hli], a
@@ -329,9 +329,9 @@ asm_4a19d:
 	jp Function4a195
 
 String_4a1ef:
-	db   "Mobile Select"
-	next "Login Password"
-	next "Back@"
+	db   "MOBILE CENTER"   ; "モバイルセンター¯えらぶ"
+	next "LOG-IN PASSWORD" ; "ログインパスワード¯いれる"
+	next "BACK@"           ; "もどる@"
 
 Function4a20e:
 	ld a, $1
@@ -359,15 +359,14 @@ Function4a239:
 	jp Function4a13b
 
 Strings_4a23d:
-	db   "Select"
-	next "Mobile Center@"
+	db   "Chose which MOBILE" ; "いつも　せつぞく¯する"
+	next "CENTER to use.@"    ; "モバイルセンター¯えらびます@"
 
-	db   "Your"
-	next "Password@"
+	db   "The PASSWORD used"  ; "モバイルセンター<NI>せつぞくするとき"
+	next "to connect.@"       ; "つかうパスワード¯ほぞんできます@"
 
-	db   "Return@"
-
-	db   "@"
+	db   "Return to the"      ; "まえ<NO>がめん　<NI>もどります@"
+	db   "previous screen.@"
 
 Function4a28a:
 	hlcoord 2, 3
@@ -451,9 +450,9 @@ MenuHeader_0x4a346:
 	menu_coords 12, 0, SCREEN_WIDTH - 1, 6
 
 String_4a34b:
-	db   "Replace"
-	next "Delete"
-	next "Back@"
+	db   "CHANGE"  ; "いれなおす"
+	next "DELETE"  ; "けす"
+	next "CANCEL@" ; "もどる@"
 
 DeleteSavedLoginPasswordText:
 	text_far _DeleteSavedLoginPasswordText
@@ -472,8 +471,8 @@ DeletePassword_YesNo_MenuHeader:
 MenuData_0x4a36a:
 	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING | STATICMENU_WRAP ; flags
 	db 2 ; items
-	db "Yes@"
-	db "No@"
+	db "YES@"
+	db "NO@"
 
 Function4a373:
 	ld hl, w2DMenuCursorInitY
@@ -755,7 +754,7 @@ Function4a5b0:
 	jp Function4a545
 
 String_4a5c5:
-	db "Greeting@"
+	db "Greeting@" ; "じこしょうかい@"
 String_4a5cd:
 	db "たいせん　<GA>はじまるとき@"
 String_4a5da:
@@ -763,19 +762,20 @@ String_4a5da:
 String_4a5e6:
 	db "たいせん　<NI>まけたとき@"
 String_4a5f2:
-	db "Back@"
+	db "Back@" ; "もどる@"
 
 Strings_4a5f6:
-	db "めいし　や　ニュース　<NI>のせる@"
-	db "あなた<NO>あいさつです@"
-	db "モバイル　たいせん<GA>はじまるとき@"
-	db "あいて<NI>みえる　あいさつです@"
-	db "モバイル　たいせんで　かったとき@"
-	db "あいて<NI>みえる　あいさつです@"
-	db "モバイル　たいせんで　まけたとき@"
-	db "あいて<NI>みえる　あいさつです@"
-	db "まえ<NO>がめん　<NI>もどります@"
-	db "@"
+	db "Put on your CARD@" ;"めいし　や　ニュース　<NI>のせる@"
+	db "and the NEWS.@"    ;"あなた<NO>あいさつです@"
+	db "Shown when a@"     ;"モバイル　たいせん<GA>はじまるとき@"
+	db "battle begins.@"   ;"あいて<NI>みえる　あいさつです@"
+	db "Shown when you@"   ;"モバイル　たいせんで　かったとき@"
+	db "won a battle.@"    ;"あいて<NI>みえる　あいさつです@"
+	db "Shown when you@"   ;"モバイル　たいせんで　まけたとき@"
+	db "lost a battle.@"   ;"あいて<NI>みえる　あいさつです@"
+	db "Return to the@"    ;"まえ<NO>がめん　<NI>もどります@"
+	db "previous screen.@"
+
 
 Function4a680:
 	ld hl, w2DMenuCursorInitY

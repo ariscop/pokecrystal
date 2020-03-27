@@ -5058,79 +5058,81 @@ Function11a63c:
 	ret
 
 String_11a661:
-	db   "Going to dial"
-	next "Mobile Center@"
+	db   "Going to call"  ; "これから　モバイルセンターに"
+	next "MOBILE CENTER@" ; "でんわ<WO>かけます@"
 
 String_11a679:
-	db   "Is the Mobile"
-	next "Adapter ready?@"
+	db   "Is your MOBILE"  ; "モバイルアダプタ<NO>じゅんびは"
+	next "ADAPTER ready?@" ; "できて　いますか？@"
 
 String_11a692:
-	db   "Dialing..."
-	next "Please wait@"
+	db   "Dialing..."   ; "でんわ<WO>かけています"
+	next "Please wait@" ; "しばらく　おまちください@"
 
 String_11a6aa:
-	db   "There may be"
-	next "a charge@"
+	db   "Charges may" ; "でんわをかけると　つうわりょう"
+	next "apply.@"     ; "せつぞくりょう<GA>かかります@"
 
 String_11a6c8:
-	db   "I'm sorry@"
+	db   "Connected@" ; "せつぞく　しました@"
 
 String_11a6d2:
-	db   "つうしん　ちゅう@"
+	db   "Communicating…@" ; "つうしん　ちゅう@"
 
 String_11a6db:
-	db   "つうしん　ちゅう"
-	next "セレクト　エーでちゅうし@"
+	db   "Communication"  ; "つうしん　ちゅう" ; ???
+	next "canceled.@"     ; "セレクト　エーでちゅうし@"
 
 String_11a6f1:
-	db   "この　サービスには"
-	next "つうわりょう<NO>ほかに@"
+	db   "This is a"      ; "この　サービスには" ; ???
+	next "paid service.@" ; "つうわりょう<NO>ほかに@"
 
 String_11a706:
-	db   "おかね<GA>@"
+	db   "Cost:@" ; "おかね<GA>@"
 
 String_11a70b:
-	db   "えん"
-	next "かかります　よろしい　ですか？@"
+	db   "Yen" ; "えん"
+	next "Is this OK?@"  ; "かかります　よろしい　ですか？@" ; Are you sure you want to do this?
 
 String_11a71e:
-	db   "つうしん　しゅうりょう@"
+	db   "Communication" ; "つうしん　しゅうりょう@" ; ???
+	next "ended.@"
 
 String_11a72a:
-	db   "つないだ　じかん"
+	db   "Connected for" ; "つないだ　じかん"
 	next "　　やく　　　ふん　　　びょう@"
 
 String_11a743:
-	db   "There is no"
-	next "data@"
+	db   "No data"     ; "もっていない　データが"
+	next "available!@" ; "あります！@" ; no data available
 
 String_11a755:
-	db   "Import data?@"
+	db   "Read the"    ; "データ<WO>よみこみますか？@"
+	next "data?@"
 
 String_11a762:
-	db   "Read the same"
-	next "data@" ; ????
+	db   "Read the"    ; "おなじ　データ<WO>よみこんだ"
+	next "same data.@" ; "こと<GA>ありますが@"
 
 String_11a779:
-	db   "The data is"
-	next "broken@" ; missing or broken
+	db   "The data was" ; "そのデータ<WA>なくなっているか"
+	next "corrupted.@"  ; "こわれて　います@"
 
 String_11a791:
-	db   "No new"
-	next "data@"
+	db   "もっている　データと"
+	next "おなじデータしか　ありません！@" ; There is only the same data you have
 
 String_11a7ac:
-	db   "Do you want to"
-	next "read the data?@"
+	db   "Stop reading" ; "データ<NO>よみこみを"
+	next "data?@"       ; "ちゅうし　しますか？@"
 
 String_11a7c1:
-	db   "There was no"
-	next "new news@"
+	db   "There was no" ; "あたらしい　ニュースは"
+	next "new NEWS.@"   ; "ありません　でした@"
 
 String_11a7d7:
-	db   "There is new news"
-	next "Download?@"
+	db   "Receive the" ; "あたらしいニュース<GA>あります"
+	next "new NEWS?@"  ; "ニュース<WO>よみこみますか？@"
 
 String_11a7f4:
 	db   "　　　　　　　　　　　　　　　@"
@@ -5770,14 +5772,14 @@ Function11adc4: ; gts gender select menu
 
 MenuHeader_11ae38:
 	db MENU_BACKUP_TILES ; flags
-	menu_coords 10, 10, 17, SCREEN_HEIGHT - 1
+	menu_coords 8, 10, 17, SCREEN_HEIGHT - 1
 	dw NULL
 	db 0 ; default option
 
 String_11ae40:
-	db   "Any"
-	next "♂"
-	next "♀"
+	db   "EITHER"
+	next "♂MALE"
+	next "♀FEMALE"
 	db   "@"
 
 Function11ae4e:
@@ -6029,8 +6031,8 @@ MenuHeader_11b013:
 	db 1 ; default option
 
 String_11b01b:
-	db   "Yes"
-	next "No@"
+	db   "YES"
+	next "NO@"
 
 Function11b022:
 	ld a, [wcd2e]
@@ -6099,8 +6101,8 @@ Function11b03d:
 	call CopyBytes
 	ret
 
-.MaleString: db "オスの　"
-.FemaleString: db "メスの　"
+.MaleString:   db "♂　" ; "オスの　"
+.FemaleString: db "♀　" ;"メスの　"
 
 Function11b082:
 	call Function11b242
@@ -6552,7 +6554,7 @@ String_11b308:
 	db "　　　　　@"
 
 String_11b30e:
-	db "みはっけん@"
+	db "?????@" ;"みはっけん@"
 
 Function11b314:
 	call Function11b31b

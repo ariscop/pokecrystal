@@ -542,12 +542,16 @@ PlacePartyMonMobileBattleSelection:
 	jr .loop2
 
 .String_Banme:
+	;db "　ばんめ　　@"
 	db "      @" ; Place
 .String_Sanka_Shinai:
+	;db "さんかしない@"
 	db "      @" ; Cancel
 .String_Kettei_Yameru:
+	;db "けってい　　やめる@"
 	db "READY　QUIT@" ; Quit
 .Strings_1_2_3:
+	; db "１@", "２@", "３@"
 	db "1st@", "2nd@", "3rd@" ; 1st, 2nd, 3rd
 
 PartyMenuCheckEgg:

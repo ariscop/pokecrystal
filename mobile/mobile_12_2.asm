@@ -830,10 +830,10 @@ String_4ad88:
 	next "RETURN@"
 
 String_4ad9a:
-	db   "SELECT@"
+	db   "ENTER@"
 
 String_4ada0:
-	db   "REJECT@"
+	db   "WITHDRAW@"
 
 String_4ada7:
 	db   "STATS"

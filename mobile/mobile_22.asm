@@ -142,12 +142,12 @@ Function891fe:
 	pop bc
 	ret
 
-Function89209:
+Mobile_EnableSpriteUpdates:
 	ld a, 1
 	ld [wSpriteUpdatesEnabled], a
 	ret
 
-Function8920f:
+Mobile_DisableSpriteUpdates:
 	ld a, 0
 	ld [wSpriteUpdatesEnabled], a
 	ret
@@ -237,13 +237,13 @@ Function89261:
 	ld [wMenuCursorBuffer], a
 	call PushWindow
 	call Mobile22_SetBGMapMode0
-	call Function89209
+	call Mobile_EnableSpriteUpdates
 	call VerticalMenu
 	push af
 	ld c, $a
 	call DelayFrames
 	call CloseWindow
-	call Function8920f
+	call Mobile_DisableSpriteUpdates
 	pop af
 	jr c, .done
 	ld a, [wMenuCursorY]
@@ -265,8 +265,8 @@ MenuHeader_0x892a3:
 MenuData_0x892ab:
 	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING ; flags
 	db 2 ; items
-	db "Yes@"
-	db "No@"
+	db "YES@"
+	db "NO@"
 
 Function892b4:
 	call Function8931b
@@ -277,14 +277,14 @@ Function892b7:
 	ld hl, 0
 	add hl, bc
 	ld a, "@"
-	ld bc, 6
+	ld bc, NAME_LENGTH_JAPANESE
 	call ByteFill
 	ld b, d
 	ld c, e
-	ld hl, 6
+	ld hl, NAME_LENGTH_JAPANESE
 	add hl, bc
 	ld a, "@"
-	ld bc, 6
+	ld bc, NAME_LENGTH_JAPANESE
 	call ByteFill
 	ld b, d
 	ld c, e
@@ -462,12 +462,12 @@ Function8939a:
 	ld hl, 0
 	add hl, bc
 	ld de, wd002
-	ld c, 6
+	ld c, NAME_LENGTH_JAPANESE
 	call Function89193
 	pop bc
 	ld hl, 17
 	add hl, bc
-	ld de, wd008
+	ld de, wCardPhoneNumber
 	call Function89381
 	ret
 
@@ -1466,7 +1466,7 @@ Function8999c:
 	ret
 
 String_899ac:
-	db "の　めいし@"
+	db "'S CARD@"; "の　めいし@"
 
 Function899b2:
 	ld bc, wPlayerName
@@ -1553,10 +1553,10 @@ Function89a2e:
 	ret
 
 String_89a4e:
-	db "けってい@"
+	db "SAVE@"
 
 String_89a53:
-	db "やめる@"
+	db "CANCEL@"
 
 Function89a57:
 	call JoyTextDelay_ForcehJoyDown ; joypad
@@ -2514,9 +2514,9 @@ Function89ff6:
 
 Function8a03d:
 	ld hl, MobileCardFolderIntro2Text
-	call Function89209
+	call Mobile_EnableSpriteUpdates
 	call PrintText
-	call Function8920f
+	call Mobile_DisableSpriteUpdates
 	jp Function89e36
 
 Function8a04c:
@@ -2690,20 +2690,20 @@ Function8a116:
 	and a
 	ret
 .asm_8a16b
-	call Function89209
+	call Mobile_EnableSpriteUpdates
 	call CloseWindow
-	call Function8920f
+	call Mobile_DisableSpriteUpdates
 	scf
 	ret
 
 MenuHeader_0x8a176:
 	db MENU_BACKUP_TILES ; flags
-	menu_coords 14, 0, SCREEN_WIDTH - 1, 6
+	menu_coords 11, 0, SCREEN_WIDTH - 1, 6
 
 Function8a17b:
-	decoord 14, 0
+	decoord 11, 0
 	ld b, $5
-	ld c, $4
+	ld c, $7
 	call Function89b3b
 	ld hl, MenuHeader_0x8a19a
 	ld a, [wd030]
@@ -2718,16 +2718,16 @@ Function8a17b:
 
 MenuHeader_0x8a19a:
 	db MENU_BACKUP_TILES ; flags
-	menu_coords 14, 0, SCREEN_WIDTH - 1, 6
+	menu_coords 11, 0, SCREEN_WIDTH - 1, 6
 	dw MenuData_0x8a1a2
 	db 1 ; default option
 
 MenuData_0x8a1a2:
 	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING | STATICMENU_WRAP ; flags
 	db 3 ; items
-	db "ひらく@"
-	db "すてる@"
-	db "もどる@"
+	db "OPEN@"
+	db "DELETE@"
+	db "BACK@"
 
 Function8a1b0:
 	hlcoord 0, 12
@@ -2744,15 +2744,15 @@ Function8a1b0:
 	ret
 
 Strings_8a1cc:
-	db   "めいし<NO>せいりと　へんしゅうを"
-	next "おこないます"
+	db   "Open the"     ; "めいし<NO>せいりと　へんしゅうを"
+	next "CARD FOLDER." ; "おこないます"
 	db   "@"
 
-	db   "めいしフォルダー<NO>めいしと"
-	next "あんしょうばんごう<WO>けします"
+	db   "Delete the"   ; "めいしフォルダー<NO>めいしと"
+	next "CARD FOLDER." ; "あんしょうばんごう<WO>けします"
 	db   "@"
 
-	db   "まえ<NO>がめん<NI>もどります"
+	db   "Go back."     ; "まえ<NO>がめん<NI>もどります"
 	db   "@"
 
 Function8a20d:
@@ -3026,10 +3026,10 @@ MenuHeader_0x8a40f:
 MenuData_0x8a417:
 	db STATICMENU_CURSOR | STATICMENU_WRAP ; flags
 	db 4 ; items
-	db "めいしりスト@"
-	db "じぶんの　めいし@"
-	db "めいしこうかん@"
-	db "やめる@"
+	db "CARDS@"   ; "めいしりスト@"
+	db "MY CARD@" ; "じぶんの　めいし@"
+	db "TRADE@"   ; "めいしこうかん@"
+	db "CANCEL@"  ; "やめる@"
 
 MenuHeader_0x8a435:
 	db MENU_BACKUP_TILES ; flags
@@ -3040,9 +3040,9 @@ MenuHeader_0x8a435:
 MenuData_0x8a43d:
 	db STATICMENU_CURSOR | STATICMENU_WRAP ; flags
 	db 3 ; items
-	db "めいしりスト@"
-	db "じぶんの　めいし@"
-	db "やめる@"
+	db "CARDS@"   ; "めいしりスト@"
+	db "MY CARD@" ; "じぶんの　めいし@"
+	db "CANCEL@"  ; "やめる@"
 
 Function8a453:
 	hlcoord 0, 12
@@ -3063,17 +3063,25 @@ Function8a453:
 	ret
 
 String_8a476:
-	db   "まえ<NO>がめん<NI>もどります@"
+	;db   "まえ<NO>がめん<NI>もどります@"
+	db   "Return to the"
+	next "previous screen.@"
 
 Strings_8a483:
-	db   "おともだち<NO>めいしは"
-	next "ここ<NI>いれておきます@"
+	;db   "おともだち<NO>めいしは"
+	;next "ここ<NI>いれておきます@"
+	db   "Friends' CARDS"
+	next "are stored here.@"
 
-	db   "でんわばんごう<WO>いれると"
-	next "めいしこうかん<GA>できます@"
+	;db   "でんわばんごう<WO>いれると"
+	;next "めいしこうかん<GA>できます@"
+	db   "Enter your number"
+	next "to trade CARDS.@"
 
-	db   "ともだちと　じぶん<NO>めいしを"
-	next "せきがいせんで　こうかん　します@"
+	;db   "ともだちと　じぶん<NO>めいしを"
+	;next "せきがいせんで　こうかん　します@"
+	db   "Trade CARDS with"
+	next "friends.@"
 
 Function8a4d3:
 	ld a, [wMenuSelection]
@@ -3457,7 +3465,7 @@ Function8a765:
 	ld hl, $0
 	add hl, bc
 	ld de, wd002
-	ld c, $6
+	ld c, NAME_LENGTH_JAPANESE
 	call Function89185
 	pop bc
 	jr nz, .asm_8a78a
@@ -3574,7 +3582,9 @@ Function8a818:
 	ret
 
 .string_8a868
-	db "めいし<WO>かきかえ　まし<TA!>@"
+	;db "めいし<WO>かきかえ　まし<TA!>@"
+	db   "The CARD was"
+	next "updated.@"
 
 .asm_8a875
 	ld de, String_8a88b
@@ -3590,8 +3600,8 @@ Function8a818:
 	ret
 
 String_8a88b:
-	db   "おともだち<NO>なまえが"
-	next "かかれて　いません！@"
+	db   "Please enter a" ; "おともだち<NO>なまえが"
+	next "name.@"         ; "かかれて　いません！@"
 
 Function8a8a1:
 	call OpenSRAMBank4
@@ -3646,10 +3656,13 @@ Function8a8c3:
 	ret
 
 String_8a919:
-	db "このデータ<WO>けしますか？@"
+	;db "このデータ<WO>けしますか？@"
+	db "Erase this data?@"
 
 String_8a926:
-	db "データ<WO>けしまし<TA!>@"
+	;db "データ<WO>けしまし<TA!>@"
+	db   "The data was"
+	next "erased.@"
 
 Function8a930:
 	ld a, [wMenuSelection]
@@ -3726,9 +3739,9 @@ Function8a999:
 	pop bc
 	jr .asm_8a9a1
 .asm_8a9bb
-	call Function89209
+	call Mobile_EnableSpriteUpdates
 	call CloseWindow
-	call Function8920f
+	call Mobile_DisableSpriteUpdates
 	ret
 
 Jumptable_8a9c5:
@@ -3771,9 +3784,9 @@ MenuHeader_0x8a9f2:
 MenuData_0x8a9fa:
 	db STATICMENU_CURSOR | STATICMENU_WRAP ; flags
 	db 3 ; items
-	db "へんしゅう@"
-	db "みる@"
-	db "やめる@"
+	db "EDIT@" ; "へんしゅう@"
+	db "VIEW@" ; "みる@"
+	db "BACK@" ; "やめる@"
 
 Function8aa09:
 	ret
@@ -3885,7 +3898,9 @@ Function8aab6:
 	ret
 
 String_8aaf0:
-	db "あたらしい　めいし<PKMN>できまし<LF>@"
+	;db "あたらしい　めいし<PKMN>できまし<LF>@"
+	db   "Your CARD was" ; maybe 'your trainer card'?
+	next "updated.@"
 
 Function8ab00:
 	ld de, String_8911c
@@ -4038,8 +4053,8 @@ Function8aba9:
 	ret
 
 String_8ac3b:
-	db   "こ<NO>ともだち<NI>でんわを"
-	next "かけますか？@"
+	db   "Call this" ; "こ<NO>ともだち<NI>でんわを"
+	next "friend?@"  ; "かけますか？@"
 
 Function8ac4e:
 	xor a
@@ -4210,12 +4225,12 @@ Function8ad0b:
 	ret
 
 String_8ad89:
-	db   "こ<NO>めいし<WO>けして"
-	next "いれかえますか？@"
+	db   "Overwrite"   ; "こ<NO>めいし<WO>けして"
+	next "this data?@" ; "いれかえますか？@"
 
 String_8ad9c:
-	db   "おともだち<NO>なまえを"
-	next "のこして　おきますか？@"
+	db   "Keep the"        ; "おともだち<NO>なまえを"
+	next "friend's name?@" ; "のこして　おきますか？@"
 
 Function8adb3:
 	call Function891de
