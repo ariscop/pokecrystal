@@ -194,7 +194,7 @@ sMobileEventIndexBackup:: db ; be44
 SECTION "SRAM Battle Tower", SRAM
 
 ; Battle Tower data must be in SRAM because you can save and leave between battles
-sBattleTowerChallengeState::
+sBattleTowerChallengeState:: ; Originally at 05:a000?
 ; 0: normal
 ; 2: battle tower
 	db

@@ -272,6 +272,7 @@ _SaveGameData:
 	farcall BackupPartyMonMail
 	farcall BackupMobileEventIndex
 	farcall SaveRTC
+	; Missing on jp version
 	ld a, BANK(sBattleTowerChallengeState)
 	call GetSRAMBank
 	ld a, [sBattleTowerChallengeState]
@@ -281,9 +282,10 @@ _SaveGameData:
 	ld [sBattleTowerChallengeState], a
 .ok
 	call CloseSRAM
+	; End missing on jp
 	ret
 
-UpdateStackTop:
+UpdateStackTop: ; Not present on jp
 ; sStackTop appears to be unused.
 ; It could have been used to debug stack overflow during saving.
 	call FindStackTop
@@ -311,7 +313,7 @@ UpdateStackTop:
 	call CloseSRAM
 	ret
 
-FindStackTop:
+FindStackTop: ; Not present on jp
 ; Find the furthest point that sp has traversed to.
 ; This is distinct from the current value of sp.
 	ld hl, wStack - $ff
@@ -353,17 +355,20 @@ ErasePreviousSave:
 	call EraseMysteryGift
 	call Unreferenced_Function14d18
 	; TODO call EraseBattleTowerStatus is here in jp crystal (it was changed)
+	; call EraseBattleTowerStatus_JP
 	call SaveData
 	call Unreferenced_Function14d6c
 	call Unreferenced_Function14d83
 	call Unreferenced_Function14d93
 	call EraseBattleTowerStatus
+	; Not in jp
 	ld a, BANK(sStackTop)
 	call GetSRAMBank
 	xor a
 	ld [sStackTop + 0], a
 	ld [sStackTop + 1], a
 	call CloseSRAM
+	; End not in jp
 	ld a, $1
 	ld [wSavedAtLeastOnce], a
 	ret
@@ -421,6 +426,29 @@ EraseBattleTowerStatus:
 	xor a
 	ld [sBattleTowerChallengeState], a
 	jp CloseSRAM
+
+EraseBattleTowerStatus_JP:
+	ld a, $5 ; BANK(sBattleTowerChallengeState)?
+	call GetSRAMBank
+	xor a
+	ld [$A800], a ; sBattleTowerChallengeState?
+	ld hl, $aa3e
+	ld bc, $05e5
+	call ByteFill
+	ld hl, .Data
+	ld de, $a89c
+	ld bc, $16
+	call CopyBytes
+	xor a
+	ld hl, $a8b2
+	ld bc, $96
+	call ByteFill
+	jp CloseSRAM
+
+.Data
+	db "ーーーーーー@"
+	db "　　　　ーーー@"
+	dn "　　　　　　　" ; Unterminated?
 
 SaveData:
 	call _SaveData
