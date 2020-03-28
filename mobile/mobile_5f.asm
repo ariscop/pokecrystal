@@ -543,7 +543,7 @@ MenuData_UnknownBattleTowerMenu:
 	db "Explanation@"
 	db "Cancel@"
 
-Function17d2b6:
+Function17d2b6: ; something news related?
 	call Function17d2c0
 	farcall Function1181da
 	ret
