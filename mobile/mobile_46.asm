@@ -559,7 +559,7 @@ Function1184a5:
 	dw Function1188c8
 	dw Function11878d
 	dw Function118903
-	dw Function118a8f
+	dw Set_ExchangeDownloadURL
 	dw Function11878d
 	dw Function118d80
 	dw Function118d9b
@@ -659,7 +659,7 @@ Function11857c:
 	dw Function1188c8
 	dw Function11878d
 	dw Function118903
-	dw Function118a7a
+	dw Set_BattleDownloadURL
 	dw Function11878d
 	dw Function11891c
 	dw Function1198ee
@@ -692,7 +692,7 @@ Function1185c3:
 	dw Function1188c8
 	dw Function11878d
 	dw Function118903
-	dw Function118aa4
+	dw Set_NewsDownloadURL
 	dw Function11878d
 	dw Function118e92
 	dw Function11878d
@@ -738,7 +738,7 @@ Function118624:
 	dw Function1188c8
 	dw Function11878d
 	dw Function118903
-	dw Function118aa4
+	dw Set_NewsDownloadURL
 	dw Function11878d
 	dw Function118e92
 	dw Function11878d
@@ -835,7 +835,7 @@ Function1186f5:
 	dw Function1188c8
 	dw Function11878d
 	dw Function118903
-	dw Function118abc
+	dw Set_MenuDownloadURL
 	dw Function11878d
 	dw Function119451
 	dw Function1195f8
@@ -873,7 +873,7 @@ Function118746:
 	dw Function1188c8
 	dw Function11878d
 	dw Function118903
-	dw Function118ad0
+	dw Set_IndexDownloadURL
 	dw Function11878d
 	dw Function1196f2
 	dw Function1197c9
@@ -1311,7 +1311,7 @@ Function118a54:
 	ld bc, $0004
 	jp Function118ae4
 
-Function118a65:
+Unused_Set_BattleDownloadURL:
 	ld hl, BattleDownloadURL
 	ld de, wcc60
 	ld bc, $80
@@ -1320,7 +1320,7 @@ Function118a65:
 	ld bc, $1000
 	jp Function118b10
 
-Function118a7a:
+Set_BattleDownloadURL:
 	ld hl, BattleDownloadURL
 	ld de, wcc60
 	ld bc, $80
@@ -1329,7 +1329,7 @@ Function118a7a:
 	ld bc, $1000
 	jp Function118b10
 
-Function118a8f:
+Set_ExchangeDownloadURL:
 	ld hl, ExchangeDownloadURL
 	ld de, wcc60
 	ld bc, $80
@@ -1338,7 +1338,7 @@ Function118a8f:
 	ld bc, $1000
 	jp Function118b10
 
-Function118aa4:
+Set_NewsDownloadURL:
 	ld hl, NewsDownloadURL
 	ld de, wcc60
 	ld bc, $80
@@ -1349,7 +1349,7 @@ Function118aa4:
 	ld bc, $e00
 	jr Function118b10
 
-Function118abc:
+Set_MenuDownloadURL:
 	ld hl, MenuDownloadURL
 	ld de, wcc60
 	ld bc, $80
@@ -1358,7 +1358,7 @@ Function118abc:
 	ld bc, $1000
 	jr Function118b10
 
-Function118ad0:
+Set_IndexDownloadURL:
 	ld hl, IndexDownloadURL
 	ld de, wcc60
 	ld bc, $80
@@ -1569,7 +1569,10 @@ asm_118d9f:
 	ld a, [wcd38]
 	and a
 	jr nz, .asm_118db2
-	ld a, $8f
+	;ld a, $8f ; DION addr $1e + request $8 + Name $5
+	           ; + party struct $30 + OT $5 + NICK $5
+	           ; + JP Mail struct $2a
+	ld a, $a3  ; Proper size for english
 	ld [wcd3b], a
 	jr .asm_118db7
 
@@ -6815,16 +6818,17 @@ Mobile46_RunJumptable:
 	jumptable .Jumptable, wJumptableIndex
 
 .Jumptable:
-	dw Function11b483
-	dw Function11b570
-	dw Function11b5c0
-	dw Function11b5e0
-	dw Function11b5e7 ; unused
+	dw PrepareMonForUpload
+	dw Function11b570 ; ???
+	dw Function11b5c0 ; Remove from party?
+	dw Function11b5e0 ; Set script value to 0, indicates success
+	dw Function11b5e7 ; unused - is it really unused or is it
+	                  ; a return in this gheto script thing
 
-Function11b483:
+PrepareMonForUpload:
 	call .InitRAM
 	ld hl, wPlayerName
-	ld a, NAME_LENGTH_JAPANESE - 1
+	ld a,  NAME_LENGTH - 1 ; NAME_LENGTH_JAPANESE - 1
 .loop1
 	push af
 	ld a, [hli]
@@ -6843,7 +6847,7 @@ Function11b483:
 .loop2
 	and a
 	jr z, .okay
-	add hl, de
+	add hl, de ; bump hl to selected mon?
 	dec a
 	jr .loop2
 
@@ -6960,7 +6964,7 @@ Function11b483:
 	jp Function11ad8a
 
 .InitRAM:
-	ld bc, $c626
+	ld bc, $c626 ; after dion email
 	ld a, [wPlayerID]
 	ld [wcd2a], a
 	ld [bc], a
@@ -6981,19 +6985,19 @@ Function11b483:
 	ld [bc], a
 	inc bc
 
-	ld a, [wcd2e]
+	ld a, [wcd2e] ; offer_gender
 	ld [bc], a
 	inc bc
 
-	ld a, [wcd2f]
+	ld a, [wcd2f] ; offer_species
 	ld [bc], a
 	inc bc
 
-	ld a, [wcd30]
+	ld a, [wcd30] ; req_gender
 	ld [bc], a
 	inc bc
 
-	ld a, [wd265]
+	ld a, [wd265] ; req_species
 	ld [bc], a
 	inc bc
 	ret
@@ -7449,7 +7453,7 @@ Function11b879:
 	ld [wScriptVar], a
 	ret
 
-Function11b920:
+Function11b920: ; upload?
 	call Mobile46_InitJumptable
 	ld a, $5
 	call GetSRAMBank

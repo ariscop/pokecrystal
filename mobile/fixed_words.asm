@@ -3251,21 +3251,21 @@ INCBIN "gfx/pokedex/slowpoke_jp.2bpp.lz"
 
 MobileEZChatCategoryNames:
 ; entries correspond to EZCHAT_* constants
-	db "ポケモン@@" ; 00
-	db "タイプ@@@" ; 01
-	db "あいさつ@@" ; 02
-	db "ひと@@@@" ; 03
-	db "バトル@@@" ; 04
-	db "こえ@@@@" ; 05
-	db "かいわ@@@" ; 06
-	db "きもち@@@" ; 07
-	db "じょうたい@" ; 08
-	db "せいかつ@@" ; 09
-	db "しゅみ@@@" ; 0a
-	db "こうどう@@" ; 0b
-	db "じかん@@@" ; 0c
-	db "むすび@@@" ; 0d
-	db "あれこれ@@" ; 0e
+	db "ポケモン@@" ; 00 POKEMON
+	db "タイプ@@@" ; 01 TYPES
+	db "あいさつ@@" ; 02 GREETINGS
+	db "ひと@@@@" ; 03 PEOPLE
+	db "バトル@@@" ; 04 BATTLE
+	db "こえ@@@@" ; 05 VOICES
+	db "かいわ@@@" ; 06 SPEECH
+	db "きもち@@@" ; 07 FEELINGS
+	db "じょうたい@" ; 08 CONDITIONS
+	db "せいかつ@@" ; 09 LIFESTYLE
+	db "しゅみ@@@" ; 0a HOBBIES
+	db "こうどう@@" ; 0b ACTIONS
+	db "じかん@@@" ; 0c TIME
+	db "むすび@@@" ; 0d ENDINGS
+	db "あれこれ@@" ; 0e MISC.
 
 MobileEZChatCategoryPointers:
 ; entries correspond to EZCHAT_* constants
