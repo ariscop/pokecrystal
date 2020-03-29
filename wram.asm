@@ -3079,6 +3079,8 @@ NEXTU ; dd68
 w3_de00:: ds $200
 ENDU ; e000
 
+SECTION "News Script RAM", WRAMX
+w4_d000:: ds $1000 ; News pages get stored here?
 
 SECTION "GBC Video", WRAMX, ALIGN[8]
 ; LCD expects wLYOverrides to have an alignment of $100

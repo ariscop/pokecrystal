@@ -2013,7 +2013,7 @@ Function1190d0:
 	ld bc, $1000
 	jp Function118b10
 
-Function1190ec:
+Function1190ec: ; aa72 seems news related?
 	ld a, BANK(s5_aa73)
 	call GetSRAMBank
 	ld hl, wBGMapBuffer

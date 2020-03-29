@@ -294,7 +294,7 @@ PokeComNewsMachine:
 	waitbutton
 	sjump .script68eb
 .script692e
-	writetext UnknownText_0x61bc4
+	writetext NewsMachineNoOldNewsText
 	waitbutton
 .script6932
 	sjump .script68eb
@@ -837,7 +837,7 @@ UnknownText_0x61b9d:
 	line "NEWS… Please wait."
 	done
 
-UnknownText_0x61bc4:
+NewsMachineNoOldNewsText:
 	text "There is no old"
 	line "NEWS…"
 	done

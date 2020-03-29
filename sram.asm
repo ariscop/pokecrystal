@@ -358,7 +358,7 @@ s5_aa5d:: ds MOBILE_LOGIN_PASSWORD_LENGTH ; aa5d
 
 	ds $4
 
-s5_aa72:: db ; aa72
+s5_aa72:: db    ; aa72 - If != 0, there is news
 s5_aa73:: ds 12 ; aa73
 s5_aa7f:: ds 12 ; aa7f
 

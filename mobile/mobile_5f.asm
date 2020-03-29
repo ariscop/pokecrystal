@@ -557,17 +557,17 @@ Function17d2c0:
 	ret
 
 Function17d2ce:
-	ld a, $5
+	ld a, BANK(s5_aa72)
 	call GetSRAMBank
-	ld a, [$aa72]
+	ld a, [s5_aa72]
 	call CloseSRAM
-	and a
+	and a ; Is aa72 <> 0? if so we have saved news
 	jr nz, .asm_17d2e2
 	ld a, $1
 	ld [wScriptVar], a
 	ret
 
-.asm_17d2e2
+.asm_17d2e2 ; Launch news screen?
 	call Function17d314
 	ret c
 	call SpeechTextbox
@@ -688,7 +688,7 @@ Function17d370:
 	ld a, $6
 	call GetSRAMBank
 	ld hl, $a006
-	ld de, wBGPals1
+	ld de, w4_d000
 	ld bc, $1000
 	call CopyBytes
 	call CloseSRAM
@@ -1135,7 +1135,7 @@ Function17d6a1:
 
 Function17d6fd:
 	ld a, [wcd77]
-	bit 7, a
+	bit 7, a ; Set by command $30
 	jr nz, asm_17d721
 	ld a, [wMobileCrashCheckPointer]
 	ld l, a
@@ -1165,56 +1165,58 @@ asm_17d721:
 	ld [wcd77], a
 	ret
 
-Jumptable17d72a:
-	dw Function17d78c
-	dw Function17d78d
-	dw Function17d7b4
-	dw Function17d7c2
-	dw Function17d7d3
-	dw Function17d7e5
-	dw Function17d818
-	dw Function17d833
-	dw Function17d85d
-	dw Function17d902
-	dw Function17d93a
-	dw Function17d98b
-	dw Function17d9e3
-	dw Function17da31
-	dw Function17da9c
-	dw Function17dadc
-	dw Function17db2d
-	dw Function17db56
-	dw Function17db77
-	dw Function17dbe9
-	dw Function17dc1f
-	dw Function17dc9f
-	dw Function17dca9
-	dw Function17dccf
-	dw Function17dd13
-	dw Function17dd30
-	dw Function17dd49
-	dw Function17ddcd
-	dw Function17de32
-	dw Function17de91
-	dw Function17ded9
-	dw Function17e0fd
-	dw Function17e133
-	dw Function17e165
-	dw Function17e1a1
-	dw Function17e254
-	dw Function17e261
-	dw Function17e270
-	dw Function17e27f
-	dw Function17e293
-	dw Function17e2a7
-	dw IncCrashCheckPointer_SaveGameData
-	dw IncCrashCheckPointer_SaveAfterLinkTrade
-	dw IncCrashCheckPointer_SaveBox
-	dw IncCrashCheckPointer_SaveChecksum
-	dw IncCrashCheckPointer_SaveTrainerRankingsChecksum
-	dw Function17e3e0
-	dw Function17e3f0
-	dw Function17e409
+Jumptable17d72a: ; News script commands
+	         ; Note that no script need be run to draw
+	         ; the initial menu
+	dw Function17d78c ; $00 - no-op in jp as well
+	dw Function17d78d ; $01 - Jump to another page
+	dw Function17d7b4 ; $02
+	dw Function17d7c2 ; $03
+	dw Function17d7d3 ; $04
+	dw Function17d7e5 ; $05
+	dw Function17d818 ; $06
+	dw Function17d833 ; $07
+	dw Function17d85d ; $08
+	dw Function17d902 ; $09
+	dw Function17d93a ; $0a
+	dw Function17d98b ; $0b
+	dw Function17d9e3 ; $0c
+	dw Function17da31 ; $0d
+	dw Function17da9c ; $0e
+	dw Function17dadc ; $0f
+	dw Function17db2d ; $10
+	dw Function17db56 ; $11
+	dw Function17db77 ; $12
+	dw Function17dbe9 ; $13
+	dw Function17dc1f ; $14
+	dw Function17dc9f ; $15
+	dw Function17dca9 ; $16
+	dw Function17dccf ; $17
+	dw Function17dd13 ; $18
+	dw Function17dd30 ; $19
+	dw Function17dd49 ; $1a
+	dw Function17ddcd ; $1b
+	dw Function17de32 ; $1c
+	dw Function17de91 ; $1d
+	dw Function17ded9 ; $1e
+	dw Function17e0fd ; $1f
+	dw Function17e133 ; $20
+	dw Function17e165 ; $21
+	dw Function17e1a1 ; $22
+	dw Function17e254 ; $23
+	dw Function17e261 ; $24
+	dw Function17e270 ; $25
+	dw Function17e27f ; $26
+	dw Function17e293 ; $27
+	dw Function17e2a7 ; $28
+	dw IncCrashCheckPointer_SaveGameData ; $29
+	dw IncCrashCheckPointer_SaveAfterLinkTrade ; $2a
+	dw IncCrashCheckPointer_SaveBox ; $2b
+	dw IncCrashCheckPointer_SaveChecksum ; $2c
+	dw IncCrashCheckPointer_SaveTrainerRankingsChecksum ; $2d
+	dw Function17e3e0 ; $2e
+	dw Function17e3f0 ; $2f
+	dw Function17e409 ; $30 - exit news?
 
 Function17d78c:
 	ret
@@ -1230,7 +1232,7 @@ Function17d78d:
 	call GetSRAMBank
 	ld hl, $a006
 	add hl, bc
-	ld de, wBGPals1
+	ld de, w4_d000
 	ld bc, $1000
 	call CopyBytes
 	call CloseSRAM
