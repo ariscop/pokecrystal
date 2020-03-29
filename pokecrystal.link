@@ -96,6 +96,7 @@ ROMX $1e
 	"Map Scripts 9"
 ROMX $1f
 	"Map Scripts 10"
+	"debug menu"
 ROMX $20
 	"bank20"
 ROMX $21

@@ -727,3 +727,6 @@ INCBIN "mobile/stadium/stadium2_11.bin"
 else
 INCBIN "mobile/stadium/stadium2.bin"
 endc
+
+SECTION "debug menu", ROMX
+INCLUDE "debugmenu.asm"
