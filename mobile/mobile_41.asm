@@ -798,7 +798,7 @@ Mobile_AlwaysReturnNotCarry:
 	ld c, a
 	ret
 
-Function10635c:
+Function10635c: ; Called at bootup
 	ld a, [wMobileCommsJumptableIndex]
 	bit 7, a
 	ret nz

@@ -369,7 +369,9 @@ s5_aa8e:: ds 7 * $cc ; aa8e
 
 	ds $1
 
-s5_b023:: ds 105 ; b023
+s5_b023:: ds 105 ; b023 - Mobile trade 'backup'
+                 ; pokecom center scene script can trigger
+                 ; receiving this pokemon
 s5_b08c:: ds 4 ; b08c
 s5_b090:: db ; b090
 s5_b091:: db ; b091

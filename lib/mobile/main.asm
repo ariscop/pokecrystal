@@ -139,41 +139,42 @@ Function110030::
 	ld l, a
 	ret ; indirectly jump to the function loaded from the dw, which returns to Function3e60.
 
-.dw
-	dw Function110115
-	dw Function110236
-	dw Function110291
-	dw Function1103ac
-	dw Function110438
-	dw Function1104c6
-	dw Function110578
-	dw Function110582
-	dw Function11058c
-	dw Function1105dd
-	dw Function1106ef
-	dw Function110757
-	dw Function1107ff
-	dw Function110899
-	dw Function1108a3
-	dw Function110905
-	dw Function1109a4
-	dw Function1109f9
-	dw Function110a5b
-	dw Function110c3c
-	dw Function110c9e
-	dw Function110ddd
-	dw Function1111fe
-	dw Function1113fe
-	dw Function1100dc
-	dw Function111541
-	dw Function111596
-	dw Function11162d
-	dw Function11032c
-	dw Function11148c
-	dw Function111610
-	dw Function1103ac
-	dw Function110235
-	dw Function111540
+.dw	                  ; Not doubled before indexing, so only even
+	                  ; indexes are valid
+	dw Function110115 ; $00
+	dw Function110236 ; $02
+	dw Function110291 ; $04
+	dw Function1103ac ; $06
+	dw Function110438 ; $08
+	dw Function1104c6 ; $0a
+	dw Function110578 ; $0c
+	dw Function110582 ; $0e
+	dw Function11058c ; $10
+	dw Function1105dd ; $12
+	dw Function1106ef ; $14
+	dw Function110757 ; $16
+	dw Function1107ff ; $18
+	dw Function110899 ; $1a
+	dw Function1108a3 ; $1c
+	dw Function110905 ; $1e
+	dw Function1109a4 ; $20
+	dw Function1109f9 ; $22
+	dw Function110a5b ; $24
+	dw Function110c3c ; $26
+	dw Function110c9e ; $28
+	dw Function110ddd ; $2a
+	dw Function1111fe ; $2c
+	dw Function1113fe ; $2e
+	dw Function1100dc ; $30
+	dw Function111541 ; $32
+	dw Function111596 ; $34
+	dw Function11162d ; $36
+	dw Function11032c ; $38
+	dw Function11148c ; $3a
+	dw Function111610 ; $3c
+	dw Function1103ac ; $3e
+	dw Function110235 ; $40
+	dw Function111540 ; $42
 
 Function1100b4:
 	push bc
@@ -8952,7 +8953,7 @@ Function113a40:
 Unknown_113a55:
 	db "Authorization: GB00 name=", $22, 0
 
-Unknown_113a70:
+Unknown_113a70: ; Every 4th byte is the per-round shift
 	db $00, $00, $00, $07, $06, $04, $00, $0c, $04, $08, $00, $11, $02, $0c, $00, $16
 	db $00, $10, $00, $07, $06, $14, $00, $0c, $04, $18, $00, $11, $02, $1c, $00, $16
 	db $00, $20, $00, $07, $06, $24, $00, $0c, $04, $28, $00, $11, $02, $2c, $00, $16
@@ -8983,23 +8984,23 @@ Unknown_113b7e:
 	db $01, $23, $45, $67, $89, $ab, $cd, $ef
 	db $fe, $dc, $ba, $98, $76, $54, $32, $10
 
-Unknown_113b8e:
-	db $78, $a4, $6a, $d7, $56, $b7, $c7, $e8, $db, $70, $20, $24, $ee, $ce, $bd, $c1
-	db $af, $0f, $7c, $f5, $2a, $c6, $87, $47, $13, $46, $30, $a8, $01, $95, $46, $fd
-	db $d8, $98, $80, $69, $af, $f7, $44, $8b, $b1, $5b, $ff, $ff, $be, $d7, $5c, $89
-	db $22, $11, $90, $6b, $93, $71, $98, $fd, $8e, $43, $79, $a6, $21, $08, $b4, $49
-	db $62, $25, $1e, $f6, $40, $b3, $40, $c0, $51, $5a, $5e, $26, $aa, $c7, $b6, $e9
-	db $5d, $10, $2f, $d6, $53, $14, $44, $02, $81, $e6, $a1, $d8, $c8, $fb, $d3, $e7
-	db $e6, $cd, $e1, $21, $d6, $07, $37, $c3, $87, $0d, $d5, $f4, $ed, $14, $5a, $45
-	db $05, $e9, $e3, $a9, $f8, $a3, $ef, $fc, $d9, $02, $6f, $67, $8a, $4c, $2a, $8d
-	db $42, $39, $fa, $ff, $81, $f6, $71, $87, $22, $61, $9d, $6d, $0c, $38, $e5, $fd
-	db $44, $ea, $be, $a4, $a9, $cf, $de, $4b, $60, $4b, $bb, $f6, $70, $bc, $bf, $be
-	db $c6, $7e, $9b, $28, $fa, $27, $a1, $ea, $85, $30, $ef, $d4, $05, $1d, $88, $04
-	db $39, $d0, $d4, $d9, $e5, $99, $db, $e6, $f8, $7c, $a2, $1f, $65, $56, $ac, $c4
-	db $44, $22, $29, $f4, $97, $ff, $2a, $43, $a7, $23, $94, $ab, $39, $a0, $93, $fc
-	db $c3, $59, $5b, $65, $92, $cc, $0c, $8f, $7d, $f4, $ef, $ff, $d1, $5d, $84, $85
-	db $4f, $7e, $a8, $6f, $e0, $e6, $2c, $fe, $14, $43, $01, $a3, $a1, $11, $08, $4e
-	db $82, $7e, $53, $f7, $35, $f2, $3a, $bd, $bb, $d2, $d7, $2a, $91, $d3, $86, $eb
+Unknown_113b8e: ; MD5 k table
+	dl $d76aa478, $e8c7b756, $242070db, $c1bdceee
+	dl $f57c0faf, $4787c62a, $a8304613, $fd469501
+	dl $698098d8, $8b44f7af, $ffff5bb1, $895cd7be
+	dl $6b901122, $fd987193, $a679438e, $49b40821
+	dl $f61e2562, $c040b340, $265e5a51, $e9b6c7aa
+	dl $d62f105d, $02441453, $d8a1e681, $e7d3fbc8
+	dl $21e1cde6, $c33707d6, $f4d50d87, $455a14ed
+	dl $a9e3e905, $fcefa3f8, $676f02d9, $8d2a4c8a
+	dl $fffa3942, $8771f681, $6d9d6122, $fde5380c
+	dl $a4beea44, $4bdecfa9, $f6bb4b60, $bebfbc70
+	dl $289b7ec6, $eaa127fa, $d4ef3085, $04881d05
+	dl $d9d4d039, $e6db99e5, $1fa27cf8, $c4ac5665
+	dl $f4292244, $432aff97, $ab9423a7, $fc93a039
+	dl $655b59c3, $8f0ccc92, $ffeff47d, $85845dd1
+	dl $6fa87e4f, $fe2ce6e0, $a3014314, $4e0811a1
+	dl $f7537e82, $bd3af235, $2ad7d2bb, $eb86d391
 
 Function113c8e:
 	ld a, c
@@ -9275,7 +9276,7 @@ endr
 	ld [hl], a
 	ret
 
-.Function113dfa:
+.Function113dfa: ; base64
 	cp $2b
 	jr c, .asm_113e24
 	jr z, .asm_113e31

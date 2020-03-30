@@ -604,9 +604,9 @@ Function1184ec:
 	dw Function1199e2
 	dw Function119b0d
 	dw Function11878d
-	dw Function119b6b
-	dw Function119b3b
-	dw Function11878d
+	dw Function119b6b ; un-base64 the pokemon
+	dw Function119b3b ; back into the mobile adapter code
+	dw Function11878d ; and again
 	dw Function119b52
 	dw Function11878d
 	dw Function118e6d
@@ -956,7 +956,7 @@ Function11878d:
 .asm_118803
 	ld a, $d3
 
-Function118805:
+Mobile46SetErrorCode:
 	ld [wMobileErrorCodeBuffer], a
 	xor a
 	ld [wMobileErrorCodeBuffer + 1], a
@@ -1388,7 +1388,7 @@ Function118ae4:
 	cp $a6
 	jr c, .asm_118af5
 	ld a, $da
-	jp Function118805
+	jp Mobile46SetErrorCode
 
 .asm_118b06
 	call Function118b24
@@ -1478,7 +1478,7 @@ Function118b9a:
 	cp $e0
 	ret c
 	ld a, $d3
-	call Function118805
+	call Mobile46SetErrorCode
 	and a
 	ret
 
@@ -1542,7 +1542,7 @@ Unreferenced_Function118d35:
 
 .asm_118d7b
 	ld a, $d3
-	jp Function118805
+	jp Mobile46SetErrorCode
 
 Function118d80:
 	call Function118e06
@@ -1730,7 +1730,7 @@ Function118e92:
 	ld a, [wcd54]
 	ld h, a
 	ld de, wcc60
-	call Function1191ad
+	call Function1191ad_CopyBytes
 	ret c
 	ld de, w3_d800
 	ld bc, $0800
@@ -1788,7 +1788,7 @@ Function118f14:
 	ld a, [wcd52]
 	ld h, a
 	ld de, wcc60
-	call Function1191ad
+	call Function1191ad_CopyBytes
 	ret c
 	ld a, [wcc60]
 	and a
@@ -1802,7 +1802,7 @@ Function118f14:
 	ld a, [wcd58]
 	ld h, a
 	ld de, wcc60
-	call Function1191ad
+	call Function1191ad_CopyBytes
 	ret c
 	ld hl, wcc60
 	call Function118e39
@@ -1831,7 +1831,7 @@ Function118f68:
 	ld a, [wcd52]
 	ld h, a
 	ld de, wcc60
-	call Function1191ad
+	call Function1191ad_CopyBytes
 	ret c
 	ld a, [wcc60]
 	and a
@@ -1874,7 +1874,7 @@ Function118fc0:
 	ld a, [wcd56]
 	ld h, a
 	ld de, wcc60
-	call Function1191ad
+	call Function1191ad_CopyBytes
 	ret c
 	ld a, [wcc60]
 	and a
@@ -1884,7 +1884,7 @@ Function118fc0:
 	ld a, [wcd52]
 	ld h, a
 	ld de, wcc60
-	call Function1191ad
+	call Function1191ad_CopyBytes
 	ret c
 	ld a, [wcc60]
 	and a
@@ -1914,7 +1914,7 @@ Function119009:
 	ld a, [wcd56]
 	ld h, a
 	ld de, wcc60
-	call Function1191ad
+	call Function1191ad_CopyBytes
 	ret c
 	ld hl, wc346
 	ld a, $8
@@ -2007,7 +2007,7 @@ Function1190d0:
 	ld a, [wcd58]
 	ld h, a
 	ld de, wcc60
-	call Function1191ad
+	call Function1191ad_CopyBytes
 	ret c
 	ld de, w3_d000
 	ld bc, $1000
@@ -2120,11 +2120,11 @@ Function119192:
 
 .asm_1191a6
 	ld a, $d3
-	call Function118805
+	call Mobile46SetErrorCode
 	scf
 	ret
 
-Function1191ad:
+Function1191ad_CopyBytes:
 	push bc
 	ld c, $0
 	ld a, $5
@@ -2140,7 +2140,7 @@ Function1191ad:
 	cp $a6
 	jr c, .asm_1191b4
 	ld a, $da
-	call Function118805
+	call Mobile46SetErrorCode
 	ld a, BANK("Battle Tower RAM")
 	ldh [rSVBK], a
 	pop bc
@@ -2275,7 +2275,7 @@ Function119223:
 	and a
 	jr z, .asm_119266
 	ld a, $d3
-	call Function118805
+	call Mobile46SetErrorCode
 	scf
 	ret
 
@@ -2540,7 +2540,7 @@ Function119451:
 	and $1
 	jr z, .asm_11945d
 	ld a, $d3
-	jp Function118805
+	jp Mobile46SetErrorCode
 .asm_11945d
 	xor a
 	ld [wcd50], a
@@ -2720,7 +2720,7 @@ endr
 	ret
 .asm_119571
 	ld a, $d8
-	jp Function118805
+	jp Mobile46SetErrorCode
 .asm_119576
 	ld a, $10
 	jr .asm_11957c
@@ -2808,7 +2808,7 @@ Function1195c4:
 	ret
 .asm_1195f3
 	ld a, $d8
-	jp Function118805
+	jp Mobile46SetErrorCode
 
 Function1195f8:
 	ld a, $11
@@ -2994,7 +2994,7 @@ Function1196f2:
 	cp $a
 	jr nz, .asm_119722
 	ld a, $b
-	jp Function118805
+	jp Mobile46SetErrorCode
 
 .asm_119722
 	call Random
@@ -3058,7 +3058,7 @@ Function1196f2:
 
 .asm_119770
 	ld a, $d3
-	jp Function118805
+	jp Mobile46SetErrorCode
 
 .asm_119775
 	ld a, b
@@ -3600,7 +3600,7 @@ Function119b6b:
 	jr z, .asm_119be3
 	ld hl, w3_d800
 	ld de, w3_d100 + 2
-.asm_119b85
+.asm_119b85 ; Something about skipping to the base64 pokemon
 	ld a, [de]
 	inc de
 	cp $d
@@ -3673,7 +3673,7 @@ Function119b6b:
 	cp $e0
 	jr c, .asm_119b93
 
-.asm_119be3
+.asm_119be3 ; Error state?
 	ld a, $19
 	ld [wBattleTowerRoomMenuJumptableIndex], a
 	ld a, BANK(s5_a800)
@@ -3715,7 +3715,7 @@ Function119b6b:
 	call CopyBytes
 	jp BattleTowerRoomMenu_IncrementJumptable
 
-Function119c3e:
+Function119c3e: ; Duplicate base64?
 	cp $2b
 	jr c, .asm_119c68
 	jr z, .asm_119c80
@@ -4472,7 +4472,7 @@ Function11a1d6:
 	cp $50
 	jr nz, .asm_11a1e4
 	ld a, $d3
-	call Function118805
+	call Mobile46SetErrorCode
 	scf
 	ret
 
@@ -5406,7 +5406,7 @@ Function11a9f4:
 	bit 7, h
 	ret nz
 	ld a, $d6
-	call Function118805
+	call Mobile46SetErrorCode
 	and a
 	ret
 
@@ -7020,7 +7020,7 @@ Function11b570:
 	ldh [rSVBK], a
 
 	ld hl, w3_d800
-	ld de, $c608
+	ld de, $c608 ; Mobile trade pokemon is at w3_d800?
 	ld bc, w3_d88f - w3_d800
 	call CopyBytes
 

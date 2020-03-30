@@ -1398,7 +1398,7 @@ Function1709bb: ; BattleTowerAction $10
 	call GetSRAMBank
 	ld hl, s5_b023
 	ld de, wc608
-	ld bc, 105
+	ld bc, 105 ; Mobile trade or mystery egg?
 	call CopyBytes
 	ld a, [s5_a825]
 	ld [wcd30], a
