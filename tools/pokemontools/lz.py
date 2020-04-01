@@ -44,8 +44,8 @@ lz_end = 0xff
 
 
 bit_flipped = [
-    sum(((byte >> i) & 1) << (7 - i) for i in xrange(8))
-    for byte in xrange(0x100)
+    sum(((byte >> i) & 1) << (7 - i) for i in range(8))
+    for byte in range(0x100)
 ]
 
 
@@ -105,7 +105,7 @@ class Compressed:
         self.arg_names = 'data', 'commands', 'debug', 'literal_only'
 
         self.__dict__.update(kwargs)
-        self.__dict__.update(dict(zip(self.arg_names, args)))
+        self.__dict__.update(dict(list(zip(self.arg_names, args))))
 
         if self.data is not None:
             self.compress()
@@ -146,7 +146,7 @@ class Compressed:
         self.scores = {}
         self.offsets = {}
         self.helpers = {}
-        for method in self.min_scores.iterkeys():
+        for method in self.min_scores.keys():
             self.scores[method] = 0
 
     def bit_flip(self, byte):
@@ -163,7 +163,7 @@ class Compressed:
     def score(self):
         self.reset_scores()
 
-        map(self.score_literal, ['iterate', 'alternate', 'blank'])
+        list(map(self.score_literal, ['iterate', 'alternate', 'blank']))
 
         for method in self.lookback_methods:
             self.scores[method], self.offsets[method] = self.find_lookback(method, self.address)
@@ -173,7 +173,7 @@ class Compressed:
         return any(
             score
           > self.min_scores[method] + int(score > lowmax)
-            for method, score in self.scores.iteritems()
+            for method, score in self.scores.items()
         )
 
     def stop_short(self):
@@ -181,7 +181,7 @@ class Compressed:
         If a lookback is close, reduce the scores of other commands.
         """
         best_method, best_score = max(
-            self.scores.items(),
+            list(self.scores.items()),
             key = lambda x: (
                 x[1],
                 -self.preference.index(x[0])
@@ -189,11 +189,11 @@ class Compressed:
         )
         for method in self.lookback_methods:
             min_score = self.min_scores[method]
-            for address in xrange(self.address+1, self.address+best_score):
+            for address in range(self.address+1, self.address+best_score):
                 length, index = self.find_lookback(method, address)
                 if length > max(min_score, best_score):
                     # BUG: lookbacks can reduce themselves. This appears to be a bug in the target also.
-                    for m, score in self.scores.items():
+                    for m, score in list(self.scores.items()):
                         self.scores[m] = min(score, address - self.address)
 
 
@@ -211,7 +211,7 @@ class Compressed:
 
     def find_lookback(self, method, address=None):
         """Temporarily stubbed, because the real function doesn't run in polynomial time."""
-	return 0, None
+        return 0, None
 
     def broken_find_lookback(self, method, address=None):
         if address is None:
@@ -282,7 +282,7 @@ class Compressed:
         return lookback
 
     def get_indexes(self, byte):
-        if not self.indexes.has_key(byte):
+        if byte not in self.indexes:
             self.indexes[byte] = []
             index = -1
             while 1:
@@ -314,16 +314,12 @@ class Compressed:
         self.helpers[method] = compare
 
     def do_winner(self):
-        winners = filter(
-            lambda (method, score):
-                score
-              > self.min_scores[method] + int(score > lowmax),
-            self.scores.iteritems()
-        )
+        winners = [method_score for method_score in iter(self.scores.items()) if method_score[1]
+              > self.min_scores[method_score[0]] + int(method_score[1] > lowmax)]
         winners.sort(
-            key = lambda (method, score): (
-                -(score - self.min_scores[method] - int(score > lowmax)),
-                self.preference.index(method)
+            key = lambda method_score1: (
+                -(method_score1[1] - self.min_scores[method_score1[0]] - int(method_score1[1] > lowmax)),
+                self.preference.index(method_score1[0])
             )
         )
         winner, score = winners[0]
@@ -368,11 +364,11 @@ class Compressed:
                 output += [offset / 0x100, offset % 0x100] # big endian
 
         if self.debug:
-            print ' '.join(map(str, [
+            print(' '.join(map(str, [
                   cmd, length, '\t',
                   ' '.join(map('{:02x}'.format, output)),
                   self.data[start_address:start_address+length] if cmd in self.lookback_methods else '',
-            ]))
+            ])))
 
         self.output += output
 
@@ -405,16 +401,16 @@ class Decompressed:
     arg_names = 'lz', 'start', 'commands', 'debug'
 
     def __init__(self, *args, **kwargs):
-        self.__dict__.update(dict(zip(self.arg_names, args)))
+        self.__dict__.update(dict(list(zip(self.arg_names, args))))
         self.__dict__.update(kwargs)
 
-        self.command_names = dict(map(reversed, self.commands.items()))
+        self.command_names = dict(list(map(reversed, list(self.commands.items()))))
         self.address = self.start
 
         if self.lz is not None:
             self.decompress()
 
-        if self.debug: print self.command_list()
+        if self.debug: print(self.command_list())
 
 
     def command_list(self):
@@ -432,7 +428,7 @@ class Decompressed:
             direction  = attrs['direction']
 
             text += '{2:03x} {0}: {1}'.format(name, length, output_address)
-            text += '\t' + ' '.join(
+            text += '\t' + ','.join(
                 '{:02x}'.format(int(byte))
                 for byte in self.lz[ address : address + attrs['cmd_length'] ]
             )
@@ -440,8 +436,8 @@ class Decompressed:
             if offset is not None:
                 repeated_data = self.output[ offset : offset + length * direction : direction ]
                 if name == 'flip':
-                    repeated_data = map(bit_flipped.__getitem__, repeated_data)
-                text += ' [' + ' '.join(map('{:02x}'.format, repeated_data)) + ']'
+                    repeated_data = list(map(bit_flipped.__getitem__, repeated_data))
+                text += ' [' + ','.join(map('{:02x}'.format, repeated_data)) + ']'
 
             text += '\n'
             output_address += length
@@ -466,7 +462,7 @@ class Decompressed:
             self.direction = None
 
             if (self.byte == lz_end):
-                self.next()
+                next(self)
                 break
 
             self.cmd = (self.byte & 0b11100000) >> 5
@@ -474,11 +470,11 @@ class Decompressed:
             if self.cmd_name == 'long':
                 # 10-bit length
                 self.cmd = (self.byte & 0b00011100) >> 2
-                self.length = (self.next() & 0b00000011) * 0x100
-                self.length += self.next() + 1
+                self.length = (next(self) & 0b00000011) * 0x100
+                self.length += next(self) + 1
             else:
                 # 5-bit length
-                self.length = (self.next() & 0b00011111) + 1
+                self.length = (next(self) & 0b00011111) + 1
 
             self.__class__.__dict__[self.cmd_name](self)
 
@@ -501,7 +497,7 @@ class Decompressed:
     def byte(self):
         return self.lz[ self.address ]
 
-    def next(self):
+    def __next__(self):
         byte = self.byte
         self.address += 1
         return byte
@@ -515,12 +511,12 @@ class Decompressed:
 
         if self.byte >= 0x80: # negative
             # negative
-            offset = self.next() & 0x7f
+            offset = next(self) & 0x7f
             offset = len(self.output) - offset - 1
         else:
             # positive
-            offset =  self.next() * 0x100
-            offset += self.next()
+            offset =  next(self) * 0x100
+            offset += next(self)
 
         self.offset = offset
 
@@ -536,14 +532,14 @@ class Decompressed:
         """
         Write one byte repeatedly.
         """
-        self.output += [self.next()] * self.length
+        self.output += [next(self)] * self.length
 
     def alternate(self):
         """
         Write alternating bytes.
         """
-        alts = [self.next(), self.next()]
-        self.output += [ alts[x & 1] for x in xrange(self.length) ]
+        alts = [next(self), next(self)]
+        self.output += [ alts[x & 1] for x in range(self.length) ]
 
     def blank(self):
         """
@@ -575,6 +571,6 @@ class Decompressed:
         self.get_offset()
         self.direction = direction
         # Note: appends must be one at a time (this way, repeats can draw from themselves if required)
-        for i in xrange(self.length):
+        for i in range(self.length):
             byte = self.output[ self.offset + i * direction ]
             self.output.append( table[byte] if table else byte )
