@@ -2463,9 +2463,9 @@ Function1193a0:
 	ld [hli], a
 	ld a, HIGH(wc708)
 	ld [hli], a
-	ld a, $60
+	ld a, LOW(wcc60)
 	ld [hli], a
-	ld a, $cc
+	ld a, HIGH(wcc60)
 	ld [hli], a
 	call Function119eb4
 	call Function119ec2

@@ -19,12 +19,12 @@ MobileBattleRoom_MapScripts:
 
 MobileBattleRoomConsoleScript:
 	refreshscreen
-	special Function1037c2
+	special Function1037c2 ; "Try again using the same settings?"
 	ifequal $1, .one
-	special Function1037eb
-	iffalse .false
-	ifequal $1, .one_
-	ifequal $2, .two_
+	special Function1037eb ; Check and print time remaining
+	iffalse .false    ; Not enough time
+	ifequal $1, .one_ ; Enough time
+	ifequal $2, .two_ ; Also check wdc60, if set skip heal animation
 	sjump .false
 
 .one_
@@ -41,10 +41,10 @@ MobileBattleRoomConsoleScript:
 .two_
 	special StubbedTrainerRankings_Healings
 	special HealParty
-	special Function10383c
+	special Function10383c ; select 3 pokemon for battle
 	iftrue .false
 .one
-	special Function10387b
+	special Function10387b ; "Todays remaining time is ..."
 	writetext MobileBattleRoom_EstablishingCommsText
 	waitbutton
 	reloadmappart

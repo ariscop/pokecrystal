@@ -333,11 +333,12 @@ Function100232:
 	ret
 
 String10024d:
-	db   "つうしんを　キャンセル　しました@"
+	db   "Communication" ; "つうしんを　キャンセル　しました@"
+	next "canceled.@"
 
 String10025e:
-	db   "おともだちと　えらんだ　へやが"
-	next "ちがうようです@"
+	db   "Incompatible rooms" ; "おともだちと　えらんだ　へやが"
+	next "were chosen.@"      ; "ちがうようです@"
 
 Function100276:
 	ld a, [wcd2b]
@@ -873,8 +874,8 @@ MenuHeader_1005b2:
 MenuData_1005ba:
 	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING ; flags
 	db 2
-	db "Yes@"
-	db "No@"
+	db "YES@"
+	db "NO@"
 
 Function1005c3:
 	ld a, [wcd26]
@@ -912,7 +913,7 @@ Function1005e1:
 
 MenuHeader_1005fc:
 	db MENU_BACKUP_TILES ; flags
-	db 6, 14
+	db 6, 13
 	db 10, 19
 	dw MenuData_100604
 	db 1 ; default option
@@ -920,8 +921,8 @@ MenuHeader_1005fc:
 MenuData_100604:
 	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING ; flags
 	db 2
-	db "かける@"
-	db "まつ@"
+	db "CALL@" ; "かける@"
+	db "WAIT@" ; "まつ@"
 
 Mobile_CommunicationStandby:
 	hlcoord 3, 10
@@ -934,7 +935,7 @@ Mobile_CommunicationStandby:
 	ret
 
 .String:
-	db "つうしんたいきちゅう！@"
+	db "Waiting...!@" ; db "つうしんたいきちゅう！@"
 
 AdvanceMobileInactivityTimerAndCheckExpired:
 	push bc
@@ -1684,7 +1685,7 @@ Function100ae7:
 pushc
 setcharmap ascii
 
-Unknown_100b0a:
+Unknown_100b0a: ; When running from a mobile battle?
 	db "tetsuji", 0
 
 popc
@@ -1861,17 +1862,17 @@ MobileMoveSelectionScreen:
 	jp .GetMoveSelection
 
 Function100c74:
-	hlcoord 0, 8
-	ld b, 8
-	ld c, 8
+	hlcoord 4, 17 - NUM_MOVES - 1
+	ld b, 4
+	ld c, 14
 	call Textbox
 	ld hl, wBattleMonMoves
 	ld de, wListMoves_MoveIndicesBuffer
 	ld bc, NUM_MOVES
 	call CopyBytes
-	ld a, SCREEN_WIDTH * 2
+	ld a, SCREEN_WIDTH
 	ld [wBuffer1], a
-	hlcoord 2, 10
+	hlcoord 6, 17 - NUM_MOVES
 	predef ListMoves
 	ret
 
@@ -1887,10 +1888,10 @@ Function100c98:
 	ret
 
 .attrs
-	db 10, 1
+	db 13, 5
 	db 255, 1
 	db $a0, $00
-	dn 2, 0
+	dn 1, 0
 	db D_UP | D_DOWN | A_BUTTON | B_BUTTON
 
 Mobile_PartyMenuSelect:
@@ -2501,7 +2502,7 @@ Function1010de:
 LoadSelectedPartiesForColosseum:
 	xor a
 	ld hl, wStringBuffer2
-	ld bc, 9
+	ld bc, 9 ; PLAYER_NAME_LENGTH + 1?
 	call ByteFill
 	ld hl, wPlayerMonSelection
 	ld de, wPartyCount
@@ -2532,7 +2533,7 @@ LoadSelectedPartiesForColosseum:
 .CopyThreeSpecies:
 ; Load the 3 choices to the buffer
 	push de
-	ld bc, wStringBuffer2 + NAME_LENGTH_JAPANESE
+	ld bc, wStringBuffer2 + NAME_LENGTH;_JAPANESE
 	xor a
 .party_loop
 	push af
@@ -2548,7 +2549,7 @@ LoadSelectedPartiesForColosseum:
 	ld a, 3
 	ld [de], a
 	inc de
-	ld hl, wStringBuffer2 + NAME_LENGTH_JAPANESE
+	ld hl, wStringBuffer2 + NAME_LENGTH;_JAPANESE
 	ld bc, 3
 	call CopyBytes
 	ld a, $ff
@@ -2680,14 +2681,14 @@ Function101220:
 	ld [wLinkMode], a
 	ret
 
-Function101225:
+Function101225: ; Mobile battle
 	ld d, 1
 	ld e, BANK(Jumptable_101297)
 	ld bc, Jumptable_101297
 	call Function100000
 	jr Function10123d
 
-Function101231:
+Function101231: ; Mobile trade
 	ld d, 2
 	ld e, BANK(Jumptable_101297)
 	ld bc, Jumptable_101297
@@ -3085,7 +3086,7 @@ Function1014a6:
 Function1014b7:
 	call GetJoypad
 	ldh a, [hJoyPressed]
-	and $03
+	and A_BUTTON | B_BUTTON
 	jr nz, .asm_1014c5
 	ld hl, wcd42
 	dec [hl]
@@ -3615,6 +3616,7 @@ Function101826:
 pushc
 setcharmap ascii
 
+; Sent over direct mobile connection
 Unknown_10186f:
 	db .end - @
 	db $19, $73, $09, $13, "trade_crystal"
@@ -3802,11 +3804,11 @@ _StartMobileBattle:
 .CopyOTDetails:
 	ldh a, [rSVBK]
 	push af
-	ld a, 5
+	ld a, BANK(w5_dc0d)
 	ldh [rSVBK], a
 
-	ld bc, w5_dc0d
-	ld de, w5_dc11
+	ld bc, w5_dc0d + 10 ; Because of the longer names in
+	ld de, w5_dc11 + 10 ; LoadSelectedPartiesForColosseum.CopyThreeSpecies
 	farcall GetMobileOTTrainerClass
 
 	pop af
@@ -3888,7 +3890,7 @@ Function101a97:
 
 Function101ab4:
 	ld e, $01
-	call Function101ee4
+	call Unknown_GetString101e5f
 	ld hl, wcd29
 	set 5, [hl]
 	ld a, [wMobileCommsJumptableIndex]
@@ -3932,7 +3934,7 @@ Function101b0f:
 	ld c, 0
 	call Function10142c
 	ld e, $03
-	call Function101ee4
+	call Unknown_GetString101e5f
 	ld hl, wcd29
 	set 5, [hl]
 	ld a, [wMobileCommsJumptableIndex]
@@ -3969,7 +3971,7 @@ Function101b59:
 	ld c, $02
 	call Function10142c
 	ld e, $02
-	call Function101ee4
+	call Unknown_GetString101e5f
 	ld hl, wcd29
 	set 5, [hl]
 	ld a, [wMobileCommsJumptableIndex]
@@ -3981,7 +3983,7 @@ Function101b70:
 	ld c, $02
 	call Function10142c
 	ld e, $04
-	call Function101ee4
+	call Unknown_GetString101e5f
 	ld hl, wcd29
 	set 5, [hl]
 	call UpdateSprites
@@ -4024,7 +4026,7 @@ Function101bc8:
 	ld c, $02
 	call Function10142c
 	ld e, $08
-	call Function101ee4
+	call Unknown_GetString101e5f
 	call Function102048
 	call Function1013dd
 	ld a, 0
@@ -4060,7 +4062,7 @@ Function101c11:
 	ld a, $01
 	ld [wdc5f], a
 	ld e, $09
-	call Function101ee4
+	call Unknown_GetString101e5f
 	call Function102048
 	ld hl, wcd29
 	set 5, [hl]
@@ -4073,7 +4075,7 @@ Function101c2b:
 	ld a, $02
 	ld [wdc5f], a
 	ld e, $07
-	call Function101ee4
+	call Unknown_GetString101e5f
 	ld hl, wcd29
 	set 5, [hl]
 	ld a, [wMobileCommsJumptableIndex]
@@ -4091,7 +4093,7 @@ Function101c42:
 
 Function101c50:
 	ld e, $0a
-	call Function101ee4
+	call Unknown_GetString101e5f
 	ld hl, wcd29
 	set 2, [hl]
 	ld a, [wMobileCommsJumptableIndex]
@@ -4110,7 +4112,7 @@ Function101c62:
 	ld hl, wcd29
 	res 4, [hl]
 	ld e, $0b
-	call Function101ee4
+	call Unknown_GetString101e5f
 	ld hl, wcd29
 	set 5, [hl]
 	ld a, [wMobileCommsJumptableIndex]
@@ -4131,7 +4133,7 @@ Function101ca0:
 	ld c, $02
 	call Function10142c
 	ld e, $0c
-	call Function101ee4
+	call Unknown_GetString101e5f
 	ld hl, wcd29
 	set 5, [hl]
 	ld a, [wMobileCommsJumptableIndex]
@@ -4268,10 +4270,10 @@ Unknown_101d8d:
 	db $15, $15, $1f, $1f, $0c, $12, $3a, $3a
 
 Function101d95:
-	call Function101ee2
+	call Unknown_GetNullString
 	call LoadStandardMenuHeader
 	ld e, $0e
-	call Function101ee4
+	call Unknown_GetString101e5f ; Please adjust the settings
 	ld hl, wcd29
 	set 5, [hl]
 	ld a, [wMobileCommsJumptableIndex]
@@ -4380,7 +4382,7 @@ Function101e39:
 
 Function101e4f:
 	ld e, $06
-	call Function101ee4
+	call Unknown_GetString101e5f
 	call Function1013d6
 	ld a, [wMobileCommsJumptableIndex]
 	inc a
@@ -4454,7 +4456,7 @@ Function101ead:
 	ret
 
 Function101ecc:
-	call Function101ee2
+	call Unknown_GetNullString
 	call FadeToMenu
 	ret
 
@@ -4465,10 +4467,10 @@ Function101ed3:
 	set 7, [hl]
 	ret
 
-Function101ee2:
+Unknown_GetNullString:
 	ld e, 0
 
-Function101ee4:
+Unknown_GetString101e5f:
 	ld d, 0
 	ld hl, Unknown_101ef5
 	add hl, de
@@ -4500,55 +4502,58 @@ String_101f13:
 	db "@"
 
 String_101f14:
-	db   "モバイルアダプタを　つかって"
-	next "おともだちと　つうしんします@"
+	db   "Communication"  ; "モバイルアダプタを　つかって"
+	next "with friends.@" ; "おともだちと　つうしんします@"
 
 String_101f32:
-	db   "でんわを　かけるひとには"
-	next "つうわりょうきんが　かかります@"
+	db   "Caller will"    ; "でんわを　かけるひとには"
+	next "be charged.@"   ; "つうわりょうきんが　かかります@"
 
 String_101f4f:
-	db   "モバイルアダプタの　じゅんびは"
-	next "できて　いますか？@"
+	db   "Is your MOBILE" ; "モバイルアダプタの　じゅんびは"
+	next "ADAPTER ready?@"; "できて　いますか？@"
 
 String_101f69:
-	db   "あなたが　おともだちに"
-	next "でんわを　かけますか？@"
+	db   "Want to call"   ; "あなたが　おともだちに"
+	next "your friend?@"  ; "でんわを　かけますか？@"
 
 String_101f81:
-	db   "めいしフォルダーを"
-	next "つかいますか？@"
+	db   "Use the"        ; "めいしフォルダーを"
+	next "CARD FOLDER?@"  ; "つかいますか？@"
 
 String_101f93:
-	db   "でんわばんごうを　にゅうりょく"
-	next "してください@"
+	db   "Enter a"        ; "でんわばんごうを　にゅうりょく"
+	next "phone number.@" ; "してください@"
 
 String_101faa:
-	db   "それでは　おともだちからの"
-	next "でんわを　おまちします⋯@"
+	db   "Waiting for"    ; "それでは　おともだちからの"
+	next "call…@"         ; "でんわを　おまちします⋯@"
 
 String_101fc5:
-	next "に　でんわを　かけます@"
+	db   "Call this no.?@"; "に　でんわを　かけます@"
 
 String_101fd2:
-	next "に　でんわを　かけています@"
+	db   "Calling…@"      ; "に　でんわを　かけています@"
 
 String_101fe1:
-	db   "でんわが　つながりました!@"
+	db   "Connected to"   ; "でんわが　つながりました!@"
+	next "friend!@"
 
 String_101fef:
-	db   "つうわを"
-	next "しゅうりょう　します⋯@"
+	db   "Ending call…@"  ; "つうわを"
+	                      ; "しゅうりょう　します⋯@"
 
 String_102000:
-	db   "つうしん　しゅうりょう@"
+	db   "Communication"  ; "つうしん　しゅうりょう@"
+	next "ended.@"
 
 String_10200c:
-	db   "つうわ　じかん@"
+	db   "Call lasted@"   ; "つうわ　じかん@"
 
 String_102014:
-	db   "それでは　つうしんの"
-	next "せっていを　してください@"
+	db   "Please adjust"  ; "それでは　つうしんの"
+	next "the settings.@" ; "せっていを　してください@"
+
 
 Function10202c:
 	farcall Function115d99
@@ -4557,7 +4562,7 @@ Function10202c:
 	ld c, $02
 	call Function10142c
 	ld e, $0d
-	call Function101ee4
+	call Unknown_GetString101e5f
 	hlcoord 4, 4
 	call Function100681
 	ret
@@ -6987,7 +6992,7 @@ Function10339a:
 	ld [wd1f3], a
 	ret
 
-Function1033af:
+Function1033af: ; 'chose the settings' menu loop
 	call GetJoypad
 	ldh a, [hJoyPressed]
 	bit D_LEFT_F, a
@@ -7219,19 +7224,19 @@ Unknown_103522:
 	dw String_103545
 
 String_103545: db "@"
-String_103546: db "せんとう　アニメ@"
-String_10354f: db "でんわばんごう@"
-String_103557: db "めいしこうかん@"
-String_10355f: db "でんわを　かけるひとが　きめられる@"
-String_103571: db "でんわばんごうの　にゅうりょくのしかた@"
-String_103585: db "あたらしいめいしが　あれば　こうかん@"
-String_103598: db "とばして　みる@"
-String_1035a0: db "じっくり　みる@"
-String_1035a8: db "めいしからえらぶ@"
-String_1035b1: db "すうじで　いれる@"
-String_1035ba: db "する@"
-String_1035bd: db "しない@"
-String_1035c1: db "けってい@"
+String_103546: db "Animations@" ; "せんとう　アニメ@"
+String_10354f: db "Phone no.@"  ; "でんわばんごう@"
+String_103557: db "CARD trade@" ; "めいしこうかん@"
+String_10355f: db "Caller decides.@" ; "でんわを　かけるひとが　きめられる@"
+String_103571: db "Phone no. source.@" ; "でんわばんごうの　にゅうりょくのしかた@" ; Entering a phone number
+String_103585: db "Replaces old CARD.@" ; "あたらしいめいしが　あれば　こうかん@" ; Replace if there is a new business card
+String_103598: db "SKIP@"  ; "とばして　みる@"   ; Skip to see
+String_1035a0: db "SHOW@"  ; "じっくり　みる@"   ; Watch carefully
+String_1035a8: db "CARD@"  ; "めいしからえらぶ@" ; Choose from business cards
+String_1035b1: db "ENTER@" ; "すうじで　いれる@"
+String_1035ba: db "YES@"   ; "する@"
+String_1035bd: db "NO@"    ; "しない@"
+String_1035c1: db "OK@"    ; "けってい@"
 
 Function1035c6:
 	farcall Function10138b
@@ -7317,8 +7322,8 @@ MenuHeader_103640:
 MenuData_103648:
 	db STATICMENU_CURSOR ; flags
 	db 2
-	db "Mobile@"
-	db "Cable@"
+	db "MOBILE@"
+	db "CABLE@"
 
 Function103654:
 	farcall Mobile_AlwaysReturnNotCarry
@@ -7459,16 +7464,17 @@ Function103700:
 
 MenuHeader_103747:
 	db MENU_BACKUP_TILES ; flags
-	menu_coords 13, 5, SCREEN_WIDTH - 1, TEXTBOX_Y - 1
+	menu_coords 11, 5, SCREEN_WIDTH - 1, TEXTBOX_Y - 1
 	dw MenuData_10374f
 	db 1 ; default option
 
 MenuData_10374f:
 	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING ; flags
 	db 3
-	db "Yes@"
-	db "No@"
-	db "Info@"
+	db "YES@"    ; "はい@"
+	db "CANCEL@" ; "やめる@"
+	db "INFO@"   ; "せつめい@"
+
 
 UnknownText_0x10375d:
 	text_far UnknownText_0x1c422a
@@ -7544,7 +7550,7 @@ Function1037c2:
 	ld a, [wdc5f]
 	and a
 	jr z, .nope
-	ld hl, UnknownText_0x1037e6
+	ld hl, UnknownText_0x1037e6 ; "Try again using the same settings?"
 	call PrintText
 	call YesNoBox
 	jr c, .nope
@@ -7599,7 +7605,7 @@ MobileBattleNoTimeLeftForLinkingText:
 MobileCheckRemainingBattleTime:
 ; Returns carry if less than one minute remains
 	farcall Mobile_AlwaysReturnNotCarry
-	bit 7, c
+	bit 7, c ; Unlimited battle check
 	jr nz, .ok
 	farcall MobileBattleGetRemainingTime
 	ld a, c
@@ -7647,12 +7653,12 @@ UnknownText_0x103876:
 
 Function10387b:
 	farcall Mobile_AlwaysReturnNotCarry
-	bit 7, c
+	bit 7, c ; unlimited battle check?
 	ret nz
 	farcall MobileBattleGetRemainingTime
 	ld a, c
 	ld [wStringBuffer2], a
-	ld hl, UnknownText_0x103898
+	ld hl, UnknownText_0x103898 ; Todays remaining time is
 	call PrintText
 	call JoyWaitAorB
 	ret
