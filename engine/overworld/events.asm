@@ -828,14 +828,25 @@ CheckMenuOW:
 	scf
 	ret
 
-.NoMenu:
+.NoMenu
 	xor a
 	ret
 
-.Select:
+.Select
+	ldh a, [hJoyDown]
+	bit B_BUTTON_F, a
+	jr nz, .DebugMenu
+
 	call PlayTalkObject
 	ld a, BANK(SelectMenuScript)
 	ld hl, SelectMenuScript
+	call CallScript
+	scf
+	ret
+
+.DebugMenu
+	ld a, BANK(DebugMenuScript)
+	ld hl, DebugMenuScript
 	call CallScript
 	scf
 	ret
@@ -848,8 +859,13 @@ SelectMenuScript:
 	callasm SelectMenu
 	sjump SelectMenuCallback
 
+DebugMenuScript:
+	callasm DebugMenu
+	sjump DebugMenuCallback
+
 StartMenuCallback:
 SelectMenuCallback:
+DebugMenuCallback:
 	readmem hMenuReturn
 	ifequal HMENURETURN_SCRIPT, .Script
 	ifequal HMENURETURN_ASM, .Asm

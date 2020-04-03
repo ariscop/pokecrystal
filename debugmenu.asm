@@ -1,11 +1,10 @@
 DebugMenu::
-	farcall EnableScriptMode
 	ld a, BANK(NewsDebugScript)
-	ld [wScriptBank], a
-	ld a, LOW(NewsDebugScript)
-	ld [wScriptPos], a
-	ld a, HIGH(NewsDebugScript)
-	ld [wScriptPos + 1], a
+	ld hl, NewsDebugScript
+	call FarQueueScript
+	ldh a, [hMenuReturn]
+	or HMENURETURN_SCRIPT
+	ldh [hMenuReturn], a
 	ret
 
 NewsDebugScript:

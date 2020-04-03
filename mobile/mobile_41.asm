@@ -477,24 +477,24 @@ CalculateTrainerRankingsChecksum:
 BackupMobileEventIndex:
 	ld a, BANK(sMobileEventIndex)
 	call GetSRAMBank
-	ld a, [sMobileEventIndex]
-	push af
-	ld a, BANK(sMobileEventIndexBackup)
-	call GetSRAMBank
-	pop af
-	ld [sMobileEventIndexBackup], a
+	ld hl, sMobileEventIndex
+	ld de, sMobileEventIndexBackup
+	ld bc, sTrainerRankingsEnd - sMobileEventIndex
+	call CopyBytes
+	call Unreferenced_VerifyTrainerRankingsChecksum
+	call nz, InitializeTrainerRankings
 	call CloseSRAM
 	ret
 
 RestoreMobileEventIndex:
-	ld a, BANK(sMobileEventIndexBackup)
-	call GetSRAMBank
-	ld a, [sMobileEventIndexBackup]
-	push af
 	ld a, BANK(sMobileEventIndex)
 	call GetSRAMBank
-	pop af
-	ld [sMobileEventIndex], a
+	ld hl, sMobileEventIndexBackup
+	ld de, sMobileEventIndex
+	ld bc, sTrainerRankingsEnd - sMobileEventIndex
+	call CopyBytes
+	call Unreferenced_VerifyTrainerRankingsChecksum
+	call nz, InitializeTrainerRankings
 	call CloseSRAM
 	ret
 
@@ -509,11 +509,18 @@ Unreferenced_VerifyTrainerRankingsChecksum:
 	cp [hl]
 	ret
 
-DeleteMobileEventIndex:
+DeleteMobileEventIndex: ; In jp this also clears the trainer rankings
 	ld a, BANK(sMobileEventIndex)
 	call GetSRAMBank
+	ld hl, sMobileEventIndex
+	ld bc, sTrainerRankingsEnd - sMobileEventIndex
 	xor a
-	ld [sMobileEventIndex], a
+	call ByteFill
+	ld hl, sTrainerRankingLongestMagikarp
+	ld a, 3
+	ldi [hl], a
+	ld [hl], $e8
+	call UpdateTrainerRankingsChecksum
 	call CloseSRAM
 	ret
 

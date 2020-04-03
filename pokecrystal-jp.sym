@@ -223,7 +223,10 @@
 01:5b7e AreYouABoyOrAreYouAGirl
 01:5b96 ResetWRAM
 01:5b9d _ResetWRAM
+01:5cb9 InitializeMagikarpHouse
+01:5cd1 InitalizeNPCNames
 01:5d0c InitializeWorld
+01:5d1c LoadOrRegenerateLuckyIDNumber
 01:5d4e Continue
 01:5dd9 Continue_MobileAdapterMenu
 01:5e1d ConfirmContinue
@@ -231,6 +234,7 @@
 01:5e46 FinishContinueFunction
 01:5e6e DisplaySaveInfoOnContinue
 01:5f89 OakSpeech
+01:6289 ShrinkPlayer
 01:6385 CrystalIntroSequence
 01:6393 StartTitleScreen
 01:63e4 StartTitleScreen.dw
@@ -247,6 +251,7 @@
 01:7DB4 SpecialPointer_62
 01:7DB9 SpecialPointer_63
 01:7E16 predef_1
+02:4029 SpawnPlayer
 02:4029 SpawnPlayer
 02:40B8 RefreshPlayerCoords
 02:4379 SpecialPointer_3f
@@ -307,6 +312,7 @@
 03:61E1 predef_a
 03:63BD predef_c
 03:63D1 predef_d
+04:5370 _InitializeStartDay
 04:541F SpecialPointer_95
 04:55D3 predef_e
 04:5604 predef_f
@@ -903,7 +909,11 @@
 41:50F1 SpecialPointer_13
 41:5111 BackupMysteryGift
 41:6101 SpecialPointer_9d
+41:61ad UpdateTrainerRankingsChecksum
 41:61d2 BackupMobileEventIndex
+41:61ed RestoreMobileEventIndex
+41:6208 VerifyTrainerRankingsChecksum
+41:6215 DeleteMobileEventIndex
 41:6375 SpecialPointer_a0
 41:6397 Mobile_AlwaysReturnNotCarry
 45:7656 SpecialPointer_7d
@@ -1065,6 +1075,7 @@
 00:c2cd wGameLogicPaused
 00:c2cf wUnusedScriptByteBuffer
 00:c2dd wScriptVar
+00:c400 wVirtualOAM
 00:c608 wSurroundingTiles
 00:c6d0 wPokedexOrder
 00:c7d2 wDexListingEnd
