@@ -180,11 +180,11 @@ Function1100b4:
 	push bc
 .loop
 	di
-	ld a, [$c800]
+	ld a, [wc800]
 	ld b, a
 	ld a, [$c80b]
 	ld c, a
-	ld a, [$c822]
+	ld a, [wc822]
 	ei
 	or a
 	bit 0, a
@@ -196,8 +196,8 @@ Function1100b4:
 	cp $4
 	jr z, .loop
 	xor a
-	ld [$c80f], a
-	ld hl, $c821
+	ld [wc80f], a
+	ld hl, wc821
 	set 1, [hl]
 	scf
 .done
@@ -229,11 +229,11 @@ Function1100dc:
 	ldh [rTMA], a
 	ldh [rTIMA], a
 	ld a, [hli]
-	ld [$c81f], a
-	ld [$c816], a
+	ld [wc81f], a
+	ld [wc815 + 1], a
 	ld a, [hl]
-	ld [$c820], a
-	ld [$c815], a
+	ld [wc820], a
+	ld [wc815], a
 	ld c, $7
 	ld a, $2
 	ldh [c], a
@@ -242,7 +242,7 @@ Function1100dc:
 	ret
 
 Function110115:
-	ld hl, $c821
+	ld hl, wc821
 	bit 1, [hl]
 	jr nz, .asm_110120
 	xor a
@@ -252,7 +252,7 @@ Function110115:
 
 .asm_110120
 	res 1, [hl]
-	ld a, [$c80f]
+	ld a, [wc80f]
 	ld e, a
 	cp $22
 	jr z, .asm_11016a
@@ -292,7 +292,7 @@ Function110115:
 	ld hl, $c810
 	ld [hli], a
 	ld [hl], a
-	ld hl, $c821
+	ld hl, wc821
 
 .asm_11016a
 	xor a
@@ -301,7 +301,7 @@ Function110115:
 	ld [$c807], a
 	inc a
 	ld [$c86a], a
-	ld hl, $c822
+	ld hl, wc822
 	res 0, [hl]
 	res 5, [hl]
 	ld hl, wMobileSDK_PacketBuffer
@@ -316,7 +316,7 @@ Function110115:
 	jr .asm_1101d7
 
 .asm_11018e
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 4, a
 	ld a, $1
 	jr z, .asm_11016a
@@ -328,9 +328,9 @@ Function110115:
 
 .asm_1101a4
 	res 0, [hl]
-	ld hl, $c822
+	ld hl, wc822
 	res 5, [hl]
-	ld hl, $c821
+	ld hl, wc821
 	res 7, [hl]
 	res 6, [hl]
 	set 5, [hl]
@@ -403,8 +403,8 @@ Function110226:
 	ld a, $21
 
 Function110228:
-	ld [$c80f], a
-	ld hl, $c821
+	ld [wc80f], a
+	ld hl, wc821
 	set 1, [hl]
 	ret
 
@@ -427,7 +427,7 @@ Function110236:
 	ldh [rIF], a
 	call ResetReceivePacketBuffer
 	ld bc, $0452
-	ld hl, $c800
+	ld hl, wc800
 .asm_11024e
 	xor a
 	ld [hli], a
@@ -435,9 +435,9 @@ Function110236:
 	ld a, c
 	or b
 	jr nz, .asm_11024e
-	ld a, [$c822]
+	ld a, [wc822]
 	set 6, a
-	ld [$c822], a
+	ld [wc822], a
 	pop hl
 	ld a, l
 	ld [$c981], a
@@ -472,15 +472,15 @@ Function110236:
 	jp Function110432
 
 Function110291:
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 1, a
 	jr z, .asm_1102a6
-	ld a, [$c80f]
+	ld a, [wc80f]
 	cp $14
 	jr z, .asm_1102b3
 	cp $25
 	jr z, .asm_1102b3
-	ld a, [$c821]
+	ld a, [wc821]
 
 .asm_1102a6
 	bit 0, a
@@ -560,13 +560,13 @@ Function110291:
 	call Function1104b0
 	ld a, $2e
 	ld [$c86a], a
-	ld hl, $c821
+	ld hl, wc821
 	res 1, [hl]
 	set 0, [hl]
 	ret
 
 Function11032c:
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 1, a
 	jp nz, Function110226
 	bit 0, a
@@ -651,7 +651,7 @@ Function11039a:
 	ret
 
 Function1103ac:
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 0, a
 	jp nz, Function110226
 	ld a, [$c86a]
@@ -720,12 +720,12 @@ Function1103ac:
 	ld [$c86a], a
 
 Function110432:
-	ld hl, $c821
+	ld hl, wc821
 	set 0, [hl]
 	ret
 
 Function110438:
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 0, a
 	jp nz, Function110226
 	ld a, [$c86a]
@@ -804,7 +804,7 @@ Function1104b0:
 	jp PacketSendBytes
 
 Function1104c6:
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 0, a
 	jp nz, Function110226
 	ld a, [$c86a]
@@ -814,7 +814,7 @@ Function1104c6:
 	jr z, .asm_110526
 	cp $2
 	jp nz, Function110226
-	ld hl, $c822
+	ld hl, wc822
 	bit 4, [hl]
 	jr nz, .asm_110507
 	ld a, $2
@@ -828,7 +828,7 @@ Function1104c6:
 .asm_1104fa
 	ld a, $e
 	ld [$c86a], a
-	ld hl, $c821
+	ld hl, wc821
 	set 0, [hl]
 	res 3, [hl]
 	ret
@@ -839,9 +839,9 @@ Function1104c6:
 	jr nz, .asm_11051f
 	ld a, $1
 	ld [$c86a], a
-	ld hl, $c822
+	ld hl, wc822
 	res 4, [hl]
-	ld hl, $c821
+	ld hl, wc821
 	ld a, [hl]
 	and $17
 	ld [hl], a
@@ -856,7 +856,7 @@ Function1104c6:
 	call Function112724
 	xor a
 	ld [$c86b], a
-	ld de, $cb67
+	ld de, wcb67
 	ld hl, MobilePacket_TransferData
 	ld b, $6
 	call MobileSDK_CopyBytes
@@ -911,7 +911,7 @@ Function11058c:
 	ret
 
 Function110596:
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 0, a
 	jr nz, .asm_1105d9
 	ld a, [$c86a]
@@ -949,7 +949,7 @@ Function110596:
 	jp Function110226
 
 Function1105dd:
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 0, a
 	jp nz, Function110226
 	ld a, [$c86a]
@@ -1100,7 +1100,7 @@ Function110615:
 	jp .asm_110631
 
 Function1106ef:
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 0, a
 	jp nz, Function110226
 	ld a, [$c86a]
@@ -1155,7 +1155,7 @@ Function1106ef:
 	jp Function110615
 
 Function110757:
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 0, a
 	jp nz, Function110226
 	ld a, [$c86a]
@@ -1239,7 +1239,7 @@ Function110757:
 	jp Function110231
 
 Function1107ff:
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 0, a
 	jp nz, Function110226
 	ld a, [$c86a]
@@ -1321,13 +1321,13 @@ Function1108a3:
 	jp nz, Function110226
 
 Function1108ab:
-	ld hl, $c821
+	ld hl, wc821
 	bit 0, [hl]
 	jp nz, Function110226
 	call Function112724
 	xor a
 	ld [$c86b], a
-	ld de, $cb67
+	ld de, wcb67
 	ld hl, MobilePacket_TransferData
 	ld b, $6
 	call MobileSDK_CopyBytes
@@ -1361,7 +1361,7 @@ Function1108ab:
 	jp Function110432
 
 Function110905:
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 0, a
 	jp nz, Function110226
 	ld a, [$c86a]
@@ -1442,7 +1442,7 @@ Function110905:
 	jp Function110615
 
 Function1109a4:
-	ld hl, $c821
+	ld hl, wc821
 	bit 0, [hl]
 	jp nz, Function110226
 	ld a, [$c86a]
@@ -1480,7 +1480,7 @@ Function1109a4:
 	jp Function110432
 
 Function1109f9:
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 0, a
 	jp nz, Function110226
 	ld a, [$c86a]
@@ -1525,7 +1525,7 @@ Function1109f9:
 	jp Function110432
 
 Function110a5b:
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 2, a
 	jr z, .asm_110a6d
 	ld a, [$c86a]
@@ -1726,7 +1726,7 @@ Function110af4:
 	call Function1127f3
 	jr z, .asm_110bbb
 	di
-	ld hl, $c821
+	ld hl, wc821
 	res 2, [hl]
 	ld a, $1
 	ld [$c86b], a
@@ -1740,7 +1740,7 @@ Function110af4:
 .asm_110bbb
 	ld a, $4
 	ld [$c86a], a
-	ld hl, $c821
+	ld hl, wc821
 	res 0, [hl]
 	res 2, [hl]
 	ld hl, $c827
@@ -1820,7 +1820,7 @@ Function110af4:
 	jp .asm_110b1c
 
 Function110c3c:
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 0, a
 	jp nz, Function110226
 	ld a, [$c86a]
@@ -1865,7 +1865,7 @@ Function110c3c:
 	jp Function110432
 
 Function110c9e:
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 2, a
 	jr z, .asm_110cb0
 	ld a, [$c86a]
@@ -2085,7 +2085,7 @@ Function110d37:
 	ret
 
 Function110ddd:
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 2, a
 	ld a, [$c86a]
 	jr z, .asm_110e00
@@ -2109,7 +2109,7 @@ Function110ddd:
 .asm_110e00
 	cp $2
 	jp nz, Function110226
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 0, a
 	jp nz, Function110226
 	ld a, [$c86d]
@@ -2508,7 +2508,7 @@ Function111044:
 	di
 	ld a, $2
 	ld [$c989], a
-	ld hl, $c821
+	ld hl, wc821
 	res 2, [hl]
 	ld a, [wMobileSDK_ReceivePacketBuffer]
 	cp $9f
@@ -2640,7 +2640,7 @@ Function11115f:
 	ret
 
 Function1111ca:
-	ld hl, $c821
+	ld hl, wc821
 	res 2, [hl]
 	ld a, $6
 	ld [$c86b], a
@@ -2680,13 +2680,13 @@ Function1111d7:
 	ret
 
 Function1111fe:
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 2, a
 	ld a, [$c86a]
 	jp nz, Function1113ea
 	cp $2
 	jp nz, Function110226
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 0, a
 	jp nz, Function110226
 	ld a, [$c86d]
@@ -3022,29 +3022,29 @@ Function1113f8:
 	jp Function110231
 
 Function1113fe:
-	ld a, [$c822]
+	ld a, [wc822]
 	bit 4, a
 	jp z, .asm_11147f
 	bit 7, a
 	jp nz, .asm_11147f
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 0, a
 	jp nz, .asm_11147f
 .asm_111413
-	ld a, [$c800]
+	ld a, [wc800]
 	or a
 	jr nz, .asm_111413
 	di
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 3, a
 	jp nz, .asm_11147b
 	ld a, [$c807]
 	or a
 	jr nz, .asm_111436
-	ld hl, $c821
+	ld hl, wc821
 	set 1, [hl]
 	ld a, $23
-	ld [$c80f], a
+	ld [wc80f], a
 	ld a, $ff
 	ei
 	ret
@@ -3086,9 +3086,9 @@ Function1113fe:
 	inc b
 	inc b
 	call Function111f63
-	ld hl, $c822
+	ld hl, wc822
 	set 7, [hl]
-	ld hl, $c821
+	ld hl, wc821
 	set 0, [hl]
 	ld a, $0
 	ei
@@ -3111,10 +3111,10 @@ Function1113fe:
 	ret
 
 Function11148c:
-	ld a, [$c822]
+	ld a, [wc822]
 	bit 4, a
 	jp z, Function110226
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 0, a
 	jp nz, Function110226
 	bit 3, a
@@ -3156,7 +3156,7 @@ Function11148c:
 	xor a
 	or c
 	jr nz, .asm_1114dc
-	ld hl, $c821
+	ld hl, wc821
 	res 3, [hl]
 	ret
 
@@ -3183,7 +3183,7 @@ Function11148c:
 	ld de, $c880
 	call MobileSDK_CopyBytes
 .asm_1114fa
-	ld hl, $c821
+	ld hl, wc821
 	res 3, [hl]
 	ret
 
@@ -3235,7 +3235,7 @@ Function111540:
 	nop
 
 Function111541:
-	ld hl, $c821
+	ld hl, wc821
 	bit 0, [hl]
 	jp nz, Function110226
 	ld a, [$c86a]
@@ -3286,7 +3286,7 @@ Function111596:
 	jp z, Function110226
 	cp $2a
 	jp z, Function110226
-	ld a, [$c800]
+	ld a, [wc800]
 	bit 1, a
 	jr nz, .asm_1115af
 	ld a, $2a
@@ -3301,17 +3301,17 @@ Function111596:
 	di
 	ld [hli], a
 	ld [hl], b
-	ld hl, $c822
+	ld hl, wc822
 	res 5, [hl]
 	res 0, [hl]
 	xor a
 	ld [$c80b], a
-	ld [$c800], a
+	ld [wc800], a
 	ld a, $8
 	ld [$c807], a
 	call ResetReceivePacketBuffer
 	call Function11164f
-	ld hl, $c821
+	ld hl, wc821
 	set 0, [hl]
 	ei
 	ret
@@ -3326,7 +3326,7 @@ Function111596:
 Function1115e4:
 	di
 	push af
-	ld hl, $c821
+	ld hl, wc821
 	set 0, [hl]
 	ld a, $1
 	ld [$c86b], a
@@ -3360,7 +3360,7 @@ Function111610:
 	jp z, Function110226
 	dec a
 	jp z, Function110226
-	ld a, [$c800]
+	ld a, [wc800]
 	or a
 	jr nz, .asm_111626
 	ld a, $28
@@ -3384,7 +3384,7 @@ Function11162d:
 	call Function111686
 	call ResetReceivePacketBuffer
 	ld bc, $0452
-	ld hl, $c800
+	ld hl, wc800
 .asm_111647
 	xor a
 	ld [hli], a
@@ -3395,10 +3395,10 @@ Function11162d:
 	ret
 
 Function11164f:
-	ld hl, $c815
+	ld hl, wc815
 	xor a
 	ld [hli], a
-	ld a, [$c81f]
+	ld a, [wc81f]
 	ld b, a
 	ld a, [wMobileSDK_AdapterType]
 	ld a, b
@@ -3444,7 +3444,7 @@ Function111686:
 	ld [$c86a], a
 	ld a, [wMobileSDK_PacketBuffer]
 	ld c, a
-	ld hl, $c821
+	ld hl, wc821
 	ld a, [hl]
 	or c
 	ld [hl], a
@@ -3460,13 +3460,13 @@ Function1116a4:
 
 Function1116a9:
 	ld [$cb48], a
-	ld hl, $c815
+	ld hl, wc815
 	xor a
 	ld [hli], a
-	ld a, [$c81f]
+	ld a, [wc81f]
 	rla
 	ld [hl], a
-	ld hl, $c821
+	ld hl, wc821
 	ld a, [hl]
 	ld b, a
 	and $d
@@ -3477,7 +3477,7 @@ Function1116a9:
 	ret
 
 _MobileReceive::
-	ld a, [$c800]
+	ld a, [wc800]
 	rrca
 	jp nc, Function1118bc
 	rrca
@@ -3540,21 +3540,21 @@ _MobileReceive::
 	xor a
 	ld [$c819], a
 	ld a, $3
-	ld [$c800], a
+	ld [wc800], a
 	xor a
 	ld hl, $c80a
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
-	ld hl, $c81f
+	ld hl, wc81f
 	ld a, [hli]
 	ld b, a
 	ld a, [hl]
-	ld hl, $c815
+	ld hl, wc815
 	ld [hli], a
 	ld a, b
 	ld [hli], a
-	ld a, [$c822]
+	ld a, [wc822]
 	bit 0, a
 	jr z, .asm_111757
 	ld a, $b
@@ -3581,9 +3581,9 @@ _MobileReceive::
 	jp Function1118bc
 .asm_111778
 	xor a
-	ld [$c800], a
+	ld [wc800], a
 Function11177c:
-	ld hl, $c820
+	ld hl, wc820
 	ld a, [hld]
 	ld e, a
 	ld a, [hl]
@@ -3597,7 +3597,7 @@ Function11177c:
 	jr nz, .asm_111785
 	or a
 	inc a
-	ld hl, $c816
+	ld hl, wc815 + 1
 	ld [hld], a
 	ld [hl], e
 	jp Function1118bc
@@ -3614,15 +3614,15 @@ asm_11179a:
 Function1117a0:
 	ld b, $3
 asm_1117a2:
-	ld hl, $c822
+	ld hl, wc822
 	set 3, [hl]
-	ld hl, $c815
-	ld a, [$c820]
+	ld hl, wc815
+	ld a, [wc820]
 	ld [hli], a
-	ld a, [$c81f]
+	ld a, [wc81f]
 	ld [hl], a
 	xor a
-	ld [$c800], a
+	ld [wc800], a
 	ld hl, $c819
 	inc [hl]
 	ld a, b
@@ -3631,13 +3631,13 @@ asm_1117a2:
 	xor a
 	ld hl, $c806
 	ld [hli], a
-	ld [$c800], a
+	ld [wc800], a
 	ld a, $6
 	ld [hl], a
-	ld hl, $c821
+	ld hl, wc821
 	set 1, [hl]
 	ld a, $15
-	ld [$c80f], a
+	ld [wc80f], a
 	ld hl, $c810
 	ld a, [$c808]
 	and $f
@@ -3689,12 +3689,12 @@ Function1117e7:
 	ld a, $6
 	ld [$c807], a
 	ld a, $10
-	ld [$c80f], a
+	ld [wc80f], a
 	xor a
-	ld [$c800], a
-	ld hl, $c822
+	ld [wc800], a
+	ld hl, wc822
 	res 0, [hl]
-	ld hl, $c821
+	ld hl, wc821
 	ld a, [hl]
 	set 1, a
 	and $f
@@ -3714,18 +3714,18 @@ Function1117e7:
 	ld [hli], a
 	dec b
 	jr nz, .asm_11184e
-	ld a, [$c822]
+	ld a, [wc822]
 	bit 4, a
 	jr z, .asm_111864
 	ld b, a
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 3, a
 	jr nz, .asm_111864
 	jp Function11177c
 .asm_111864
-	ld a, [$c820]
+	ld a, [wc820]
 	ld [hli], a
-	ld a, [$c81f]
+	ld a, [wc81f]
 	ld [hl], a
 	jr Function1118bc
 
@@ -3781,7 +3781,7 @@ Function111892:
 	ld [hli], a
 	inc [hl]
 Function1118bc:
-	ld hl, $c822
+	ld hl, wc822
 	res 1, [hl]
 	ret
 
@@ -3829,21 +3829,21 @@ _Timer::
 	jp z, Function111b3b
 	ld [hl], a
 	ld a, $10
-	ld [$c80f], a
+	ld [wc80f], a
 	xor a
-	ld [$c800], a
-	ld hl, $c822
+	ld [wc800], a
+	ld hl, wc822
 	res 0, [hl]
-	ld hl, $c821
+	ld hl, wc821
 	ld a, [hl]
 	and $f
 	or $2
 	ld [hl], a
 	ld a, $10
-	ld [$c80f], a
+	ld [wc80f], a
 	jp Function111b3b
 .asm_111927
-	ld a, [$c800]
+	ld a, [wc800]
 	cp $1
 	jp z, Function111b21
 	cp $3
@@ -3851,14 +3851,14 @@ _Timer::
 	ld a, [$c807]
 	cp $1
 	jp c, Function111b3b
-	ld hl, $c815
+	ld hl, wc815
 	dec [hl]
 	jp nz, Function111b3b
 	inc hl
 	dec [hl]
 	jp nz, Function111b3b
 	ld hl, $c807
-	ld a, [$c822]
+	ld a, [wc822]
 	bit 3, a
 	jp nz, Function111a0b
 	bit 4, a
@@ -3888,14 +3888,14 @@ _Timer::
 .asm_111984
 	xor a
 	ld [hl], a
-	ld hl, $c821
+	ld hl, wc821
 	res 0, [hl]
 	call Function111686
 	jp Function111b3b
 .asm_111991
 	xor a
 	ld [hl], a
-	ld [$c821], a
+	ld [wc821], a
 	call Function111686
 	jp Function111b3b
 .asm_11199c
@@ -3903,11 +3903,11 @@ _Timer::
 	ld [hl], a
 	or a
 	jp z, Function111b3b
-	ld a, [$c822]
+	ld a, [wc822]
 	bit 7, a
 	jr nz, .asm_1119be
 .asm_1119a9
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 3, a
 	jr nz, .asm_111977
 	ld de, MobilePacket_TransferData.End - MobilePacket_TransferData
@@ -3916,7 +3916,7 @@ _Timer::
 	call Function111f02
 	jp Function111b3b
 .asm_1119be
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 3, a
 	jr nz, .asm_1119dd
 	ld a, [$cb4c]
@@ -3930,13 +3930,13 @@ _Timer::
 	call PacketSendBytes
 	jp Function111b3b
 .asm_1119dd
-	ld hl, $c821
+	ld hl, wc821
 	set 1, [hl]
 	res 0, [hl]
-	ld hl, $c822
+	ld hl, wc822
 	res 7, [hl]
 	ld a, $21
-	ld [$c80f], a
+	ld [wc80f], a
 	jr .asm_1119a9
 
 Function1119f0:
@@ -3955,7 +3955,7 @@ Function111a0b:
 	ld a, [hl]
 	cp $6
 	jp z, Function111b3b
-	ld hl, $c822
+	ld hl, wc822
 	res 3, [hl]
 	res 0, [hl]
 	ld hl, $c81a
@@ -3990,7 +3990,7 @@ Function111a42:
 	jp Function111b2e
 
 asm_111a47:
-	ld hl, $c815
+	ld hl, wc815
 	dec [hl]
 	jr nz, asm_111a40
 	inc hl
@@ -3999,11 +3999,11 @@ asm_111a47:
 	inc hl
 	dec [hl]
 	jr z, .asm_111a63
-	ld hl, $c81f
+	ld hl, wc81f
 	ld a, [hli]
 	ld d, a
 	ld a, [hl]
-	ld hl, $c815
+	ld hl, wc815
 	ld [hli], a
 	ld a, d
 	ld [hli], a
@@ -4018,10 +4018,10 @@ asm_111a47:
 	ld a, [hl]
 	cp $1
 	jr z, .asm_111a91
-	ld hl, $c822
+	ld hl, wc822
 	res 5, [hl]
 	res 0, [hl]
-	ld hl, $c821
+	ld hl, wc821
 	res 4, [hl]
 	ld a, $0
 	ld [$c805], a
@@ -4037,13 +4037,13 @@ asm_111a47:
 	ld [$c806], a
 	ld [$c86b], a
 	ld [$c80b], a
-	ld [$c800], a
+	ld [wc800], a
 	ld a, $8
 	ld [$c807], a
 .asm_111aa8
 	call ResetReceivePacketBuffer
 	call Function11164f
-	ld hl, $c822
+	ld hl, wc822
 	res 5, [hl]
 	res 0, [hl]
 	ei
@@ -4068,18 +4068,18 @@ Function111abd:
 	jr z, .asm_111afe
 	call ResetReceivePacketBuffer
 	ld a, $3
-	ld [$c800], a
+	ld [wc800], a
 	xor a
 	ld hl, $c80a
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
-	ld hl, $c815
-	ld a, [$c820]
+	ld hl, wc815
+	ld a, [wc820]
 	ld [hli], a
-	ld a, [$c81f]
+	ld a, [wc81f]
 	ld [hli], a
-	ld a, [$c822]
+	ld a, [wc822]
 	bit 0, a
 	jr z, .asm_111af9
 	ld a, $b
@@ -4093,13 +4093,13 @@ Function111abd:
 	ld hl, $c806
 	xor a
 	ld [hli], a
-	ld [$c800], a
+	ld [wc800], a
 	ld a, $6
 	ld [hl], a
-	ld hl, $c821
+	ld hl, wc821
 	set 1, [hl]
 	ld a, $15
-	ld [$c80f], a
+	ld [wc80f], a
 	ld a, $2
 	ld [$c810], a
 	xor a
@@ -4121,7 +4121,7 @@ Function111b21:
 	ld [hl], e
 
 Function111b2e:
-	ld hl, $c822
+	ld hl, wc822
 	set 1, [hl]
 	ld a, (0 << rSC_ON) | (1 << rSC_CGB) | (1 << rSC_CLOCK)
 	ldh [rSC], a
@@ -4138,8 +4138,8 @@ Function111b3c:
 	ld hl, $c9b1
 	ld [hli], a
 	ld [hl], a
-	ld [$c800], a
-	ld hl, $c822
+	ld [wc800], a
+	ld hl, wc822
 	res 5, [hl]
 	bit 0, [hl]
 	jr z, .asm_111b59
@@ -4188,12 +4188,12 @@ Function111b3c:
 	jp z, Function111d65
 	cp MOBILE_COMMAND_DIAL_TELEPHONE | $80
 	jp z, Function111d65
-	ld hl, $c822
+	ld hl, wc822
 	res 0, [hl]
 	ld a, $a
 	ld [$c807], a
 	xor a
-	ld [$c800], a
+	ld [wc800], a
 	ret
 
 .asm_111bbe
@@ -4219,9 +4219,9 @@ Function111b3c:
 .asm_111be0
 	ld a, $2
 	ld [$c807], a
-	ld hl, $c822
+	ld hl, wc822
 	res 4, [hl]
-	ld hl, $c821
+	ld hl, wc821
 	res 4, [hl]
 	ret
 
@@ -4266,7 +4266,7 @@ Function111c17:
 	dec a
 	jp z, Function111d07
 	ld c, a
-	ld a, [$c822]
+	ld a, [wc822]
 	bit 4, a
 	jp z, Function111cc2
 	ld a, [$c992]
@@ -4287,7 +4287,7 @@ Function111c17:
 	cp b
 	jr c, .asm_111c6e
 .asm_111c5b
-	ld hl, $c821
+	ld hl, wc821
 	set 3, [hl]
 	ld hl, $c993
 	ld a, $1
@@ -4356,9 +4356,9 @@ Function111cc2:
 	cp e
 	jr c, .asm_111cda
 	jr z, .asm_111cda
-	ld a, [$c821]
+	ld a, [wc821]
 	set 2, a
-	ld [$c821], a
+	ld [wc821], a
 	ld a, c
 	sub e
 	ld c, e
@@ -4398,14 +4398,14 @@ Function111cc2:
 	inc [hl]
 
 Function111d07:
-	ld a, [$c822]
+	ld a, [wc822]
 	bit 4, a
 	jr z, .asm_111d1c
 	bit 7, a
 	jr z, .asm_111d1c
-	ld hl, $c822
+	ld hl, wc822
 	res 7, [hl]
-	ld hl, $c821
+	ld hl, wc821
 	res 0, [hl]
 .asm_111d1c
 	ld a, [$c805]
@@ -4458,12 +4458,12 @@ ParseResponse_BeginSession:
 Function111d65:
 	ld a, $3
 	ld [$c807], a
-	ld hl, $c821
+	ld hl, wc821
 	set 4, [hl]
 	ret
 
 Function111d70:
-	ld hl, $c822
+	ld hl, wc822
 	bit 0, [hl]
 	jr z, .asm_111dc0
 	ld a, [$c805]
@@ -4478,23 +4478,23 @@ Function111d70:
 	jr z, .asm_111da9
 	or a
 	ret nz
-	ld hl, $c821
+	ld hl, wc821
 	res 4, [hl]
 	set 1, [hl]
-	ld a, [$c822]
+	ld a, [wc822]
 	bit 4, a
 	jr nz, .asm_111dbb
 	ld a, $23
-	ld [$c80f], a
+	ld [wc80f], a
 	ld a, $6
 	ld [$c807], a
 	ret
 .asm_111da9
-	ld hl, $c821
+	ld hl, wc821
 	res 4, [hl]
 	set 1, [hl]
 	ld a, $11
-	ld [$c80f], a
+	ld [wc80f], a
 	ld a, $6
 	ld [$c807], a
 	ret
@@ -4531,7 +4531,7 @@ Function111dd9:
 	ret
 .asm_111dea
 	ld b, $5
-	ld a, [$c822]
+	ld a, [wc822]
 	bit 0, a
 	jr z, .asm_111df8
 	ld a, [$c86a]
@@ -4549,7 +4549,7 @@ Function111dd9:
 	cp $3
 	ret z
 	ld b, $1
-	ld a, [$c822]
+	ld a, [wc822]
 	bit 4, a
 	ret z
 	inc b
@@ -4566,10 +4566,10 @@ Function111e15:
 	rrca
 	push hl
 	ld l, a
-	ld a, [$c821]
+	ld a, [wc821]
 	and $1f
 	or l
-	ld [$c821], a
+	ld [wc821], a
 	pop hl
 	ret
 
@@ -4588,10 +4588,10 @@ GetErrorCode:
 	jr z, .asm_111e48
 	ld a, $6
 	ld [$c807], a
-	ld hl, $c821
+	ld hl, wc821
 	set 1, [hl]
 .asm_111e48
-	ld a, [$c822]
+	ld a, [wc822]
 	bit 0, a
 	jr z, .asm_111e54
 	ld hl, $ca33
@@ -4624,7 +4624,7 @@ GetErrorCode:
 	ld a, [hl]
 
 .store_error_code
-	ld [$c80f], a
+	ld [wc80f], a
 	ret
 
 .adapter_not_plugged_in
@@ -4647,7 +4647,7 @@ GetErrorCode:
 	jr .store_error_code
 
 .hang_up_logout
-	ld hl, $c821
+	ld hl, wc821
 	res 1, [hl]
 	res 4, [hl]
 	ld a, $2
@@ -4658,23 +4658,23 @@ GetErrorCode:
 	ld a, [hl]
 	cp $1
 	jr nz, .asm_111ed3
-	ld a, [$c822]
+	ld a, [wc822]
 	bit 4, a
 	jr z, .asm_111ed3
 	res 4, a
-	ld [$c822], a
-	ld hl, $c821
+	ld [wc822], a
+	ld hl, wc821
 	ld a, [hl]
 	and $f
 	or $2
 	ld [hl], a
 	ld a, $23
-	ld [$c80f], a
+	ld [wc80f], a
 	ld a, $6
 	ld [$c807], a
 	ret
 .asm_111ed3
-	ld hl, $c822
+	ld hl, wc822
 	res 5, [hl]
 	ld a, $24
 	jr .store_error_code
@@ -4688,7 +4688,7 @@ GetErrorCode:
 	jr .store_error_code
 
 .open_tcp_connection
-	ld hl, $c821
+	ld hl, wc821
 	res 1, [hl]
 
 .dns_query
@@ -4696,7 +4696,7 @@ GetErrorCode:
 	jr .store_error_code
 
 .close_tcp_connection
-	ld hl, $c821
+	ld hl, wc821
 	res 1, [hl]
 	ld a, $3
 	ld [$c807], a
@@ -4720,7 +4720,7 @@ PacketSendBytes:
 ; b = ?
 	call Function1100b4
 	ret c
-	ld a, [$c800]
+	ld a, [wc800]
 	cp $0
 	jr z, .asm_111f17
 	call Function110226
@@ -4762,8 +4762,8 @@ PacketSendBytes:
 	xor a
 	ld [$c806], a
 	ld a, $1
-	ld [$c800], a
-	ld hl, $c822
+	ld [wc800], a
+	ld hl, wc822
 	set 5, [hl]
 	ei
 	ret
@@ -4815,7 +4815,7 @@ Function111f8d:
 	ret
 
 Function111f97:
-	ld hl, $c822
+	ld hl, wc822
 	bit 0, [hl]
 	ret nz
 	ld a, [$c807]
@@ -4825,7 +4825,7 @@ Function111f97:
 	jr z, .asm_111fcb
 	cp $6
 	jr nz, .asm_111fcd
-	ld a, [$c80f]
+	ld a, [wc80f]
 	cp $22
 	jr z, .asm_111fcb
 	cp $23
@@ -4854,7 +4854,7 @@ Function111f97:
 	ld hl, MobilePacket_TelephoneStatus
 	ld de, MobilePacket_TelephoneStatus.End - MobilePacket_TelephoneStatus
 	call PacketSendBytes
-	ld hl, $c822
+	ld hl, wc822
 	set 0, [hl]
 	ret
 .asm_111fe9
@@ -4975,7 +4975,7 @@ Unknown_11213d:
 	db "Content-Length: ", 0
 
 Function11214e:
-	ld a, [$c822]
+	ld a, [wc822]
 	bit 5, a
 	ret nz
 	ld a, [$c86a]
@@ -5014,18 +5014,18 @@ Function11214e:
 	ld a, [$c86b]
 	cp $1
 	jr nz, .asm_11216f
-	ld hl, $c821
+	ld hl, wc821
 	res 1, [hl]
 	jr .asm_112175
 .asm_112196
 	ld c, a
-	ld a, [$c80f]
+	ld a, [wc80f]
 	cp $24
 	jr nz, .asm_11216f
 	ld a, [$c86b]
 	cp $1
 	jr nz, .asm_11216f
-	ld hl, $c821
+	ld hl, wc821
 	res 1, [hl]
 	jr .asm_112175
 
@@ -5141,17 +5141,17 @@ Function1121f6:
 
 Function112251:
 	xor a
-	ld [$c821], a
+	ld [wc821], a
 	ld [$c807], a
 	inc a
 	ld [$c86a], a
 	ret
 
 Function11225d:
-	ld [$c80f], a
+	ld [wc80f], a
 	ld a, $5
 	ld [$c86a], a
-	ld hl, $c821
+	ld hl, wc821
 	ret
 
 Function112269:
@@ -5253,7 +5253,7 @@ Function112271:
 	jp Function112269
 
 .asm_112309
-	ld a, [$c821]
+	ld a, [wc821]
 	and $e0
 	jr nz, .asm_112314
 	ld b, $92
@@ -5283,7 +5283,7 @@ Function112271:
 .asm_112335
 	ld a, $2
 	ld [$c86a], a
-	ld hl, $c821
+	ld hl, wc821
 	res 0, [hl]
 	set 5, [hl]
 	ret
@@ -5330,7 +5330,7 @@ Function112373:
 	ret
 
 .asm_112381
-	ld a, [$c821]
+	ld a, [wc821]
 	and $e0
 	jr nz, .asm_11238c
 	ld b, $92
@@ -5348,11 +5348,11 @@ Function112373:
 	jp Function112269
 
 .asm_11239b
-	ld hl, $c822
+	ld hl, wc822
 	set 4, [hl]
 	ld a, $2
 	ld [$c86a], a
-	ld hl, $c821
+	ld hl, wc821
 	res 0, [hl]
 	set 6, [hl]
 	ret
@@ -5381,11 +5381,11 @@ Function1123b6:
 	ld a, [wMobileSDK_ReceivePacketBuffer]
 	cp $ee
 	jr z, .asm_1123bd
-	ld hl, $c822
+	ld hl, wc822
 	set 4, [hl]
 	ld a, $2
 	ld [$c86a], a
-	ld hl, $c821
+	ld hl, wc821
 	res 0, [hl]
 	set 6, [hl]
 	set 5, [hl]
@@ -5413,7 +5413,7 @@ Function1123e1:
 	jr z, .asm_112408
 	ld hl, $c86b
 	dec [hl]
-	ld hl, $cb67
+	ld hl, wcb67
 	jp Function1127c5
 
 .asm_112408
@@ -5435,9 +5435,9 @@ Function1123e1:
 	jp Function112269
 
 .asm_112421
-	ld hl, $c822
+	ld hl, wc822
 	res 4, [hl]
-	ld hl, $c821
+	ld hl, wc821
 	ld a, [hl]
 	and $f
 	ld [hl], a
@@ -5504,7 +5504,7 @@ Function112451:
 	ld a, [wMobileSDK_ReceivePacketBuffer]
 	cp $a3
 	jr z, .asm_1124ce
-	ld a, [$c822]
+	ld a, [wc822]
 	bit 3, a
 	jr z, .asm_1124ab
 	dec [hl]
@@ -5516,7 +5516,7 @@ Function112451:
 	ld a, [$c9af]
 	cp $5
 	jr c, .asm_1124b8
-	ld hl, $c821
+	ld hl, wc821
 	set 1, [hl]
 	ret
 
@@ -5524,12 +5524,12 @@ Function112451:
 	dec [hl]
 	ld hl, $c9af
 	inc [hl]
-	ld hl, $c822
+	ld hl, wc822
 	set 3, [hl]
-	ld hl, $c815
-	ld a, [$c820]
+	ld hl, wc815
+	ld a, [wc820]
 	ld [hli], a
-	ld a, [$c81f]
+	ld a, [wc81f]
 	ld [hl], a
 	ret
 
@@ -5666,7 +5666,7 @@ Function112597:
 	ld [$c86a], a
 
 Function1125bf:
-	ld hl, $c821
+	ld hl, wc821
 	set 0, [hl]
 	res 2, [hl]
 	ret
@@ -5749,7 +5749,7 @@ Function11261c:
 	ld [$c86a], a
 
 Function11264e:
-	ld hl, $c821
+	ld hl, wc821
 	set 0, [hl]
 	ret
 
@@ -5871,7 +5871,7 @@ Function112715:
 	ld [$c86c], a
 	ld a, $2
 	ld [$c86a], a
-	ld hl, $c821
+	ld hl, wc821
 	res 0, [hl]
 	ret
 
@@ -5955,7 +5955,7 @@ Function11273a:
 	jr nz, .asm_1127b7
 	ld a, $3
 	ld [$c86a], a
-	ld hl, $c821
+	ld hl, wc821
 	ld a, [hl]
 	and $d6
 	or $80
@@ -6142,7 +6142,7 @@ Function1128bd:
 	ret
 
 Function1128d3:
-	ld hl, $c821
+	ld hl, wc821
 	res 0, [hl]
 	res 2, [hl]
 	ret
@@ -6166,7 +6166,7 @@ Function1128db:
 	jr nz, .asm_112901
 	ld a, $3
 	ld [$c86a], a
-	ld hl, $c821
+	ld hl, wc821
 	res 0, [hl]
 	ret
 
@@ -6251,7 +6251,7 @@ Function112969:
 	jr z, .asm_112986
 	ld hl, $c86b
 	dec [hl]
-	ld hl, $cb67
+	ld hl, wcb67
 	jp Function1127c5
 
 .asm_112986
@@ -6262,7 +6262,7 @@ Function112969:
 	ld [$c86d], a
 	ld a, $2
 	ld [$c86a], a
-	ld hl, $c821
+	ld hl, wc821
 	res 0, [hl]
 	res 7, [hl]
 	set 5, [hl]
@@ -6332,7 +6332,7 @@ Function11299c:
 
 .asm_112a0f
 	ld a, [$c86b]
-	ld [$cb67], a
+	ld [wcb67], a
 	ld a, $3
 	ld [$c86b], a
 	jp Function112430
@@ -6341,17 +6341,17 @@ Function11299c:
 	xor a
 	ld [$c86d], a
 	ld de, $0002
-	ld a, [$cb67]
+	ld a, [wcb67]
 	cp $1
 	jr z, .asm_112a2c
 	inc de
 .asm_112a2c
 
 Function112a2c:
-	ld hl, $c821
+	ld hl, wc821
 	set 1, [hl]
 	res 0, [hl]
-	ld hl, $c80f
+	ld hl, wc80f
 	ld a, $31
 	ld [hli], a
 	ld a, e
@@ -6659,7 +6659,7 @@ Function112bec:
 	jr z, .asm_112c0b
 
 .asm_112c03
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 2, a
 	jp z, .asm_112cef
 
@@ -6791,11 +6791,11 @@ Function112bec:
 	ld [hli], a
 	ld a, d
 	ld [hl], a
-	ld hl, $c821
+	ld hl, wc821
 	res 2, [hl]
 
 .asm_112cdb
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 2, a
 	jr z, .asm_112cea
 	ld a, $2
@@ -6892,7 +6892,7 @@ Function112d33:
 	ld hl, $c82b
 	ld [hli], a
 	ld [hl], a
-	ld hl, $c821
+	ld hl, wc821
 	res 2, [hl]
 	ld hl, $c86b
 	dec [hl]
@@ -6916,7 +6916,7 @@ Function112d33:
 	call Function111f63
 
 .asm_112d9f
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 2, a
 	jr z, .asm_112dab
 	ld a, $3
@@ -7008,7 +7008,7 @@ Function112d33:
 	jp MobileSDK_CopyBytes
 
 .asm_112e38
-	ld hl, $c821
+	ld hl, wc821
 	set 1, [hl]
 	res 0, [hl]
 	ld de, $c98b
@@ -7047,7 +7047,7 @@ Function112d33:
 	call Function1133fe
 
 .asm_112e7f
-	ld hl, $c821
+	ld hl, wc821
 	set 1, [hl]
 	res 0, [hl]
 	ld de, $c98b
@@ -7060,7 +7060,7 @@ Function112d33:
 	inc a
 
 .asm_112e95
-	ld [$c80f], a
+	ld [wc80f], a
 	ld hl, $c810
 	ld a, [de]
 	inc de
@@ -7107,7 +7107,7 @@ Function112d33:
 	ld [$c86a], a
 	xor a
 	ld [$c86d], a
-	ld hl, $c821
+	ld hl, wc821
 	res 0, [hl]
 	ret
 
@@ -7171,7 +7171,7 @@ Function112d33:
 	ld [$c86a], a
 	xor a
 	ld [$c86d], a
-	ld hl, $c821
+	ld hl, wc821
 	res 0, [hl]
 	ret
 
@@ -7409,7 +7409,7 @@ Function113095:
 	ld hl, $c86e
 	ld [hli], a
 	ld [hl], a
-	ld hl, $c821
+	ld hl, wc821
 	res 2, [hl]
 	ld a, [$c86a]
 	cp $13
@@ -7514,7 +7514,7 @@ Function113095:
 	ld [hli], a
 	ld a, d
 	ld [hl], a
-	ld hl, $c821
+	ld hl, wc821
 	res 2, [hl]
 	ld a, $1
 	ld [$c86b], a
@@ -7634,7 +7634,7 @@ Function1131a9:
 	ld a, d
 	cp h
 	jr nz, .asm_1131ef
-	ld hl, $c821
+	ld hl, wc821
 	res 2, [hl]
 	ld hl, $c86b
 	dec [hl]
@@ -7646,7 +7646,7 @@ Function113206:
 	ld a, b
 	sub e
 	ld [$c991], a
-	ld a, [$c821]
+	ld a, [wc821]
 	bit 2, a
 	ld a, c
 	jr nz, .asm_113214
@@ -7673,7 +7673,7 @@ Function113206:
 	ld [hli], a
 	xor a
 	ld [hl], a
-	ld hl, $c821
+	ld hl, wc821
 	set 2, [hl]
 	ld a, $3
 	ld [$c86b], a
@@ -7695,7 +7695,7 @@ Function113245:
 	ld a, $0
 	adc [hl]
 	ld [hl], a
-	ld hl, $c821
+	ld hl, wc821
 	set 2, [hl]
 	ld a, $3
 	ld [$c86b], a
@@ -8043,7 +8043,7 @@ Function1134cb:
 	jr z, .asm_1134f0
 	ld a, [$c985]
 	ld [$c86a], a
-	ld hl, $c821
+	ld hl, wc821
 	res 0, [hl]
 	ret
 
@@ -8363,21 +8363,21 @@ Function1136c1:
 	xor a
 	ld [$cc28], a
 	ld a, l
-	ld [$cc07], a
+	ld [wcc07], a
 	ld a, h
-	ld [$cc08], a
-	ld hl, $cc09
+	ld [wcc08], a
+	ld hl, wcc09
 	ld a, e
 	ld [hli], a
 	ld a, d
 	ld [hli], a
 	ld a, b
 	ld [hli], a
-	ld hl, $cc07
+	ld hl, wcc07
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld de, $cb67
+	ld de, wcb67
 	ld b, $30
 	ld c, b
 	call MobileSDK_CopyBytes
@@ -8464,11 +8464,11 @@ Function1136c1:
 	ld c, a
 	push hl
 	call Function113909
-	ld hl, $cbf7
+	ld hl, wcbf7
 	ld a, [hli]
 	ld d, [hl]
 	ld e, a
-	ld hl, $cbff
+	ld hl, wcbff
 	call Function113a32
 	pop hl
 	ld a, [hli]
@@ -8485,17 +8485,17 @@ Function1136c1:
 	ld d, h
 
 .asm_11377c
-	ld hl, $cb67
+	ld hl, wcb67
 	add hl, de
 	ld e, l
 	ld d, h
-	ld hl, $cbff
+	ld hl, wcbff
 	call Function113a32
 	ld hl, $cc0c
 	ld a, [hli]
 	ld d, [hl]
 	ld e, a
-	ld hl, $cbff
+	ld hl, wcbff
 	call Function113a32
 	pop hl
 	ld a, [hli]
@@ -8504,19 +8504,19 @@ Function1136c1:
 	ld [$cc0e], a
 	ld a, h
 	ld [$cc0f], a
-	ld hl, $cbff
+	ld hl, wcbff
 	call Function113a40
-	ld hl, $cbf9
+	ld hl, wcbf9
 	ld a, [hli]
 	ld d, [hl]
 	ld e, a
-	ld hl, $cbff
+	ld hl, wcbff
 	call Function113a32
-	ld hl, $cbf7
+	ld hl, wcbf7
 	ld a, [hli]
 	ld d, [hl]
 	ld e, a
-	ld hl, $cbff
+	ld hl, wcbff
 	ld b, $4
 	call MobileSDK_CopyBytes
 	ld hl, $cc0c
@@ -8548,11 +8548,11 @@ endr
 	jp .asm_113734
 
 .asm_1137fc
-	ld hl, $cb67
+	ld hl, wcb67
 	ld de, $cb97
 	ld bc, $0030
 	call Function113d66
-	ld hl, $cc09
+	ld hl, wcc09
 	ld a, [hli]
 	ld d, [hl]
 	ld e, a
@@ -8562,12 +8562,12 @@ endr
 	ld bc, $0020
 	call Function113c8e
 	ld a, l
-	ld [$cc09], a
+	ld [wcc09], a
 	ld a, h
 	ld [$cc0a], a
 	ld b, $12
 	ld hl, $cb97
-	ld de, $cb67
+	ld de, wcb67
 .asm_11382d
 	ld a, $40
 	and [hl]
@@ -8688,7 +8688,7 @@ endr
 	xor a
 	ld [hl], a
 	ld b, $24
-	ld hl, $cb67
+	ld hl, wcb67
 	ld de, $cb97
 .asm_1138d0
 	ld a, [de]
@@ -8715,11 +8715,11 @@ endr
 	ld [hli], a
 	dec b
 	jr nz, .asm_1138d0
-	ld hl, $cc09
+	ld hl, wcc09
 	ld a, [hli]
 	ld d, [hl]
 	ld e, a
-	ld hl, $cb67
+	ld hl, wcb67
 	ld bc, $0024
 	call Function113c8e
 	ld a, $22
@@ -8751,97 +8751,97 @@ Function11391e:
 	ld d, $0
 	ld hl, Unknown_113b70
 	add hl, de
-	ld de, $cbf7
+	ld de, wcbf7
 	ld b, $8
 	jp MobileSDK_CopyBytes
 
 Function11392f:
-	ld hl, $cbf9
+	ld hl, wcbf9
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld de, $cbff
+	ld de, wcbff
 	ld b, $4
 	call MobileSDK_CopyBytes
-	ld hl, $cbfb
+	ld hl, wcbfb
 	ld a, [hli]
 	ld d, [hl]
 	ld e, a
-	ld hl, $cbff
+	ld hl, wcbff
 	call Function113a0b
-	ld hl, $cbf9
+	ld hl, wcbf9
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld de, $cc03
+	ld de, wcc03
 	ld b, $4
 	call MobileSDK_CopyBytes
-	ld hl, $cc03
+	ld hl, wcc03
 	call Function113a1f
 	ld hl, $cbfd
 	ld a, [hli]
 	ld d, [hl]
 	ld e, a
-	ld hl, $cc03
+	ld hl, wcc03
 	call Function113a0b
-	ld hl, $cbff
-	ld de, $cc03
+	ld hl, wcbff
+	ld de, wcc03
 	call Function113a15
 	ret
 
 Function113973:
-	ld hl, $cbf9
+	ld hl, wcbf9
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld de, $cbff
+	ld de, wcbff
 	ld b, $4
 	call MobileSDK_CopyBytes
 	ld hl, $cbfd
 	ld a, [hli]
 	ld d, [hl]
 	ld e, a
-	ld hl, $cbff
+	ld hl, wcbff
 	call Function113a0b
 	ld hl, $cbfd
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld de, $cc03
+	ld de, wcc03
 	ld b, $4
 	call MobileSDK_CopyBytes
-	ld hl, $cc03
+	ld hl, wcc03
 	call Function113a1f
-	ld hl, $cbfb
+	ld hl, wcbfb
 	ld a, [hli]
 	ld d, [hl]
 	ld e, a
-	ld hl, $cc03
+	ld hl, wcc03
 	call Function113a0b
-	ld hl, $cbff
-	ld de, $cc03
+	ld hl, wcbff
+	ld de, wcc03
 	call Function113a15
 	ret
 
 Function1139b7:
-	ld hl, $cbf9
+	ld hl, wcbf9
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld de, $cbff
+	ld de, wcbff
 	ld b, $4
 	call MobileSDK_CopyBytes
-	ld hl, $cbfb
+	ld hl, wcbfb
 	ld a, [hli]
 	ld d, [hl]
 	ld e, a
-	ld hl, $cbff
+	ld hl, wcbff
 	call Function113a28
 	ld hl, $cbfd
 	ld a, [hli]
 	ld d, [hl]
 	ld e, a
-	ld hl, $cbff
+	ld hl, wcbff
 	call Function113a28
 	ret
 
@@ -8850,22 +8850,22 @@ Function1139de:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld de, $cbff
+	ld de, wcbff
 	ld b, $4
 	call MobileSDK_CopyBytes
-	ld hl, $cbff
+	ld hl, wcbff
 	call Function113a1f
-	ld hl, $cbf9
+	ld hl, wcbf9
 	ld a, [hli]
 	ld d, [hl]
 	ld e, a
-	ld hl, $cbff
+	ld hl, wcbff
 	call Function113a15
-	ld hl, $cbfb
+	ld hl, wcbfb
 	ld a, [hli]
 	ld d, [hl]
 	ld e, a
-	ld hl, $cbff
+	ld hl, wcbff
 	call Function113a28
 	ret
 
@@ -9303,10 +9303,10 @@ endr
 	pop hl
 	pop hl
 .asm_113e26
-	ld hl, $c821
+	ld hl, wc821
 	set 1, [hl]
 	ld a, $20
-	ld [$c80f], a
+	ld [wc80f], a
 	ret
 
 .asm_113e31
@@ -9357,7 +9357,7 @@ Function113e42:
 	ld [$c86d], a
 	ld a, $2
 	ld [$c86a], a
-	ld hl, $c821
+	ld hl, wc821
 	ld a, [hl]
 	and $10
 	set 5, a
@@ -9388,12 +9388,12 @@ Function113e42:
 	ld [$c86a], a
 	ld a, $3
 	ld [$c807], a
-	ld hl, $c821
+	ld hl, wc821
 	ld a, [hl]
 	and $10
 	set 5, a
 	ld [hl], a
-	ld hl, $c822
+	ld hl, wc822
 	bit 0, [hl]
 	call z, Function111f97
 	ret
@@ -9412,13 +9412,13 @@ Function113e42:
 Function113eb8:
 	ld a, $ff
 	ld [wMobileSDK_SendCommandID], a
-	ld hl, $c822
+	ld hl, wc822
 	res 5, [hl]
 	res 0, [hl]
 	jp Function111f97
 
 Unreferenced_Function113ec7:
-	ld hl, $c822
+	ld hl, wc822
 	ld a, [hl]
 	push af
 	res 3, [hl]
@@ -9442,7 +9442,7 @@ Unreferenced_Function113ec7:
 	pop af
 	bit 0, a
 	ret z
-	ld hl, $c822
+	ld hl, wc822
 	set 0, [hl]
 	ret
 
@@ -9466,7 +9466,7 @@ Function113ef2:
 	call Function11225d
 	ld a, $2a
 	ld [$c86a], a
-	ld hl, $c820
+	ld hl, wc820
 	ld a, [hld]
 	ld h, [hl]
 	ld l, a
@@ -9476,13 +9476,13 @@ Function113ef2:
 	add hl, de
 	ld e, l
 	ld d, h
-	ld hl, $c815
+	ld hl, wc815
 	ld e, a
 	ld [hli], a
 	ld a, d
 	ld [hl], a
 	xor a
-	ld [$c800], a
+	ld [wc800], a
 	ld hl, wMobileSDK_PacketBuffer
 	ld a, $2
 	ld [hli], a
@@ -9517,16 +9517,16 @@ Function113f2d:
 .asm_113f4f
 	xor a
 	ld [$c86d], a
-	ld hl, $c821
+	ld hl, wc821
 	set 0, [hl]
-	ld hl, $c822
+	ld hl, wc822
 	xor a
 	ld [hl], a
 	xor a
 	ld [$c80b], a
 	xor a
 	ld [wMobileSDK_PacketBuffer], a
-	ld hl, $c820
+	ld hl, wc820
 	ld a, [hld]
 	ld h, [hl]
 	ld l, a
@@ -9536,13 +9536,13 @@ Function113f2d:
 	add hl, de
 	ld e, l
 	ld d, h
-	ld hl, $c815
+	ld hl, wc815
 	ld e, a
 	ld [hli], a
 	ld a, d
 	ld [hl], a
 	xor a
-	ld [$c800], a
+	ld [wc800], a
 	ld hl, wMobileSDK_PacketBuffer
 	xor a
 	ld [hli], a

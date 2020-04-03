@@ -1054,11 +1054,12 @@ wc80f:: ds 1
 wc810:: ds 1
 wc811:: ds 1
 wMobileSDK_PacketChecksum:: dw ; c812
-wc814:: ds 4
+wc814:: ds 1
+wc815:: ds 3
 wMobileSDK_AdapterType:: db ; c818
 	ds 5
 wMobileSDK_SendCommandID:: db ; c81e
-	ds 1
+wc81f:: db
 wc820:: ds 1
 wc821:: ds 1
 wc822:: ds 46
@@ -1142,13 +1143,23 @@ wcb0e:: ds 5
 wcb13:: ds 50
 wcb45:: ds 2
 wMobileSDK_PacketBuffer:: ds 18 ; cb47
-wcb59:: ds 20
+wcb59:: ds 14
+wcb67:: ds 6
 wcb6d:: ds 1
 wcb6e:: ds 22
 wcb84:: ds 100
 wcbe8:: dw
 wLinkOTPartyMonTypes:: ds 2 * PARTY_LENGTH
-	ds 84
+	ds 1 ; cbf6
+wcbf7:: ds 2
+wcbf9:: ds 2
+wcbfb:: ds 4
+wcbff:: ds 4
+wcc03:: ds 4
+wcc07:: db
+wcc08:: db
+wcc09:: db
+	ds 64
 wcc4a:: ds 22
 
 wcc60:: ds 1
