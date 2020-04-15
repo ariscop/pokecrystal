@@ -17,3 +17,9 @@ INCLUDE "macros/scripts/trade_anims.asm"
 INCLUDE "macros/scripts/gfx_anims.asm"
 
 INCLUDE "macros/legacy.asm"
+
+IF DEF(_CRYSTAL_JP)
+dr: macro
+INCBIN "baserom-jp.gbc", \1, \2 +- \1
+ENDM
+ENDC

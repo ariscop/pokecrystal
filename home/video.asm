@@ -123,6 +123,7 @@ UpdateBGMap::
 ; BG Map 0
 	dec a ; 1
 	jr z, .Tiles
+IF !DEF(_CRYSTAL_JP)
 	dec a ; 2
 	jr z, .Attr
 
@@ -154,6 +155,7 @@ UpdateBGMap::
 	ld a, h
 	ldh [hBGMapAddress + 1], a
 	ret
+ENDC
 
 .Attr:
 	ld a, 1

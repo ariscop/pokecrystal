@@ -154,6 +154,7 @@ UpdateBattleHuds::
 INCLUDE "home/battle_vars.asm"
 
 FarCopyRadioText::
+IF !DEF(_CRYSTAL_JP)
 	inc hl
 	ldh a, [hROMBank]
 	push af
@@ -175,6 +176,7 @@ FarCopyRadioText::
 	ldh [hROMBank], a
 	ld [MBC3RomBank], a
 	ret
+ENDC
 
 MobileTextBorder::
 	; For mobile link battles only.

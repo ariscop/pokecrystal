@@ -1108,21 +1108,33 @@ ObjectEvent::
 	jumptextfaceplayer ObjectEventText
 
 ObjectEventText::
+IF !DEF(_CRYSTAL_JP)
 	text_far _ObjectEventText
 	text_end
+ELSE
+	db $00, $84, $1B, $0B, $EB, $81, $3D, $AB, $93, $57
+ENDC
 
 BGEvent::
 	jumptext BGEventText
 
 BGEventText::
+IF !DEF(_CRYSTAL_JP)
 	text_far _BGEventText
+ELSE
+	db $00, $1A, $E3, $0B, $E3, $81, $3D, $AB, $93
+ENDC
 	text_end
 
 CoordinatesEvent::
 	jumptext CoordinatesEventText
 
 CoordinatesEventText::
+IF !DEF(_CRYSTAL_JP)
 	text_far _CoordinatesEventText
+ELSE
+	db $00, $2B, $CB, $E2, $B3, $81, $3D, $AB, $93
+ENDC
 	text_end
 
 CheckObjectMask::

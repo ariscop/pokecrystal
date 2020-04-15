@@ -161,3 +161,4 @@ hDMATransfer:: db ; ffe8
 hMobile:: db ; ffe9
 hSystemBooted:: db ; ffea
 hClockResetTrigger:: db ; ffeb
+hFFEC:: db

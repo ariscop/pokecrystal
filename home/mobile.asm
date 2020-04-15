@@ -296,3 +296,58 @@ Function3f9f::
 	dec c
 	jr nz, .row
 	ret
+
+IF DEF(_CRYSTAL_JP)
+	nop
+	nop
+	add hl, de
+	ret
+
+Function3f7c_copy:
+	call MenuBoxCoord2Tile
+	call GetMenuBoxDims
+	dec b
+	dec c
+	call Function3eea
+	ret
+
+Function3f88_copy:
+	ld hl, wDecompressScratch
+	ld b, 0
+.row
+	push bc
+	ld c, 1 tiles / 2
+.col
+	ld a, [de]
+	inc de
+	cpl
+	ld [hl], 0
+	inc hl
+	ld [hli], a
+	dec c
+	jr nz, .col
+	pop bc
+	dec c
+	jr nz, .row
+	ret
+
+Function3f9f_copy:
+	ld hl, wDecompressScratch
+.row
+	push bc
+	ld c, 1 tiles / 2
+.col
+	ld a, [de]
+	inc de
+	inc de
+	cpl
+	ld [hl], $0
+	inc hl
+	ld [hli], a
+	dec c
+	jr nz, .col
+	pop bc
+	dec c
+	jr nz, .row
+	ret
+ENDC

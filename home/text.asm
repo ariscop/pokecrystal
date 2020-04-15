@@ -142,11 +142,13 @@ RadioTerminator::
 PrintText::
 	call SetUpTextbox
 BuenaPrintText::
+IF !DEF(_CRYSTAL_JP)
 	push hl
 	hlcoord TEXTBOX_INNERX, TEXTBOX_INNERY
 	lb bc, TEXTBOX_INNERH - 1, TEXTBOX_INNERW
 	call ClearBox
 	pop hl
+ENDC
 
 PrintTextboxText::
 	bccoord TEXTBOX_INNERX, TEXTBOX_INNERY
@@ -161,6 +163,9 @@ SetUpTextbox::
 	pop hl
 	ret
 
+IF DEF(_CRYSTAL_JP)
+FarString::
+ENDC
 PlaceString::
 	push hl
 
@@ -221,23 +226,41 @@ ENDM
 	dict "<TM>",      TMChar
 	dict "<TRAINER>", TrainerChar
 	dict "<KOUGEKI>", PlaceKougeki
-	dict "<LF>",      LineFeedChar
+IF !DEF(_CRYSTAL_JP)
+	dict "<LF>",      LineFeedChar ; TA!
+ELSE
+	dict "<TA!>",    Char22
+ENDC
 	dict "<CONT>",    ContText
 	dict "<……>",      SixDotsChar
 	dict "<DONE>",    DoneText
 	dict "<PROMPT>",  PromptText
-	dict "<PKMN>",    PlacePKMN
-	dict "<POKE>",    PlacePOKE
+	dict "<PKMN>",    PlacePKMN ;ga
+	dict "<POKE>",    PlacePOKE ;wa
+IF !DEF(_CRYSTAL_JP)
 	dict "%",         NextChar
 	dict "¯",         " "
+ELSE
+	dict $25,         Char25
+	dict $1f,         Char1F
+	dict $1e,         Char1E
+	dict $1d,         Char1D
+ENDC
 	dict "<DEXEND>",  PlaceDexEnd
 	dict "<TARGET>",  PlaceMoveTargetsName
 	dict "<USER>",    PlaceMoveUsersName
 	dict "<ENEMY>",   PlaceEnemysName
 	dict "<PLAY_G>",  PlaceGenderedPlayerName
+IF !DEF(_CRYSTAL_JP)
 	dict "ﾟ",         .place ; should be .diacritic
 	dict "ﾞ",         .place ; should be .diacritic
 	jr .not_diacritic
+ELSE
+	cp "ﾟ"
+	jr z, .diacritic
+	cp "ﾞ"
+	jr nz, .not_diacritic
+ENDC
 
 .diacritic
 	ld b, a
@@ -303,9 +326,18 @@ PCChar:       print_name PCCharText
 RocketChar:   print_name RocketCharText
 PlacePOKe:    print_name PlacePOKeText
 PlaceKougeki: print_name KougekiText
+IF DEF(_CRYSTAL_JP)
+Char22:       print_name Char22Text
+ENDC
 SixDotsChar:  print_name SixDotsCharText
 PlacePKMN:    print_name PlacePKMNText
 PlacePOKE:    print_name PlacePOKEText
+IF DEF(_CRYSTAL_JP)
+Char25:       print_name Char25Text
+Char1F:       print_name Char1FText
+Char1D:       print_name Char1DText
+Char1E:       print_name Char1EText
+ENDC
 PlaceJPRoute: print_name PlaceJPRouteText
 PlaceWatashi: print_name PlaceWatashiText
 PlaceKokoWa:  print_name PlaceKokoWaText
@@ -387,6 +419,7 @@ PlaceCommandCharacter::
 	pop de
 	jp NextChar
 
+IF !DEF(_CRYSTAL_JP)
 TMCharText::      db "TM@"
 TrainerCharText:: db "TRAINER@"
 PCCharText::      db "PC@"
@@ -405,6 +438,30 @@ PlaceKokoWaText:: db "@"
 KunSuffixText::   db "@"
 ChanSuffixText::  db "@"
 
+ELSE
+TMCharText::      db "わざマシン@"
+TrainerCharText:: db "トレーナー@"
+PCCharText::      db "パソコン@"
+RocketCharText::  db "ロケットだん@"
+PlacePOKeText::   db "ポケモン@"
+KougekiText::     db "こうげき@"
+EnemyText::       db "た!@" ; "<TA!>"
+SixDotsCharText:: db "……@"
+PlacePKMNText::   db "てきの @"
+PlacePOKEText::   db "が"
+String_Space::    db " @"
+Char25Text::      db "は @"
+Char22Text::      db "の @"
+Char1FText::      db "を @"
+Char1EText::      db "に @"
+Char1DText::      db "って@"
+PlaceJPRouteText:: db "ばん　どうろ@"
+PlaceWatashiText:: db "わたし@"
+PlaceKokoWaText:: db "ここは @"
+KunSuffixText::   db "くん@"
+ChanSuffixText::  db "ちゃん@"
+ENDC
+
 NextLineChar::
 	pop hl
 	ld bc, SCREEN_WIDTH * 2
@@ -412,12 +469,14 @@ NextLineChar::
 	push hl
 	jp NextChar
 
+IF !DEF(_CRYSTAL_JP)
 LineFeedChar::
 	pop hl
 	ld bc, SCREEN_WIDTH
 	add hl, bc
 	push hl
 	jp NextChar
+ENDC
 
 CarriageReturnChar::
 	pop hl
@@ -491,8 +550,15 @@ Paragraph::
 
 _ContText::
 	ld a, [wLinkMode]
+IF !DEF(_CRYSTAL_JP)
 	or a
 	jr nz, .communication
+ELSE
+	cp a, 3
+	jr z, .communication
+	cp a, 4
+	jr z, .communication
+ENDC
 	call LoadBlinkingCursor
 
 .communication
@@ -502,10 +568,14 @@ _ContText::
 	call PromptButton
 	pop de
 
+IF !DEF(_CRYSTAL_JP)
 	ld a, [wLinkMode]
 	or a
 	call z, UnloadBlinkingCursor
 	; fallthrough
+ELSE
+	call UnloadBlinkingCursor
+ENDC
 
 _ContTextNoPause::
 	push de
@@ -615,6 +685,16 @@ Text_WaitBGMap::
 	ret
 
 Diacritic::
+IF DEF(_CRYSTAL_JP)
+	push af
+	push hl
+	ld a, b
+	ld bc, hFFEC
+	add hl, bc
+	ld [hl], a
+	pop hl
+	pop af
+ENDC
 	ret
 
 LoadBlinkingCursor::
@@ -627,6 +707,7 @@ UnloadBlinkingCursor::
 	ldcoord_a 18, 17
 	ret
 
+IF !DEF(_CRYSTAL_JP)
 FarString::
 	ld b, a
 	ldh a, [hROMBank]
@@ -639,6 +720,7 @@ FarString::
 	pop af
 	rst Bankswitch
 	ret
+ENDC
 
 PokeFluteTerminatorCharacter::
 	ld hl, .stop
@@ -708,12 +790,14 @@ TextCommands::
 	dw TextCommand_SOUND              ; TX_SOUND_SLOT_MACHINE_START
 	dw TextCommand_STRINGBUFFER       ; TX_STRINGBUFFER
 	dw TextCommand_DAY                ; TX_DAY
+IF !DEF(_CRYSTAL_JP)
 	dw TextCommand_FAR                ; TX_FAR
+ENDC
 
 TextCommand_START::
 ; text_start
 ; write text until "@"
-; [$00]["...@"]
+; [$00]["...@"]13FA
 
 	ld d, h
 	ld e, l
@@ -742,6 +826,7 @@ TextCommand_RAM::
 	pop hl
 	ret
 
+IF !DEF(_CRYSTAL_JP)
 TextCommand_FAR::
 ; text_far
 ; write text from a different bank
@@ -770,6 +855,7 @@ TextCommand_FAR::
 	ldh [hROMBank], a
 	ld [MBC3RomBank], a
 	ret
+ENDC
 
 TextCommand_BCD::
 ; text_bcd
@@ -1079,6 +1165,7 @@ TextCommand_DAY::
 	dw .Fri
 	dw .Satur
 
+IF !DEF(_CRYSTAL_JP)
 .Sun:    db "SUN@"
 .Mon:    db "MON@"
 .Tues:   db "TUES@"
@@ -1087,3 +1174,13 @@ TextCommand_DAY::
 .Fri:    db "FRI@"
 .Satur:  db "SATUR@"
 .Day:    db "DAY@"
+ELSE
+.Sun:    db "にち@"
+.Mon:    db "げつ@"
+.Tues:   db "か@"
+.Wednes: db "すい@"
+.Thurs:  db "もく@"
+.Fri:    db "きん@"
+.Satur:  db "ど@"
+.Day:    db "ようび@"
+ENDC

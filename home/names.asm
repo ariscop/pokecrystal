@@ -121,6 +121,7 @@ GetPokemonName::
 ; Each name is ten characters
 	ld a, [wNamedObjectIndexBuffer]
 	dec a
+IF !DEF(_CRYSTAL_JP)
 	ld d, 0
 	ld e, a
 	ld h, 0
@@ -131,6 +132,14 @@ GetPokemonName::
 	add hl, hl
 	ld de, PokemonNames
 	add hl, de
+ELSE
+	ld hl, PokemonNames
+	ld e, a
+	ld d, 0
+rept 5
+	add hl, de
+endr
+ENDC
 
 ; Terminator
 	ld de, wStringBuffer1
@@ -242,12 +251,20 @@ GetTMHMName::
 	ret
 
 .TMText:
+IF !DEF(_CRYSTAL_JP)
 	db "TM"
+ELSE
+	db "わざマシン"
+ENDC
 .TMTextEnd:
 	db "@"
 
 .HMText:
+IF !DEF(_CRYSTAL_JP)
 	db "HM"
+ELSE
+	db "ひでんマシン"
+ENDC
 .HMTextEnd:
 	db "@"
 

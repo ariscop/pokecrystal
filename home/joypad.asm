@@ -200,6 +200,7 @@ GetJoypad::
 ; A duration of $ff will end the stream indefinitely.
 	ld a, [hli]
 	ld [wAutoInputLength], a
+IF !DEF(_CRYSTAL_JP)
 	cp -1
 	jr nz, .next
 
@@ -209,6 +210,7 @@ GetJoypad::
 	ld b, NO_INPUT
 	jr .finishauto
 
+ENDC
 .next
 ; On to the next input...
 	ld a, l
@@ -402,10 +404,12 @@ PromptButton::
 	push af
 	ld a, $1
 	ldh [hOAMUpdate], a
+IF !DEF(_CRYSTAL_JP)
 	ld a, [wInputType]
 	or a
 	jr z, .input_wait_loop
 	farcall _DudeAutoInput_A
+ENDC
 
 .input_wait_loop
 	call .blink_cursor

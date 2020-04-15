@@ -1,9 +1,11 @@
 GetSRAMBank::
+IF !DEF(_CRYSTAL_JP)
 ; load sram bank a
 ; if invalid bank, sram is disabled
 	cp NUM_SRAM_BANKS
 	jr c, OpenSRAM
 	jr CloseSRAM
+ENDC
 
 OpenSRAM::
 ; switch to sram bank a

@@ -536,11 +536,13 @@ jumptextfaceplayer: MACRO
 	dw \1 ; text_pointer
 ENDM
 
+IF !DEF(_CRYSTAL_JP)
 	enum farjumptext_command ; $52
 farjumptext: MACRO
 	db farjumptext_command
 	dba \1
 ENDM
+ENDC
 
 	enum jumptext_command ; $53
 jumptext: MACRO
@@ -1062,3 +1064,12 @@ ENDM
 checksave: MACRO
 	db checksave_command
 ENDM
+
+; Temporary
+IF DEF(_CRYSTAL_JP)
+	enum farjumptext_command ; $52
+farjumptext: MACRO
+	db farjumptext_command
+	dba \1
+ENDM
+ENDC

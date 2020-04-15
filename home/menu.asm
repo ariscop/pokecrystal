@@ -427,6 +427,8 @@ _YesNoBox::
 	ld hl, YesNoMenuHeader
 	call CopyMenuHeader
 	pop bc
+
+IF !DEF(_CRYSTAL_JP)
 ; This seems to be an overflow prevention, but
 ; it was coded wrong.
 	ld a, b
@@ -434,6 +436,7 @@ _YesNoBox::
 	jr nz, .okay ; should this be "jr nc"?
 	ld a, SCREEN_WIDTH - 6
 	ld b, a
+ENDC
 
 .okay
 	ld a, b
@@ -475,8 +478,13 @@ YesNoMenuHeader::
 .MenuData:
 	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING ; flags
 	db 2
+IF !DEF(_CRYSTAL_JP)
 	db "YES@"
 	db "NO@"
+ELSE
+	db "はい@"
+	db "いいえ@"
+ENDC
 
 OffsetMenuHeader::
 	call _OffsetMenuHeader
