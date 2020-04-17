@@ -218,6 +218,8 @@ sBTMonPrevPrevTrainer2:: db
 sBTMonPrevPrevTrainer3:: db
 
 
+IF !DEF(_CRYSTAL_JP)
+
 SECTION "Boxes 1-7", SRAM
 
 sBox1::  box sBox1
@@ -227,7 +229,6 @@ sBox4::  box sBox4
 sBox5::  box sBox5
 sBox6::  box sBox6
 sBox7::  box sBox7
-
 
 SECTION "Boxes 8-14", SRAM
 
@@ -239,6 +240,25 @@ sBox12:: box sBox12
 sBox13:: box sBox13
 sBox14:: box sBox14
 
+ELSE
+; JP Crystal boxes
+
+SECTION "Boxes 1-6", SRAM
+
+sBox1::  box sBox1
+sBox2::  box sBox2
+sBox3::  box sBox3
+sBox4::  box sBox4
+sBox5::  box sBox5
+sBox6::  box sBox6
+
+SECTION "Boxes 7-9", SRAM
+
+sBox7::  box sBox7
+sBox8::  box sBox8
+sBox9::  box sBox9
+
+ENDC
 
 SECTION "SRAM Mobile 1", SRAM
 

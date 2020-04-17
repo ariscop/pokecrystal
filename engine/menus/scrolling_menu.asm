@@ -406,7 +406,11 @@ ScrollingMenu_UpdateDisplay:
 	ret
 
 .string_2485f
+IF !DEF(_CRYSTAL_JP)
 	db "CANCEL@"
+ELSE
+	db "やめる@"
+ENDC
 
 .call_function
 	ld d, h

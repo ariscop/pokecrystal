@@ -2162,11 +2162,13 @@ GetBoxPointer:
 	dba sBox7
 	dba sBox8
 	dba sBox9
+IF !DEF(_CRYSTAL_JP)
 	dba sBox10
 	dba sBox11
 	dba sBox12
 	dba sBox13
 	dba sBox14
+ENDC
 
 BillsPC_ApplyPalettes:
 	ld b, a
@@ -2384,11 +2386,13 @@ GetBoxCount:
 	dba sBox7
 	dba sBox8
 	dba sBox9
+IF !DEF(_CRYSTAL_JP)
 	dba sBox10
 	dba sBox11
 	dba sBox12
 	dba sBox13
 	dba sBox14
+ENDC
 
 BillsPC_PrintBoxName:
 	hlcoord 0, 0

@@ -136,15 +136,19 @@ Function140ae:
 .time_overflow
 	farcall ClearDailyTimers
 	farcall Function170923
+IF !DEF(_CRYSTAL_JP)
 	ld a, BANK(s5_aa8c) ; aka BANK(s5_b2fa)
 	call GetSRAMBank
+ENDC
 	ld a, [s5_aa8c]
 	inc a
 	ld [s5_aa8c], a
+IF !DEF(_CRYSTAL_JP)
 	ld a, [s5_b2fa]
 	inc a
 	ld [s5_b2fa], a
 	call CloseSRAM
+ENDC
 	ret
 
 .dont_update

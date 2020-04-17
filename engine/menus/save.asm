@@ -1,6 +1,13 @@
 SaveMenu:
 	call LoadStandardMenuHeader
+IF DEF(_CRYSTAL_JP)
+	ld de, $500
+	ld a, 1
+	ld hl, $5e83
+	rst 8 ;farcall somewhere
+ELSE
 	farcall DisplaySaveInfoOnSave
+ENDC
 	call SpeechTextbox
 	call UpdateSprites
 	farcall SaveMenu_CopyTilemapAtOnce
@@ -268,10 +275,13 @@ _SaveGameData:
 	call SaveBackupPlayerData
 	call SaveBackupPokemonData
 	call SaveBackupChecksum
+IF !DEF(_CRYSTAL_JP)
 	call UpdateStackTop
+ENDC
 	farcall BackupPartyMonMail
 	farcall BackupMobileEventIndex
 	farcall SaveRTC
+IF !DEF(_CRYSTAL_JP)
 	ld a, BANK(sBattleTowerChallengeState)
 	call GetSRAMBank
 	ld a, [sBattleTowerChallengeState]
@@ -281,7 +291,10 @@ _SaveGameData:
 	ld [sBattleTowerChallengeState], a
 .ok
 	call CloseSRAM
+ENDC
 	ret
+
+IF !DEF(_CRYSTAL_JP)
 
 UpdateStackTop:
 ; sStackTop appears to be unused.
@@ -322,6 +335,8 @@ FindStackTop:
 	inc hl
 	jr .loop
 
+ENDC
+
 SavingDontTurnOffThePower:
 	; Prevent joypad interrupts
 	xor a
@@ -351,6 +366,14 @@ ErasePreviousSave:
 	call EraseHallOfFame
 	call EraseLinkBattleStats
 	call EraseMysteryGift
+IF DEF(_CRYSTAL_JP)
+	call Unreferenced_Function14d18
+	call EraseBattleTowerStatus
+	call SaveData
+	call Unreferenced_Function14d6c
+	call Unreferenced_Function14d83
+	call Unreferenced_Function14d93
+ELSE
 	call SaveData
 	call EraseBattleTowerStatus
 	ld a, BANK(sStackTop)
@@ -359,6 +382,7 @@ ErasePreviousSave:
 	ld [sStackTop + 0], a
 	ld [sStackTop + 1], a
 	call CloseSRAM
+ENDC
 	ld a, $1
 	ld [wSavedAtLeastOnce], a
 	ret
@@ -411,11 +435,36 @@ Unreferenced_Function14d18:
 .DataEnd
 
 EraseBattleTowerStatus:
+IF !DEF(_CRYSTAL_JP)
 	ld a, BANK(sBattleTowerChallengeState)
 	call GetSRAMBank
 	xor a
 	ld [sBattleTowerChallengeState], a
 	jp CloseSRAM
+ELSE
+	ld a, $5 ; BANK(sBattleTowerChallengeState)?
+	call GetSRAMBank
+	xor a
+	ld [$A800], a ; sBattleTowerChallengeState?
+	ld hl, $aa3e
+	ld bc, $05e5
+	call ByteFill
+	ld hl, .Data
+	ld de, $a89c
+	ld bc, $16
+	call CopyBytes
+	xor a
+	ld hl, $a8b2
+	ld bc, $96
+	call ByteFill
+	jp CloseSRAM
+
+.Data
+	db "ーーーーーー@"
+	db "　　　　ーーー@"
+	db "　　　　　　　"
+
+ENDC
 
 SaveData:
 	call _SaveData
@@ -728,6 +777,7 @@ LoadPlayerData:
 	ld bc, wCurMapDataEnd - wCurMapData
 	call CopyBytes
 	call CloseSRAM
+IF !DEF(_CRYSTAL_JP)
 	ld a, BANK(sBattleTowerChallengeState)
 	call GetSRAMBank
 	ld a, [sBattleTowerChallengeState]
@@ -737,6 +787,7 @@ LoadPlayerData:
 	ld [sBattleTowerChallengeState], a
 .not_4
 	call CloseSRAM
+ENDC
 	ret
 
 LoadPokemonData:
@@ -1073,11 +1124,13 @@ BoxAddresses:
 	dbww BANK(sBox7),  sBox7,  sBox7End
 	dbww BANK(sBox8),  sBox8,  sBox8End
 	dbww BANK(sBox9),  sBox9,  sBox9End
+IF !DEF(_CRYSTAL_JP)
 	dbww BANK(sBox10), sBox10, sBox10End
 	dbww BANK(sBox11), sBox11, sBox11End
 	dbww BANK(sBox12), sBox12, sBox12End
 	dbww BANK(sBox13), sBox13, sBox13End
 	dbww BANK(sBox14), sBox14, sBox14End
+ENDC
 
 Checksum:
 	ld de, 0

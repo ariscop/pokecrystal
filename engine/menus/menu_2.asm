@@ -16,8 +16,10 @@ PlaceMenuItemQuantity:
 	pop hl
 	and a
 	jr nz, .done
+IF !DEF(_CRYSTAL_JP)
 	ld de, $15
 	add hl, de
+ENDC
 	ld [hl], "×"
 	inc hl
 	ld de, wMenuSelectionQuantity
@@ -39,7 +41,12 @@ PlaceMoneyBottomLeft:
 
 PlaceMoneyAtTopLeftOfTextbox:
 	ld hl, MenuHeader_0x24b15
+IF !DEF(_CRYSTAL_JP)
 	lb de, 0, 11
+ELSE
+	ld d, 0
+	ld e, 0
+ENDC
 	call OffsetMenuHeader
 
 PlaceMoneyTextbox:
@@ -50,6 +57,9 @@ PlaceMoneyTextbox:
 	ld de, wMoney
 	lb bc, PRINTNUM_MONEY | 3, 6
 	call PrintNum
+IF DEF(_CRYSTAL_JP)
+	ld [hl], "¥"
+ENDC
 	ret
 
 MenuHeader_0x24b15:
@@ -94,6 +104,10 @@ DisplayMoneyAndCoinBalance:
 	ld de, wMoney
 	lb bc, PRINTNUM_MONEY | 3, 6
 	call PrintNum
+IF DEF(_CRYSTAL_JP)
+	hlcoord 15, 6
+	ld [hl], "¥"
+ENDC
 	hlcoord 6, 3
 	ld de, CoinString
 	call PlaceString
@@ -101,14 +115,28 @@ DisplayMoneyAndCoinBalance:
 	ld de, wCoins
 	lb bc, 2, 4
 	call PrintNum
+IF DEF(_CRYSTAL_JP)
+	hlcoord 15, 6
+	ld de, ShowMoney_TerminatorString
+	call PlaceString
+ENDC
 	ret
 
+IF !DEF(_CRYSTAL_JP)
 MoneyString:
 	db "MONEY@"
 CoinString:
 	db "COIN@"
 ShowMoney_TerminatorString:
 	db "@"
+ELSE
+MoneyString:
+	db "おかね@"
+CoinString:
+	db "コイン@"
+ShowMoney_TerminatorString:
+	db "まい@"
+ENDC
 
 Unreferenced_Function24b8f:
 ; related to safari?

@@ -254,11 +254,13 @@ BoxAddressTable:
 	dba sBox7
 	dba sBox8
 	dba sBox9
+IF !DEF(_CRYSTAL_JP)
 	dba sBox10
 	dba sBox11
 	dba sBox12
 	dba sBox13
 	dba sBox14
+ENDC
 
 UpdateOTPointer:
 	push hl

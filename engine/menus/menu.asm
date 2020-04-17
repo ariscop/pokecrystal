@@ -732,7 +732,11 @@ Error_Cant_ExitMenu:
 	jr .infinite_loop
 
 .WindowPoppingErrorText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _WindowPoppingErrorText
+ELSE
+	db $00, $43, $AC, $42, $33, $B7, $D9, $7F, $82, $B0, $AB, $13, $82, $26, $4E, $B1, $D8, $CF, $BE, $DE, $E7
+ENDC
 	text_end
 
 _InitVerticalMenuCursor::
