@@ -1148,33 +1148,85 @@ Checksum:
 	ret
 
 WouldYouLikeToSaveTheGameText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _WouldYouLikeToSaveTheGameText
 	text_end
+ELSE
+	text "ここまでの かつやくを"
+	line "#レポートに かきこみますか?"
+	done
+ENDC
 
 SavingDontTurnOffThePowerText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _SavingDontTurnOffThePowerText
 	text_end
+ELSE
+	text "#レポートに かきこんでいます"
+	line "でんげんを きらないで ください"
+	done
+ENDC
 
 SavedTheGameText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _SavedTheGameText
 	text_end
+ELSE
+	text "<PLAYER>は"
+	line "レポートに しっかり かきのこした!"
+	done
+ENDC
 
 AlreadyASaveFileText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _AlreadyASaveFileText
 	text_end
+ELSE
+	text "まえに かかれた レポートに"
+	line "うえから かいても いいですか?"
+	done
+ENDC
 
 AnotherSaveFileText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _AnotherSaveFileText
 	text_end
+ELSE
+	text "べつの ぼうけんの "
+	line "レポートが かかれています!"
+	cont "うえから かいても いいですか?"
+	done
+ENDC
 
 SaveFileCorruptedText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _SaveFileCorruptedText
 	text_end
+ELSE
+	text "レポートの ないようが"
+	line "こわれています!!"
+	prompt
+ENDC
 
 ChangeBoxSaveText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _ChangeBoxSaveText
 	text_end
+ELSE
+	text "ボックスを かえると"
+	line "どうじに レポートが かかれます"
+	cont "いいですか?"
+	done
+ENDC
 
 MoveMonWOMailSaveText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _MoveMonWOMailSaveText
 	text_end
+ELSE
+	text "この きのうを つかうと"
+	line "#を いどう するたびに"
+	cont "レポートが かかれます"
+	para "よろしいですか?"
+	done
+ENDC

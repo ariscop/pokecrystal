@@ -28,6 +28,7 @@ PrintDayOfWeek:
 	ret
 
 .Days:
+IF !DEF(_CRYSTAL_JP)
 	db "SUN@"
 	db "MON@"
 	db "TUES@"
@@ -35,9 +36,23 @@ PrintDayOfWeek:
 	db "THURS@"
 	db "FRI@"
 	db "SATUR@"
+ELSE
+	db "にち@"
+	db "げつ@"
+	db "か@"
+	db "すい@"
+	db "もく@"
+	db "きん@"
+	db "ど@"
+ENDC
 
 .Day:
+IF !DEF(_CRYSTAL_JP)
 	db "DAY@"
+ELSE
+	db "ようび@"
+ENDC
+
 
 NewGame_ClearTilemapEtc:
 	xor a
@@ -232,6 +247,8 @@ SetDefaultBoxNames:
 	push hl
 	ld de, .Box
 	call CopyName2
+
+IF !DEF(_CRYSTAL_JP)
 	dec hl
 	ld a, c
 	inc a
@@ -246,7 +263,7 @@ SetDefaultBoxNames:
 	ld [hli], a
 	ld [hl], "@"
 	pop hl
-	ld de, 9
+	ld de, BOX_NAME_LENGTH
 	add hl, de
 	inc c
 	ld a, c
@@ -254,10 +271,31 @@ SetDefaultBoxNames:
 	jr c, .loop
 	ret
 
+ELSE
+	ld a, "1"
+	add c
+	dec hl
+	ld [hl+], a
+	ld [hl], "@"
+	pop hl
+	ld de, BOX_NAME_LENGTH
+	add hl, de
+	inc c
+	ld a, c
+	cp a, NUM_BOXES
+	jr c, .loop
+	ret
+ENDC
+
 .Box:
+IF !DEF(_CRYSTAL_JP)
 	db "BOX@"
+ELSE
+	db "ボックス@"
+ENDC
 
 InitializeMagikarpHouse:
+IF !DEF(_CRYSTAL_JP)
 	ld hl, wBestMagikarpLengthFeet
 	ld a, $3
 	ld [hli], a
@@ -269,6 +307,24 @@ InitializeMagikarpHouse:
 
 .Ralph:
 	db "RALPH@"
+
+ELSE
+	ld hl, $df5e
+	ld a, $04
+	ld [hl+], a
+	ld a, $1d
+	ld [hl+], a
+	ld a, "ヤ"
+	ld [hl+], a
+	ld a, "ス"
+	ld [hl+], a
+	ld a, "ア"
+	ld [hl+], a
+	ld a, "キ"
+	ld [hl+], a
+	ld [hl], "@"
+	ret
+ENDC
 
 InitializeNPCNames:
 	ld hl, .Rival
@@ -291,10 +347,17 @@ InitializeNPCNames:
 	call CopyBytes
 	ret
 
+IF !DEF(_CRYSTAL_JP)
 .Rival:  db "???@"
 .Red:    db "RED@"
 .Green:  db "GREEN@"
 .Mom:    db "MOM@"
+ELSE
+.Rival:  db "???@"
+.Red:    db "レッド@"
+.Green:  db "グりーン@"
+.Mom:    db "おかあさん@"
+ENDC
 
 InitializeWorld:
 	call ShrinkPlayer
@@ -486,8 +549,10 @@ DisplaySaveInfoOnContinue:
 	ret
 
 DisplaySaveInfoOnSave:
+IF !DEF(_CRYSTAL_JP)
 	lb de, 4, 0
 	jr DisplayNormalContinueData
+ENDC
 
 DisplayNormalContinueData:
 	call Continue_LoadMenuHeader
@@ -529,10 +594,17 @@ Continue_LoadMenuHeader:
 .MenuData_Dex:
 	db 0 ; flags
 	db 4 ; items
+IF !DEF(_CRYSTAL_JP)
 	db "PLAYER@"
 	db "BADGES@"
 	db "#DEX@"
 	db "TIME@"
+ELSE
+	db "しゅじんこう <PLAYER>@"
+	db "もっているバッジ    こ@"
+	db "#ずかん    ひき@"
+	db "プレイじかん@"
+ENDC
 
 .MenuHeader_NoDex:
 	db MENU_BACKUP_TILES ; flags
@@ -543,10 +615,17 @@ Continue_LoadMenuHeader:
 .MenuData_NoDex:
 	db 0 ; flags
 	db 4 ; items
+IF !DEF(_CRYSTAL_JP)
 	db "PLAYER <PLAYER>@"
 	db "BADGES@"
 	db " @"
 	db "TIME@"
+ELSE
+	db "しゅじんこう <PLAYER>@"
+	db "もっているバッジ    こ@"
+	db " @"
+	db "プレイじかん@"
+ENDC
 
 Continue_DisplayBadgesDexPlayerName:
 	call MenuBoxCoord2Tile
@@ -560,6 +639,8 @@ Continue_DisplayBadgesDexPlayerName:
 	add hl, de
 	call Continue_DisplayPokedexNumCaught
 	pop hl
+
+IF !DEF(_CRYSTAL_JP)
 	push hl
 	decoord 8, 2, 0
 	add hl, de
@@ -570,6 +651,9 @@ Continue_DisplayBadgesDexPlayerName:
 
 .Player:
 	db "<PLAYER>@"
+ELSE
+	ret
+ENDC
 
 Continue_PrintGameTime:
 	decoord 9, 8, 0
@@ -703,11 +787,28 @@ OakSpeech:
 	ret
 
 OakText1:
+IF !DEF(_CRYSTAL_JP)
 	text_far _OakText1
 	text_end
+ELSE
+	db $0, "いやあ またせた!", $51
+	db "ポケットモンスターの せかいへ", $4f
+	db "ようこそ!", $51
+	db "わしの なまえは ォーキド", $51
+	db "みんなからは # はかせと", $4f
+	db "したわれて おるよ", $58
+ENDC
 
 OakText2:
+IF !DEF(_CRYSTAL_JP)
 	text_far _OakText2
+ELSE
+	db $0, "ポケットモンスター………#", $51
+	db "この せかいには", $4f
+	db "ポケットモンスターと よばれる", $55
+	db "いきもの たちが", $55
+	db "いたるところに すんでいる!@"
+ENDC
 	text_asm
 	ld a, WOOPER
 	call PlayMonCry
@@ -716,24 +817,66 @@ OakText2:
 	ret
 
 OakText3:
+IF !DEF(_CRYSTAL_JP)
 	text_far _OakText3
 	text_end
+ELSE
+	text_waitbutton
+	db $50
+ENDC
 
 OakText4:
+IF !DEF(_CRYSTAL_JP)
 	text_far _OakText4
 	text_end
+ELSE
+	db $0, "ひとは #たちと", $4f
+	db "なかよく あそんだり", $55
+	db "いっしょに たたかったり…………", $55
+	db "たすけあい ながら", $55
+	db "くらして いるのじゃ", $58
+ENDC
 
 OakText5:
+IF !DEF(_CRYSTAL_JP)
 	text_far _OakText5
 	text_end
+ELSE
+	db $0, "しかし わしらは #のすべてを", $4f
+	db "しっている わけでは ない", $51
+	db "#の ひみつは", $4f
+	db "まだまだ いっぱい ある!", $51
+	db "わしは それを ときあかすために", $4f
+	db "まいにち #の けんきゅうを", $55
+	db "つづけている という わけじゃ!", $58
+ENDC
 
 OakText6:
+IF !DEF(_CRYSTAL_JP)
 	text_far _OakText6
 	text_end
+ELSE
+	db $0, "さて", $56, $4f
+	db "そろそろ きみの なまえを", $55
+	db "おしえて もらおう!", $58
+ENDC
 
 OakText7:
+IF !DEF(_CRYSTAL_JP)
 	text_far _OakText7
 	text_end
+ELSE
+	db $0, $52, "!", $4f
+	db "じゅんびは いいかな?", $51
+	db "いよいよ これから", $4f
+	db "きみの ものがたりが はじまる!", $51
+	db "たのしいことも くるしいことも", $4f
+	db "いっぱい きみを まってるだろう!", $51
+	db "ゆめと ぼうけんと!", $4f
+	db "ポケット モンスターの せかいへ!", $55
+	db "レッツ ゴー!", $51
+	db "あとで また あおう!", $57
+ENDC
 
 NamePlayer:
 	farcall MovePlayerPicRight
@@ -767,18 +910,25 @@ NamePlayer:
 
 	ld hl, wPlayerName
 	ld de, .Chris
+IF !DEF(_CRYSTAL_JP)
 	ld a, [wPlayerGender]
 	bit PLAYERGENDER_FEMALE_F, a
 	jr z, .Male
 	ld de, .Kris
 .Male:
+ENDC
 	call InitName
 	ret
 
+IF !DEF(_CRYSTAL_JP)
 .Chris:
 	db "CHRIS@@@@@@"
 .Kris:
 	db "KRIS@@@@@@@"
+ELSE
+.Chris:
+	db "クりス@@@"
+ENDC
 
 Unreferenced_Function60e9:
 	call LoadMenuHeader
@@ -1012,7 +1162,9 @@ StartTitleScreen:
 	dw DeleteSaveData
 	dw CrystalIntroSequence
 	dw CrystalIntroSequence
+IF !DEF(_CRYSTAL_JP)
 	dw ResetClock
+ENDC
 
 .TitleScreen:
 	farcall _TitleScreen
@@ -1080,11 +1232,20 @@ TitleScreenEntrance:
 	ld bc, 8 * 10 ; logo height
 	call ByteFill
 
+IF DEF(_CRYSTAL_JP)
+	ld hl, $d118
+	ld bc, JumpTable
+ENDC
+
 ; Reversed signage for every other line's position.
 ; This is responsible for the interlaced effect.
 	ld a, e
 	xor $ff
 	inc a
+
+IF DEF(_CRYSTAL_JP)
+	call ByteFill
+ELSE
 
 	ld b, 8 * 10 / 2 ; logo height / 2
 	ld hl, wLYOverrides + 1
@@ -1093,6 +1254,7 @@ TitleScreenEntrance:
 	inc hl
 	dec b
 	jr nz, .loop
+ENDC
 
 	farcall AnimateTitleCrystal
 	ret
@@ -1148,6 +1310,7 @@ TitleScreenMain:
 	cp  D_UP + B_BUTTON + SELECT
 	jr z, .delete_save_data
 
+IF !DEF(_CRYSTAL_JP)
 ; To bring up the clock reset dialog:
 
 ; Hold Down + B + Select to initiate the sequence.
@@ -1177,6 +1340,8 @@ TitleScreenMain:
 	and D_LEFT + D_UP
 	cp  D_LEFT + D_UP
 	jr z, .clock_reset
+
+ENDC
 
 ; Press Start or A to start the game.
 .check_start
@@ -1216,6 +1381,7 @@ TitleScreenMain:
 	inc [hl]
 	ret
 
+IF !DEF(_CRYSTAL_JP)
 .clock_reset
 	ld a, 4
 	ld [wIntroSceneFrameCounter], a
@@ -1224,6 +1390,7 @@ TitleScreenMain:
 	ld hl, wJumptableIndex
 	set 7, [hl]
 	ret
+ENDC
 
 TitleScreenEnd:
 ; Wait until the music is done fading.
@@ -1247,9 +1414,11 @@ DeleteSaveData:
 	farcall _DeleteSaveData
 	jp Init
 
+IF !DEF(_CRYSTAL_JP)
 ResetClock:
 	farcall _ResetClock
 	jp Init
+ENDC
 
 Unreferenced_Function639b:
 	; If bit 0 or 1 of [wTitleScreenTimer] is set, we don't need to be here.
@@ -1333,4 +1502,7 @@ GameInit::
 	ld a, $90
 	ldh [hWY], a
 	call WaitBGMap
+IF DEF(_CRYSTAL_JP)
+	farcall Unreferenced_Function16c000
+ENDC
 	jp CrystalIntroSequence

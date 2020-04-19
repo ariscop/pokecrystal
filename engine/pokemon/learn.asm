@@ -201,27 +201,78 @@ ForgetMove:
 	ret
 
 LearnedMoveText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _LearnedMoveText
 	text_end
+ELSE
+	text_from_ram wMonOrItemNameBuffer
+	db $0, "は あたらしく", $4f
+	db "@"
+	text_from_ram wStringBuffer2
+	db $0, "を おぼえた!@"
+	sound_dex_fanfare_50_79
+	text_promptbutton
+	db "@"
+ENDC
 
 MoveAskForgetText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _MoveAskForgetText
 	text_end
+ELSE
+	db $0, "どの わざを", $4e, "わすれさせたい?", $57
+ENDC
 
 StopLearningMoveText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _StopLearningMoveText
 	text_end
+ELSE
+	db $0, "それでは", $56, " @"
+	text_from_ram $d066
+	db $0, "を", $4f
+	db "おぼえるのを あきらめますか?", $57
+ENDC
 
 DidNotLearnMoveText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _DidNotLearnMoveText
 	text_end
+ELSE
+	text_from_ram $d046
+	db $0, "は @"
+	text_from_ram $d066
+	db $0, "を", $4f
+	db "おぼえずに おわった!", $58
+ENDC
 
 AskForgetMoveText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _AskForgetMoveText
 	text_end
+ELSE
+	text_from_ram $d046
+	db $0, "は あたらしく", $4f
+	db "@"
+	text_from_ram $d066
+	db $0, "を おぼえたい", $56, "!", $51
+	db "しかし @"
+	text_from_ram $d046
+	db $0, "は わざを 4つ", $4f
+	db "おぼえるので せいいっぱいだ!", $51
+	db "@"
+	text_from_ram $d066
+	db $0, "の かわりに", $4f
+	db "ほかの わざを わすれさせますか?", $57
+ENDC
 
 Text_1_2_and_Poof:
+IF !DEF(_CRYSTAL_JP)
 	text_far Text_MoveForgetCount ; 1, 2 and…
+ELSE
+	db $0, "1 2の ", $56, "@"
+	text_pause
+ENDC
 	text_asm
 	push de
 	ld de, SFX_SWITCH_POKEMON
@@ -231,9 +282,27 @@ Text_1_2_and_Poof:
 	ret
 
 .MoveForgotText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _MoveForgotText
 	text_end
+ELSE
+	db $0, " ポカン!@"
+	text_pause
+	db $0, $51
+	db "@"
+	text_from_ram $d046
+	db $0, "は @"
+	text_from_ram $d05b
+	db $0, "の", $4f
+	db "つかいかたを きれいに わすれた!", $51
+	db "そして", $56, "!", $58
+ENDC
 
 MoveCantForgetHMText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _MoveCantForgetHMText
 	text_end
+ELSE
+	db $0, "それは たいせつなわざです", $4f
+	db "わすれさせることは できません!", $58
+ENDC

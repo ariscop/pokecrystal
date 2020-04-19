@@ -53,11 +53,19 @@ PCPC_TURN_OFF     EQU 4
 	dw HallOfFamePC, .String_HallOfFame
 	dw TurnOffPC,    .String_TurnOff
 
+IF !DEF(_CRYSTAL_JP)
 .String_PlayersPC:  db "<PLAYER>'s PC@"
 .String_BillsPC:    db "BILL's PC@"
 .String_OaksPC:     db "PROF.OAK's PC@"
 .String_HallOfFame: db "HALL OF FAME@"
 .String_TurnOff:    db "TURN OFF@"
+ELSE
+.String_PlayersPC:  db "<PLAYER>の <PC>@"
+.String_BillsPC:    db "マサキの <PC>@"
+.String_OaksPC:     db "ォーキドの <PC>@"
+.String_HallOfFame: db "でんどういり@"
+.String_TurnOff:    db "スイッチを きる@"
+ENDC
 
 .WhichPC:
 	; before Pokédex
@@ -110,8 +118,14 @@ PC_CheckPartyForPokemon:
 	ret
 
 .PokecenterPCCantUseText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _PokecenterPCCantUseText
 	text_end
+ELSE
+	db $0, "ピーッ!", $4f
+	db "#を もっていない", $55
+	db "ひとは つかうことが できません!", $58
+ENDC
 
 BillsPC:
 	call PC_PlayChoosePCSound
@@ -199,8 +213,13 @@ _PlayersHousePC:
 	ret
 
 PlayersPCTurnOnText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _PlayersPCTurnOnText
 	text_end
+ELSE
+	db $0, $52, "は", $4f
+	db $5b, "の スイッチを いれた!", $58
+ENDC
 
 _PlayersPC:
 	ld a, b
@@ -263,6 +282,7 @@ PLAYERSPC_LOG_OFF       EQU 6
 	dw PlayerLogOffMenu,       .LogOff
 	dw PlayerLogOffMenu,       .TurnOff
 
+IF !DEF(_CRYSTAL_JP)
 .WithdrawItem: db "WITHDRAW ITEM@"
 .DepositItem:  db "DEPOSIT ITEM@"
 .TossItem:     db "TOSS ITEM@"
@@ -270,6 +290,15 @@ PLAYERSPC_LOG_OFF       EQU 6
 .Decoration:   db "DECORATION@"
 .TurnOff:      db "TURN OFF@"
 .LogOff:       db "LOG OFF@"
+ELSE
+.WithdrawItem: db "どうぐを ひきだす@"
+.DepositItem:  db "どうぐを あずける@"
+.TossItem:     db "どうぐを すてる@"
+.MailBox:      db "メールボックス@"
+.Decoration:   db "もようがえ@"
+.TurnOff:      db "スイッチを きる@"
+.LogOff:       db "せつぞくをきる@"
+ENDC
 
 .PlayersPCMenuList1:
 	db 5
@@ -301,8 +330,12 @@ PC_DisplayTextWaitMenu:
 	ret
 
 PlayersPCAskWhatDoText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _PlayersPCAskWhatDoText
 	text_end
+ELSE
+	db $0, "なにを しますか?", $57
+ENDC
 
 PlayerWithdrawItemMenu:
 	call LoadStandardMenuHeader
@@ -369,16 +402,35 @@ PlayerWithdrawItemMenu:
 	ret
 
 .PlayersPCHowManyWithdrawText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _PlayersPCHowManyWithdrawText
 	text_end
+ELSE
+	db $0, "いくつ ひきだしますか?", $57
+ENDC
 
 .PlayersPCWithdrewItemsText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _PlayersPCWithdrewItemsText
 	text_end
+ELSE
+	text_from_ram $d066
+	db $0, "を @"
+
+	deciram $d0cc, 1, 2
+	db $0, "こ ", $4f
+	db "ひきだしました", $58
+
+ENDC
 
 .PlayersPCNoRoomWithdrawText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _PlayersPCNoRoomWithdrawText
 	text_end
+ELSE
+	db $0, "もちものが いっぱいなので", $4f
+	db "ひきだせません!", $58
+ENDC
 
 PlayerTossItemMenu:
 	call LoadStandardMenuHeader
@@ -439,8 +491,13 @@ PlayerDepositItemMenu:
 	ret
 
 .PlayersPCNoItemsText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _PlayersPCNoItemsText
 	text_end
+ELSE
+	db $0, "どうぐを ひとつも", $4f
+	db "もっていない!", $58
+ENDC
 
 .TryDepositItem:
 	ld a, [wSpriteUpdatesEnabled]
@@ -528,16 +585,33 @@ PlayerDepositItemMenu:
 	ret
 
 .PlayersPCHowManyDepositText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _PlayersPCHowManyDepositText
 	text_end
+ELSE
+	db $0, "いくつ あずけますか?", $57
+ENDC
 
 .PlayersPCDepositItemsText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _PlayersPCDepositItemsText
 	text_end
+ELSE
+	text_from_ram $d066
+	db $0, "を @"
+	deciram $d0cc, 1, 2
+	db $0, "こ ", $4f
+	db "あずけました", $58
+ENDC
 
 .PlayersPCNoRoomDepositText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _PlayersPCNoRoomDepositText
 	text_end
+ELSE
+	db $0, "どうぐが いっぱいです", $4f
+	db "もう あずけられません!", $58
+ENDC
 
 PlayerMailBoxMenu:
 	farcall _PlayerMailBoxMenu
@@ -634,25 +708,58 @@ PC_DisplayText:
 	ret
 
 PokecenterPCTurnOnText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _PokecenterPCTurnOnText
 	text_end
+ELSE
+	db $0, $52, "は", $4f
+	db $5b, "の スイッチを いれた!", $58
+ENDC
 
 PokecenterPCWhoseText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _PokecenterPCWhoseText
 	text_end
+ELSE
+	db $0, "どこの ", $5b, "と つないで", $4f
+	db "つうしん しますか?", $57
+ENDC
 
 PokecenterBillsPCText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _PokecenterBillsPCText
 	text_end
+ELSE
+	db $0, "マサキの ", $5b, "と つないだ!", $51
+	db "#の あずかり システムを ", $4f
+	db "よびだした!", $58
+ENDC
 
 PokecenterPlayersPCText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _PokecenterPlayersPCText
 	text_end
+ELSE
+	db $0, "じぶんの ", $5b, "と つないだ!", $51
+	db "どうぐの あずかり システムを", $4f
+	db "よびだした!", $58
+ENDC
 
 PokecenterOaksPCText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _PokecenterOaksPCText
 	text_end
+ELSE
+	db $0, "ォーキドの ", $5b, "と つないだ!", $51
+	db "# ずかん", $4f
+	db "ひょうか システムを よびだした!", $58
+ENDC
 
 PokecenterPCOaksClosedText:
+IF !DEF(_CRYSTAL_JP)
 	text_far _PokecenterPCOaksClosedText
 	text_end
+ELSE
+	db $0, $56, " ", $56, " ", $56, $4f
+	db $56, " ", $56, " つうしん しゅうりょう!", $57
+ENDC

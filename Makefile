@@ -108,8 +108,8 @@ pokecrystal-au.gbc: $(crystal_au_obj) pokecrystal.link
 	$(RGBLINK) -n pokecrystal-au.sym -m pokecrystal-au.map -l pokecrystal.link -o $@ $(crystal_au_obj)
 	$(RGBFIX) -Cjv -i BYTU -k 01 -l 0x33 -m 0x10 -p 0 -r 3 -t PM_CRYSTAL $@
 
-pokekuristaru.gbc: $(crystal_jp_obj) pokecrystal.link
-	$(RGBLINK) -n pokekuristaru.sym -m pokekuristaru.map -l pokecrystal.link -o $@ $(crystal_jp_obj)
+pokekuristaru.gbc: $(crystal_jp_obj) pokekuristaru.link
+	$(RGBLINK) -n pokekuristaru.sym -m pokekuristaru.map -l pokekuristaru.link -o $@ $(crystal_jp_obj)
 	$(RGBFIX) -Cv -i BXTJ -k 01 -l 0x33 -m 0x10 -p 0 -r 5 -t PM_CRYSTAL $@
 
 # For files that the compressor can't match, there will be a .lz file suffixed with the md5 hash of the correct uncompressed file.
